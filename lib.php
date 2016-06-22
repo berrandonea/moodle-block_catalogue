@@ -201,10 +201,11 @@ function block_catalogue_instanciate_list($listname) {
         include_once($classfile);
         $classname = "blockcatalogue_list_$listname";
         $instance = new $classname();
-        return $instance;
-    } else {
-        return false;
+        if (isset($instance->name)) {
+            return $instance;
+        }
     }
+    return false;
 }
 
 /**
