@@ -205,7 +205,7 @@ function block_catalogue_instanciate_list($listname) {
             return $instance;
         }
     }
-    return false;
+    return null;
 }
 
 /**
