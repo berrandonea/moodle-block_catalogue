@@ -54,7 +54,11 @@ if (count($categories) > 1) {
     $open = 'none';
 }
 $availables = $thislist->get_availables();
+?>
 
+<script src="<?php echo $CFG->wwwroot; ?>/blocks/catalogue/js/block_catalogue.js"></script>
+
+<?php
 // Apply changes.
 $usedcategory = null;
 if ($edit && $elementname && $usereditor) {
