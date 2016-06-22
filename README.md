@@ -1,5 +1,5 @@
 # moodle-block_catalogue
-Plug-in for the Learning Management System Moodle. Provides a visual and central place for a teacher to access everything he can use in his course (activities, reports, blocks, …) Frequently used items can be marked as favorites for quick access. Unless the teacher wants to delete or move an activity or block, he no longer needs to switch to editing mode.
+Plug-in for Moodle, the well-known Learning Management System. Provides a visual and central place for a teacher to access everything he can use in his course (activities, reports, blocks, …) Frequently used items can be marked as favorites for quick access. Unless the teacher wants to delete or move an activity or block, he no longer needs to switch to editing mode.
 
 A manager interface is included. There, managers can :
 -	Edit the descriptions.
@@ -22,7 +22,7 @@ Successfully tested on Moodle 2.6.4, 2.9, 2.9.4, 3.1+
 
 - Activities : divided in 3 categories (Exercises, Collaboration, Other)
 - Blocks : 3 categories (Monitor learners, Communicate with learners, Other)
-- Customlabels : Requires the plug-in "mod_customlabels", by Valery Fremaux. 3 categories (Pedagogical elements, Structural elements, Other elements).
+- Custom labels : Requires the plug-in "mod_customlabels", by Valery Fremaux. 3 categories (Pedagogical elements, Structural elements, Other elements).
 - Enrolments : 2 categories (Users and groups, Enrolment methods)
 - Grades : 3 categories (Grade settings, Grade reports, "Outcomes, competencies, badges")
 - Reports : 1 category
