@@ -33,6 +33,8 @@
 
 abstract class blockcatalogue_list {
 
+    public $skip = false;
+
     protected $name;
     protected $prefix;
     protected $standarddocdir = 'https://docs.moodle.org';
