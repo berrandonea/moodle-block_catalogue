@@ -201,7 +201,7 @@ function block_catalogue_instanciate_list($listname) {
         include_once($classfile);
         $classname = "blockcatalogue_list_$listname";
         $instance = new $classname();
-        if (isset($instance->name)) {
+        if (!$instance->skip) {
             return $instance;
         }
     }
