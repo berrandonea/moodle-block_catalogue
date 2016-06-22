@@ -30,9 +30,7 @@
  * File : lib.php
  * PHP functions library for this block.
  */
-?>
-<script src="<?php echo $CFG->wwwroot; ?>/blocks/catalogue/js/block_catalogue.js"></script>
-<?php
+
 /**
  * Displays all the elements of a given category on the index page.
  * @param object $course
