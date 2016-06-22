@@ -15,3 +15,22 @@ This plug-in was initially developped for :
  FRANCE
  https://www.u-cergy.fr
  
+Developped on Moodle 2.9, using the theme theme_archaius, by Daniel Munera.
+Successfully tested on Moodle 2.6.4, 2.9, 2.9.4, 3.1+
+
+7 lists of items are available :
+
+- Activities : divided in 3 categories (Exercises, Collaboration, Other)
+- Blocks : 3 categories (Monitor learners, Communicate with learners, Other)
+- Customlabels : Requires the plug-in "mod_customlabels", by Valery Fremaux. 3 categories (Pedagogical elements, Structural elements, Other elements).
+- Enrolments : 2 categories (Users and groups, Enrolment methods)
+- Grades : 3 categories (Grade settings, Grade reports, "Outcomes, competencies, badges")
+- Reports : 1 category
+- Resources : 1 category
+
+The site administrator can choose which ones of these lists will be displayed in the block, and in which order.
+
+
+
+
+
