@@ -242,7 +242,7 @@ abstract class blockcatalogue_list {
      * @return string
      */
     public function get_element_localname($elementname) {
-        return get_string('pluginname', "$this->prefix_$elementname");
+        return get_string('pluginname', $this->prefix.'_'.$elementname);
     }
 
     /**
