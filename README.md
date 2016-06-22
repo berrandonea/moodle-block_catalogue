@@ -8,7 +8,6 @@ A manager interface is included. There, managers can :
 
 Authors : Brice Errandonea <brice.errandonea@u-cergy.fr>, Salma El-mrabah <salma.el-mrabah@u-cergy.fr>
 
-This plug-in was initially developped for :
  Université de Cergy-Pontoise
  33, boulevard du Port
  95011 Cergy-Pontoise cedex
