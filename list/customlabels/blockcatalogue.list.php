@@ -43,7 +43,7 @@ class blockcatalogue_list_customlabels extends blockcatalogue_list {
         $hascustomlabels = file_exists("$CFG->dirroot/mod/customlabel/locallib.php");
         $this->name = 'customlabels';
         if (!$hascustomlabels) {
-            unset($this->name);
+            $this->skip = true;
         }
         $this->prefix = 'customlabeltype';
         $this->categories = array('pedagogic', 'structure', 'other');
