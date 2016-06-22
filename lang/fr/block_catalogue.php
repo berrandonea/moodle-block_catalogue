@@ -65,6 +65,3 @@ $string['getremotedata'] = 'Chercher des données distantes';
 $string['descgetremotedata'] = 'Si coché, cherche des données concernant les éléments du catalogue dans la documentation en ligne de Moodle et le site des plugins. Le chargement de la page prend donc plus de temps. Mais une fois trouvée, une donnée est stockée localement.';
 $string['edit1'] = "Fermer l'interface gestionnaire";
 $string['edit0'] = "Ouvrir l'interface gestionnaire";
-
-
-
