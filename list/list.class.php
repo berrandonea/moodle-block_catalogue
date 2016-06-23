@@ -33,8 +33,7 @@
 
 abstract class blockcatalogue_list {
 
-    public $skip = false;
-
+    protected $skip = false;
     protected $name;
     protected $prefix;
     protected $standarddocdir = 'https://docs.moodle.org';
@@ -60,6 +59,14 @@ abstract class blockcatalogue_list {
             }
         }
         return false;
+    }
+
+    /**
+     * Do we have to skip this list ?
+     * @return boolean
+     */
+    public function get_skip() {
+        return $this->skip;
     }
 
     /**
