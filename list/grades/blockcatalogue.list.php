@@ -105,7 +105,7 @@ class blockcatalogue_list_grades extends blockcatalogue_list {
      * @return boolean
      */
     public function fill_availables() {
-        global $COURSE;
+        global $COURSE, $DB;
         $coursecontext = context_course::instance($COURSE->id);
         foreach ($this->categories as $category) {
             $this->availables[$category] = array();
@@ -113,10 +113,17 @@ class blockcatalogue_list_grades extends blockcatalogue_list {
         $this->sortout_reports($coursecontext, 'gradereport');
         $this->sortout_reports($coursecontext, 'gradesetting');
         $this->availables['outcome'][] = 'badges_index';
-        $competenciesviewer = has_capability('moodle/competency:usercompetencyview', $coursecontext);
-        if ($competenciesviewer) {
-            $this->availables['outcome'][] = "report_competency";
+        
+        // Competencies.
+        $params = array('capability' => 'moodle/competency:usercompetencyview');
+        $supportscompetencies = $DB->record_exists('role_capabilities', $params);
+        if ($supportscompetencies) {
+            $competenciesviewer = has_capability('moodle/competency:usercompetencyview', $coursecontext);
+            if ($competenciesviewer) {
+                $this->availables['outcome'][] = "report_competency";
+            }    
         }
+        
         foreach ($this->categories as $category) {
             $this->sort_by_localname($category);
         }
