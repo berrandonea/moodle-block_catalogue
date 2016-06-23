@@ -160,14 +160,16 @@ class blockcatalogue_list_enrols extends blockcatalogue_list {
             'enrol_instances' => get_string('enrolmentinstances', 'enrol'),
             'enrol_users' => get_string('enrolledusers', 'enrol'),
             'enrol_vet' => 'Inscription par VET',
-            'mass_enroll' => get_string('mass_enroll', 'local_mass_enroll'),
             'group_copygroup' => 'Importer des groupes UCP',
             'block_demands' => 'Inscriptions demandées',
             'user_index' => get_string('participants'),
             'group_index' => get_string('groups')
         );
-        if ($localnames[$elementname]) {
+        if (isset($localnames[$elementname])) {
             return $localnames[$elementname];
+        }
+        if ($elementname == 'mass_enroll') {
+            return get_string('mass_enroll', 'local_mass_enroll');
         }
         return get_string('pluginname', "$elementname");
     }
