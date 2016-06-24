@@ -284,6 +284,7 @@ function block_catalogue_show_description($usereditor, $description, $url, $elem
         <form action='<?php  echo $url; ?>' method='post' enctype='multipart/form-data' style='text-align:center'>
             <input type='hidden' name='edit' value='description'>
             <input type='hidden' name='element' value='<?php echo $elementname; ?>'>
+            <input type='hidden' name='sesskey' value='<?php echo sesskey(); ?>'>
             <textarea name='newvalue' rows='5'><?php echo $description; ?></textarea>
             <br>
             <input type='submit' value='OK'>
