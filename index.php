@@ -61,7 +61,7 @@ $availables = $thislist->get_availables();
 <?php
 // Apply changes.
 $usedcategory = null;
-if ($edit && $elementname && $usereditor) {
+if ($edit && $elementname && $usereditor && confirm_sesskey() && data_submitted()) {
     block_catalogue_update_element($thislistname, $elementname, $edit, $newvalue);
     foreach ($categories as $category) {
         $categorymembers = $availables[$category];
