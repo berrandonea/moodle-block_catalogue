@@ -220,6 +220,7 @@ function block_catalogue_link_editor($url, $elementname, $link) {
     <form action='<?php  echo $url; ?>' method='post' enctype='multipart/form-data' style='text-align:center'>
         <input type='hidden' name='edit' value='link'>
         <input type='hidden' name='element' value='<?php echo $elementname; ?>'>
+        <input type='hidden' name='sesskey' value='<?php echo sesskey(); ?>'>
         <input type='text' name='newvalue' value='<?php echo $link; ?>'>&nbsp;
         <input type='submit' value='OK'>
     </form>
