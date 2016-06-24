@@ -62,6 +62,9 @@ if (!$permitted) {
 // Header code.
 $elementlocalname = $list->get_element_localname($elementname);
 $PAGE->set_title($course->fullname);
+$args = array('list' => $listname, 'course' => $courseid, 'mod' => $mod, 'type' => $type);
+$moodlefilename = '/blocks/catalogue/chooseplace.php';
+$PAGE->set_url($moodlefilename, $args);
 $PAGE->set_pagelayout('standard');
 $PAGE->set_heading($course->fullname);
 
