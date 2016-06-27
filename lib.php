@@ -86,7 +86,7 @@ function block_catalogue_display_element($course, $usereditor, $list, $elementna
     echo "<td class='iconcell'>";
     echo "<img src='$iconurl' class='elementicon'>";
     echo '</td>';
-    echo "<td class='elementtitle' colspan=2>";
+    echo "<td style='font-size:14;font-weight:bold;color:$color' height='25px' colspan=2>";
     echo $localname;
     echo '</td>';
     echo '<td width="30px">';
