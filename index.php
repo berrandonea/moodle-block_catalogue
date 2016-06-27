@@ -121,6 +121,11 @@ if ($usereditor) {
     background-color:#7F7F7F;
     border-radius:5px 5px 0 0;
 }
+.block_catalogue_hoverlabel {
+    text-align:center;
+    width:100%;
+    font-weight:bold;
+}
 </style>
 <?php
 
@@ -147,7 +152,7 @@ foreach ($categories as $category) {
     echo "<div class='block_catalogue_categoryin'>";
     if ($availables[$category]) {
         if (!$editing) {
-            echo '<div width="100%" style="text-align:center;font-weight:bold">';
+            echo '<div class=".block_catalogue_hoverlabel">';
             echo get_string('hover', 'block_catalogue');
             echo '</div>';
         }
