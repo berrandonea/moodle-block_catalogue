@@ -45,8 +45,8 @@ function block_catalogue_display_category($course, $usereditor, $list, $elementn
         $params = array('listname' => $listname, 'elementname' => $elementname);
         $hidden = $DB->get_record('block_catalogue_hide', $params);
         if ((!$hidden)||$usereditor) {
-            echo '<div class="page1-col-1 border-right">';
-            echo '<div class="wrap">';
+            echo '<div class="block_catalogue_page1-col-1 border-right">';
+            echo '<div class="block_catalogue_wrap">';
             block_catalogue_display_element($course, $usereditor, $list, $elementname);
             echo '</div>';
             echo '</div>';
