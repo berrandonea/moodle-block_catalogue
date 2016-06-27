@@ -134,9 +134,11 @@ foreach ($categories as $category) {
     echo "<div id ='$categorylocalname' style='width:100%;display:$display'><br>";
     echo "<div class='block_catalogue_categoryin'>";
     if ($availables[$category]) {
-        echo '<div width="100%" style="text-align:center;font-weight:bold">';
-        echo get_string('hover', 'block_catalogue');
-        echo '</div>';
+        if (!$editing) {
+            echo '<div width="100%" style="text-align:center;font-weight:bold">';
+            echo get_string('hover', 'block_catalogue');
+            echo '</div>';
+        }
         block_catalogue_display_category($course, $usereditor, $thislist, $availables[$category]);
     }
     echo '</div>';
