@@ -112,7 +112,7 @@ if ($usereditor) {
     padding-right:12px;
     overflow:hidden;
 }
-.blockcatalogue_flipflop {
+.block_catalogue_flipflop {
     text-align:center;
     width:100%;
     font-weight:bold;
