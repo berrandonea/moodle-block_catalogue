@@ -132,7 +132,7 @@ foreach ($categories as $category) {
         $display = $open;
     }
     echo "<div id ='$categorylocalname' style='width:100%;display:$display'><br>";
-    echo "<div class='block_catalogue_wrap page1-row2'>";
+    echo "<div class='block_catalogue_wrap'>";
     if ($availables[$category]) {
         echo '<div width="100%" style="text-align:center;font-weight:bold">';
         echo get_string('hover', 'block_catalogue');
