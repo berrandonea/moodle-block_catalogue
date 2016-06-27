@@ -101,8 +101,8 @@ if ($usereditor) {
 }
 ?>
 <style>
-.block_catalogue_wrap {overflow:hidden; position:relative}
-.block_catalogue_page1-col-1 {float:left; height:<?php echo $height; ?>px; width:315px; padding-right:12px; overflow:hidden;}
+.block_catalogue_categoryin {overflow:hidden; position:relative}
+.block_catalogue_categoryout {float:left; height:<?php echo $height; ?>px; width:315px; padding-right:12px; overflow:hidden;}
 </style>
 <?php
 
@@ -132,7 +132,7 @@ foreach ($categories as $category) {
         $display = $open;
     }
     echo "<div id ='$categorylocalname' style='width:100%;display:$display'><br>";
-    echo "<div class='block_catalogue_wrap'>";
+    echo "<div class='block_catalogue_categoryin'>";
     if ($availables[$category]) {
         echo '<div width="100%" style="text-align:center;font-weight:bold">';
         echo get_string('hover', 'block_catalogue');
