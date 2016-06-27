@@ -101,8 +101,26 @@ if ($usereditor) {
 }
 ?>
 <style>
-.block_catalogue_categoryin {overflow:hidden; position:relative}
-.block_catalogue_categoryout {float:left; height:<?php echo $height; ?>px; width:315px; padding-right:12px; overflow:hidden;}
+.block_catalogue_categoryin {
+    overflow:hidden; 
+    position:relative
+}
+.block_catalogue_categoryout {
+    float:left;
+    height:<?php echo $height; ?>px;
+    width:315px;
+    padding-right:12px;
+    overflow:hidden;
+}
+.blockcatalogue_flipflop {
+    text-align:center;
+    width:100%;
+    font-weight:bold;
+    padding:5px;
+    color:white;
+    background-color:#7F7F7F;
+    border-radius:5px 5px 0 0;
+}
 </style>
 <?php
 
@@ -115,13 +133,7 @@ foreach ($categories as $category) {
     $categorylocalname = $thislist->langstring($category);
     ?>
     <br>
-    <div onclick="flipflop('<?php echo "$categorylocalname"; ?>');"
-         style="text-align:center;width:100%;
-                font-weight:bold;
-                padding:5px;
-                color:white;
-                background-color:#7F7F7F;
-                border-radius:5px 5px 0 0">
+    <div onclick="flipflop('<?php echo "$categorylocalname"; ?>');" class='block_catalogue_flipflop'>
         <?php echo $categorylocalname; ?>
         <img src ="pix/open.png" alt="open" style="float: right"  height="15" width="15">
     </div>
