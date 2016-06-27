@@ -101,15 +101,15 @@ if ($usereditor) {
 }
 ?>
 <style>
-.wrapper {width:100%; overflow:hidden; position:relative}
-.wrap {overflow:hidden; position:relative}
-.extra-wrap {overflow:hidden;height:100px;}
-.fleft {float:left;}
-.fright {float:right;}
-.img-indent {float:left; margin:5px 15px 10px 0;}
-.page1-row1 {padding:27px 0 38px 6px;}
-.page1-col-1 {float:left; height:<?php echo $height; ?>px; width:315px; padding-right:12px; overflow:hidden;}
-.img-border {border:#731472 1px solid;}
+//.wrapper {width:100%; overflow:hidden; position:relative}
+.block_catalogue_wrap {overflow:hidden; position:relative}
+//.extra-wrap {overflow:hidden;height:100px;}
+//.fleft {float:left;}
+//.fright {float:right;}
+//.img-indent {float:left; margin:5px 15px 10px 0;}
+//.page1-row1 {padding:27px 0 38px 6px;}
+.block_catalogue_page1-col-1 {float:left; height:<?php echo $height; ?>px; width:315px; padding-right:12px; overflow:hidden;}
+//.img-border {border:#731472 1px solid;}
 .page1-col-1 h2 {margin-bottom:21px;}
 .page1-col-1>p {border-bottom:#731472 1px solid; padding-bottom:10px; margin-bottom:10px;}
 .page1-col-1 .link-2 {float:right;}
@@ -142,7 +142,7 @@ foreach ($categories as $category) {
         $display = $open;
     }
     echo "<div id ='$categorylocalname' style='width:100%;display:$display'><br>";
-    echo "<div class='wrap page1-row2'>";
+    echo "<div class='block_catalogue_wrap page1-row2'>";
     if ($availables[$category]) {
         echo '<div width="100%" style="text-align:center;font-weight:bold">';
         echo get_string('hover', 'block_catalogue');
