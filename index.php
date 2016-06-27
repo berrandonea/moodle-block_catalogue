@@ -126,6 +126,14 @@ if ($usereditor) {
     width:100%;
     font-weight:bold;
 }
+.block_catalogue_iconcell {
+    text-align:center;
+    width:50px;
+}
+.block_catalogue_elementicon {
+    max-width:100%;
+    height:45px;
+}
 </style>
 <?php
 
