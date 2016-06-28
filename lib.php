@@ -83,8 +83,8 @@ function block_catalogue_display_element($course, $usereditor, $list, $elementna
         $color = 'black';
     }
 
-    echo "<td class='iconcell'>";
-    echo "<img src='$iconurl' class='elementicon'>";
+    echo "<td class='block_catalogue_iconcell'>";
+    echo "<img src='$iconurl' class='block_catalogue_elementicon'>";
     echo '</td>';
     echo "<td style='font-size:14;font-weight:bold;color:$color' height='25px' colspan=2>";
     echo $localname;
@@ -239,13 +239,23 @@ function block_catalogue_main_table($listnames, $course) {
     $nblists = count($listnames);
     $nbshownlists = 0;
     $favorites = array();
+    $rowtitles = array();
     foreach ($listnames as $listname) {
         $list = block_catalogue_instanciate_list($listname);
         if ($list) {
-            $maintable .= '<td style="text-align:center">'.$list->display($course).'</td>';
+            $maintable .= '<td style="text-align:center">'.$list->main_table_icon($course).'</td>';
             $nbshownlists++;
-            if (($nbshownlists % 2 == 0) && ($nbshownlists < $nblists)) {
-                $maintable .= '</tr><tr>';
+	    $column = $nbshownlists % 2;
+	    $rowtitles[$column] = $list->main_table_title($course);
+            if (($column == 0) && ($nbshownlists < $nblists)) {
+                $maintable .= '</tr>';
+		foreach ($rowtitles as $rowtitle) {
+		    $maintable .= "<td style='text-align:center'>$rowtitle</td>";
+		}
+		if ($nbshownlists < $nblists) {
+		    $rowtitles = array();
+		    $maintable .= '<tr>';
+		}
             }
             $listfavorites = $list->get_favorites();
             foreach ($listfavorites as $listfavorite) {
@@ -256,7 +266,6 @@ function block_catalogue_main_table($listnames, $course) {
             }
         }
     }
-    $maintable .= '</tr>';
     $maintable .= '<tr><td colspan=2> </td></tr>';
     $favtitle = get_string('favorites', 'block_catalogue');
     $favstyle = 'text-align:center;font-weight:bold';
