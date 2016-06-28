@@ -89,20 +89,40 @@ abstract class blockcatalogue_list {
      * @param object $course
      * @return string HTML code
      */
-    public function display($course) {
+    public function main_table_icon($course) {
         global $CFG;
-        $args = array('name' => $this->name, 'course' => $course->id);
-        $url = new moodle_url('/blocks/catalogue/index.php', $args);
+	$url = $this->index_url($course);
         $picturefile = "$CFG->wwwroot/blocks/catalogue/list/$this->name/catalogue_icon.png";
-        $label = $this->langstring('listname');
         $text = "<a href = '$url'>";
-        $text .= '<table><tr>';
-        $text .= "<td style='text-align:center'><img src='$picturefile' height='31px' width='35px'></td>";
-        $text .= '</tr><tr>';
-        $text .= '<td style="text-align:center;font-weight:bold;font-size:12px">'.$label.'</td>';
-        $text .= '</tr></table>';
+        $text .= "<img src='$picturefile' height='31px' width='35px'>";
         $text .= '</a>';
         return $text;
+    }
+
+    /**
+     * Displays the list's active icon in the small block.
+     * @global object $CFG
+     * @param object $course
+     * @return string HTML code
+     */
+    public function main_table_title($course) {
+	$url = $this->index_url($course);
+        $label = $this->langstring('listname');
+        $text = "<a href = '$url'>";
+        $text .= $label;
+        $text .= '</a>';
+        return $text;
+    }
+
+    /**
+     * Builds the URL for the catalogue's index page in this course.
+     * @param object $course
+     * @return object $url
+     */
+    public function index_url($course) {
+        $args = array('name' => $this->name, 'course' => $course->id);
+        $url = new moodle_url('/blocks/catalogue/index.php', $args);
+	return $url;
     }
 
     /**
