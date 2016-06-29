@@ -58,6 +58,12 @@ $availables = $thislist->get_availables();
 
 <script src="<?php echo $CFG->wwwroot; ?>/blocks/catalogue/js/block_catalogue.js"></script>
 
+<style>
+    <?php
+    include_once 'block_catalogue.css';
+    ?>
+</style>
+
 <?php
 // Apply changes.
 $usedcategory = null;
@@ -94,49 +100,6 @@ if ($usereditor) {
     $usereditor = $editing;
 }
 
-// Page style.
-$height = 255;
-if ($usereditor) {
-    $height += 90;
-}
-?>
-<style>
-.block_catalogue_categoryin {
-    overflow:hidden; 
-    position:relative
-}
-.block_catalogue_categoryout {
-    float:left;
-    height:<?php echo $height; ?>px;
-    width:315px;
-    padding-right:12px;
-    overflow:hidden;
-}
-.block_catalogue_flipflop {
-    text-align:center;
-    width:100%;
-    font-weight:bold;
-    padding:5px;
-    color:white;
-    background-color:#7F7F7F;
-    border-radius:5px 5px 0 0;
-}
-.block_catalogue_hoverlabel {
-    text-align:center;
-    width:100%;
-    font-weight:bold;
-}
-.block_catalogue_iconcell {
-    text-align:center;
-    width:50px;
-}
-.block_catalogue_elementicon {
-    max-width:100%;
-    height:45px;
-}
-</style>
-<?php
-
 // Header with tabs.
 echo $OUTPUT->header();
 block_catalogue_display_tabs($courseid, $thislistname, $editing);
@@ -157,10 +120,10 @@ foreach ($categories as $category) {
         $display = $open;
     }
     echo "<div id ='$categorylocalname' style='width:100%;display:$display'><br>";
-    echo "<div class='block_catalogue_categoryin'>";
+    echo "<div class='block_catalogue_categorycontent'>";
     if ($availables[$category]) {
         if (!$editing) {
-            echo '<div class=".block_catalogue_hoverlabel">';
+            echo '<div class="block_catalogue_hoverlabel">';
             echo get_string('hover', 'block_catalogue');
             echo '</div>';
         }

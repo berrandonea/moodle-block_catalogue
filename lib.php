@@ -41,14 +41,17 @@
 function block_catalogue_display_category($course, $usereditor, $list, $elementnames) {
     global $DB;
     $listname = $list->get_name();
+    if ($usereditor) {
+        $elementclass = 'block_catalogue_editedelement';
+    } else {
+        $elementclass = 'block_catalogue_element';
+    }
     foreach ($elementnames as $elementname) {
         $params = array('listname' => $listname, 'elementname' => $elementname);
         $hidden = $DB->get_record('block_catalogue_hide', $params);
         if ((!$hidden)||$usereditor) {
-            echo '<div class="block_catalogue_categoryout">';
-            echo '<div class="block_catalogue_categoryin">';
-            block_catalogue_display_element($course, $usereditor, $list, $elementname);
-            echo '</div>';
+            echo "<div class='$elementclass'>";            
+            block_catalogue_display_element($course, $usereditor, $list, $elementname);            
             echo '</div>';
         }
     }
@@ -76,44 +79,44 @@ function block_catalogue_display_element($course, $usereditor, $list, $elementna
     $useurl = $list->usage_url($elementname);
     $uselabel = $list->langstring('use');
 
-    echo '<table><tr>';
+    echo '<table class="block_catalogue_elementtable">';
+    echo '<tr class="block_catalogue_elementheader">';
     if ($hidden) {
-        $color = '#AAAAAA';
+        $titleclass = 'block_catalogue_hiddentitle';        
     } else {
-        $color = 'black';
+        $titleclass = 'block_catalogue_elementtitle';
     }
 
     echo "<td class='block_catalogue_iconcell'>";
     echo "<img src='$iconurl' class='block_catalogue_elementicon'>";
     echo '</td>';
-    echo "<td style='font-size:14;font-weight:bold;color:$color' height='25px' colspan=2>";
+    echo "<td class='$titleclass' colspan=2>";
     echo $localname;
     echo '</td>';
     echo '<td width="30px">';
     block_catalogue_toggler($list, $elementname, 'fav');
     echo '</td>';
-    echo '</tr><tr>';
+    echo '</tr><tr class="block_catalogue_elementdescription">';
     echo "<td colspan='4' height='120px'>";
     block_catalogue_show_description($usereditor, $description, $url, $elementname);
     block_catalogue_show_link($link);
     echo '</td>';
 
-    echo '</tr><tr>';
+    echo '</tr><tr class="block_catalogue_buttonline">';
 
     $colspan = 4;
     if ($usereditor) {
         $colspan--;
     }
-    echo "<td colspan='$colspan' style='text-align:center'>";
+    echo "<td colspan='$colspan'>";
     echo "<a href='$useurl'><button>$uselabel</button></a>";
     echo '</td>';
     if ($usereditor) {
-        echo "<td style='text-align:center'>";
+        echo "<td>";
         block_catalogue_toggler($list, $elementname, 'hide');
         echo '</td>';
     }
     echo '</tr></table>';
-
     if ($usereditor) {
         block_catalogue_link_editor($url, $elementname, $link);
     }
@@ -131,26 +134,25 @@ function block_catalogue_display_tabs($courseid, $thislistname, $editing) {
     $params = array('plugin' => 'catalogue', 'name' => 'displayedlists');
     $dborder = $DB->get_field('config_plugins', 'value', $params);
     $sortorder = explode(',', $dborder);
-    $listnames = block_catalogue_get_listnames($sortorder);
-    echo '<table width="100%"><tr>';
-    $logowidth = '60px';
+    $listnames = block_catalogue_get_listnames($sortorder);    
+    echo '<table width="100%"><tr>';    
     foreach ($listnames as $listname) {
         $list = block_catalogue_instanciate_list($listname);
         if ($list) {
-            echo "<td style='text-align:center'>";
+            echo "<td>";
             echo "<a href = 'index.php?name=$listname&&course=$courseid&editing=$editing'>";
             echo '<table><tr>';
-            echo "<td style='text-align:center;max-width:$logowidth'>";
-            echo "<img src='$listdir/$listname/catalogue_icon.png' width='$logowidth' height='$logowidth'>";
+            echo "<td class='block_catalogue_listtab'>";
+            echo "<img src='$listdir/$listname/catalogue_icon.png' class='block_catalogue_tabicon'>";
             echo "</td>";
             echo '</tr><tr>';
             if ($listname == $thislistname) {
-                $weight = 'font-weight:bold;font-size:150%';
+                $listnameclass = 'block_catalogue_thislistname';
             } else {
-                $weight = '';
+                $listnameclass = 'block_catalogue_otherlistname';
             }
             $listlocalname = $list->get_localname();
-            echo '<td style="text-align:center;'.$weight.'">'.$listlocalname.'</td>';
+            echo "<td class='$listnameclass'>".$listlocalname.'</td>';
             echo '</tr></table>';
             echo '</a>';
             echo "</td>";
