@@ -247,17 +247,17 @@ function block_catalogue_main_table($listnames, $course) {
         if ($list) {
             $maintable .= '<td style="text-align:center">'.$list->main_table_icon($course).'</td>';
             $nbshownlists++;
-	    $column = $nbshownlists % 2;
-	    $rowtitles[$column] = $list->main_table_title($course);
+            $column = $nbshownlists % 2;
+            $rowtitles[$column] = $list->main_table_title($course);
             if (($column == 0) && ($nbshownlists < $nblists)) {
                 $maintable .= '</tr>';
-		foreach ($rowtitles as $rowtitle) {
-		    $maintable .= "<td style='text-align:center'>$rowtitle</td>";
-		}
-		if ($nbshownlists < $nblists) {
-		    $rowtitles = array();
-		    $maintable .= '<tr>';
-		}
+                foreach ($rowtitles as $rowtitle) {
+                    $maintable .= "<td style='text-align:center'>$rowtitle</td>";
+                }
+                if ($nbshownlists < $nblists) {
+                    $rowtitles = array();
+                    $maintable .= '<tr>';
+                }
             }
             $listfavorites = $list->get_favorites();
             foreach ($listfavorites as $listfavorite) {
@@ -374,10 +374,10 @@ function block_catalogue_show_link($link) {
  * Prepares display of the add/remove favorite icon or the hide/show button on the index page,
  * then calls block_catalogue_display_toggler() to actually display it.
  * @global object $DB
- * @global object $USER 
+ * @global object $USER
  * @param object $list
  * @param string $elementname
- * @param string $toggler 'fav' ou 'hide' 
+ * @param string $toggler 'fav' ou 'hide'
  */
 function block_catalogue_toggler($list, $elementname, $toggler) {
     global $COURSE, $DB, $USER;
