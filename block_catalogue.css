@@ -15,7 +15,7 @@
     text-align:center;
 }
 .block_catalogue_categorycontent {
-    overflow:hidden; 
+    overflow:hidden;
     position:relative
 }
 .block_catalogue_element {
@@ -64,7 +64,7 @@
 }
 .block_catalogue_elementtitle {
     font-size:14;
-    font-weight:bold;    
+    font-weight:bold;
     height:25px;
     color:black;
 }
