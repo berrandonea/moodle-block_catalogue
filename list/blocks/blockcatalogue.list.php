@@ -97,7 +97,7 @@ class blockcatalogue_list_blocks extends blockcatalogue_list {
         }
     }
 
-    /**     
+    /**
      * Finds the elements available (to this user in this course) for the
      * current list, sorted out by category.
      * @return array of arrays of strings
