@@ -60,7 +60,7 @@ $availables = $thislist->get_availables();
 
 <style>
     <?php
-    include_once 'block_catalogue.css';
+    require_once('block_catalogue.css');
     ?>
 </style>
 
