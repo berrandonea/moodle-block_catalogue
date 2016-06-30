@@ -50,8 +50,8 @@ function block_catalogue_display_category($course, $usereditor, $list, $elementn
         $params = array('listname' => $listname, 'elementname' => $elementname);
         $hidden = $DB->get_record('block_catalogue_hide', $params);
         if ((!$hidden)||$usereditor) {
-            echo "<div class='$elementclass'>";            
-            block_catalogue_display_element($course, $usereditor, $list, $elementname);            
+            echo "<div class='$elementclass'>";
+            block_catalogue_display_element($course, $usereditor, $list, $elementname);
             echo '</div>';
         }
     }
@@ -82,7 +82,7 @@ function block_catalogue_display_element($course, $usereditor, $list, $elementna
     echo '<table class="block_catalogue_elementtable">';
     echo '<tr class="block_catalogue_elementheader">';
     if ($hidden) {
-        $titleclass = 'block_catalogue_hiddentitle';        
+        $titleclass = 'block_catalogue_hiddentitle';
     } else {
         $titleclass = 'block_catalogue_elementtitle';
     }
@@ -134,8 +134,8 @@ function block_catalogue_display_tabs($courseid, $thislistname, $editing) {
     $params = array('plugin' => 'catalogue', 'name' => 'displayedlists');
     $dborder = $DB->get_field('config_plugins', 'value', $params);
     $sortorder = explode(',', $dborder);
-    $listnames = block_catalogue_get_listnames($sortorder);    
-    echo '<table width="100%"><tr>';    
+    $listnames = block_catalogue_get_listnames($sortorder);
+    echo '<table width="100%"><tr>';
     foreach ($listnames as $listname) {
         $list = block_catalogue_instanciate_list($listname);
         if ($list) {
@@ -162,7 +162,7 @@ function block_catalogue_display_tabs($courseid, $thislistname, $editing) {
 }
 
 /**
- * Displays the add/remove favorite icon or the hide/show one.  
+ * Displays the add/remove favorite icon or the hide/show one.
  * @global object $CFG
  * @param string $picture
  * @param string $label
