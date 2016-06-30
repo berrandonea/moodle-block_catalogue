@@ -35,3 +35,15 @@ defined('MOODLE_INTERNAL') || die();
 $string['listname'] = 'Rapports';
 $string['report'] = 'Rapports';
 $string['use'] = 'Consulter';
+
+$string['description_report_progress'] = "Permet de voir si l'apprenant a terminé/consulté ou non une activité/ressource.";
+$string['description_report_completion'] = "Affiche le progrès d'un étudiant dans le cours par rapport à des critères spécifiques.";
+$string['description_report_outline'] = "Affiche tous les activités et ressources du cours, classées par section";
+$string['description_report_log'] = "Liste les actions réalisées dans le cours par les participants.";
+$string['description_report_loglive'] = "Pour suivre en direct la liste les actions réalisées dans le cours.";
+$string['description_report_engagement'] = "Fournit des informations sur les progrès des élèves par rapport à une gamme d'indicateurs.";
+$string['description_report_participation'] = "Affiche la participation au cours des apprenants selon le module d'activité, leur statut et groupe.";
+$string['description_report_stats'] = "Quelques statistiques sur le cours.";
+$string['description_report_exportlist'] = "Exporter en CSV la liste des étudiants par groupe.";
+$string['description_report_courseoverview'] = "Affiche les cours auxquels l’utilisateur est inscrit ainsi que les suivis à faire dans ces cours.";
+$string['description_report_roster'] = 'Trombinoscope des étudiants.';
