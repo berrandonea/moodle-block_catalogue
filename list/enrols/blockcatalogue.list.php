@@ -39,8 +39,8 @@ class blockcatalogue_list_enrols extends blockcatalogue_list {
         $this->prefix = 'enrol';
         $this->categories = array('users', 'methods');
         $this->potentialmembers = array();
-        $this->potentialmembers['methods'] =
-                array('enrol_instances', 'enrol_manual', 'enrol_self', 'local_mass_enroll', 'blocks_enrol_demands');
+        $this->potentialmembers['methods'] = array('enrol_instances', 'enrol_manual', 'enrol_self',
+                                                   'local_mass_enroll', 'blocks_enrol_demands');
         $this->defaultfavorites = array();
     }
 
@@ -54,7 +54,7 @@ class blockcatalogue_list_enrols extends blockcatalogue_list {
         return $nameparts;
     }
 
-    /**     
+    /**
      * Finds the elements available (to this user in this course) for the
      * current list, sorted out by category.
      * @return array of arrays of strings
