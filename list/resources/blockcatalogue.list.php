@@ -55,7 +55,7 @@ class blockcatalogue_list_resources extends blockcatalogue_list {
         return $permitted;
     }
 
-    /**     
+    /**
      * Finds the elements available (to this user in this course) for the
      * current list, sorted out by category.
      * @return array of arrays of strings
