@@ -91,7 +91,7 @@ abstract class blockcatalogue_list {
      */
     public function main_table_icon($course) {
         global $CFG;
-	$url = $this->index_url($course);
+        $url = $this->index_url($course);
         $picturefile = "$CFG->wwwroot/blocks/catalogue/list/$this->name/catalogue_icon.png";
         $text = "<a href = '$url'>";
         $text .= "<img src='$picturefile' height='31px' width='35px'>";
@@ -106,7 +106,7 @@ abstract class blockcatalogue_list {
      * @return string HTML code
      */
     public function main_table_title($course) {
-	$url = $this->index_url($course);
+        $url = $this->index_url($course);
         $label = $this->langstring('listname');
         $text = "<a href = '$url'>";
         $text .= $label;
@@ -122,7 +122,7 @@ abstract class blockcatalogue_list {
     public function index_url($course) {
         $args = array('name' => $this->name, 'course' => $course->id);
         $url = new moodle_url('/blocks/catalogue/index.php', $args);
-	return $url;
+        return $url;
     }
 
     /**
@@ -138,7 +138,7 @@ abstract class blockcatalogue_list {
     }
 
     /**
-     * Tells whether this favorite can be used in the current course. 
+     * Tells whether this favorite can be used in the current course.
      * @param string $elementname
      * @return boolean
      * Overriden in subclasses if necessary.
@@ -203,7 +203,7 @@ abstract class blockcatalogue_list {
      */
     public function get_db_data($elementname, $nature) {
         global $DB;
-        $lang = current_language();        
+        $lang = current_language();
         $params = array('listname' => $this->name,
                         'elementname' => $elementname,
                         'nature' => $nature,
@@ -376,11 +376,10 @@ abstract class blockcatalogue_list {
             }
             $this->pluginfile = $filecontent;
         }
-
         if ($filecontent) {
             $headdelimiter = array('description' => '<div class="shortdescription">',
-                                   'link' =>
-                'class="li documentationurl"><a onclick="this.target=&quot;_blank&quot;" class="external" href="',
+                                   'link' => 'class="li documentationurl">'
+                                           . '<a onclick="this.target=&quot;_blank&quot;" class="external" href="',
                                    'iconurl' => '<div class="plugin-logo"><img src="');
 
             $feetdelimiter = array('description' => '</div>',
@@ -398,7 +397,6 @@ abstract class blockcatalogue_list {
             $remotedata = $cropfeet[0];
             return $remotedata;
         }
-
         return null;
     }
 
