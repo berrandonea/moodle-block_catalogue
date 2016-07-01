@@ -96,7 +96,7 @@ class blockcatalogue_list_grades extends blockcatalogue_list {
         return $capable;
     }
 
-    /**     
+    /**
      * Finds the elements available (to this user in this course) for the
      * current list, sorted out by category.
      * @return array of arrays of strings
@@ -113,7 +113,6 @@ class blockcatalogue_list_grades extends blockcatalogue_list {
         $this->sortout_reports($coursecontext, 'gradereport');
         $this->sortout_reports($coursecontext, 'gradesetting');
         $this->availables['outcome'][] = 'badges_index';
-        
         // Competencies.
         $params = array('capability' => 'moodle/competency:usercompetencyview');
         $supportscompetencies = $DB->record_exists('role_capabilities', $params);
@@ -121,9 +120,8 @@ class blockcatalogue_list_grades extends blockcatalogue_list {
             $competenciesviewer = has_capability('moodle/competency:usercompetencyview', $coursecontext);
             if ($competenciesviewer) {
                 $this->availables['outcome'][] = "report_competency";
-            }    
+            }
         }
-        
         foreach ($this->categories as $category) {
             $this->sort_by_localname($category);
         }
