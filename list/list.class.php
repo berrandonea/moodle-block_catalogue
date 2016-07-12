@@ -71,6 +71,14 @@ abstract class blockcatalogue_list {
     }
 
     /**
+     * If true, the categories of this list will be shown open by default
+     * @return boolean
+     */
+    public function get_open() {
+        return $this->open;
+    }
+
+    /**
      * Checks wether a localized string has really been found.
      * @param type $string
      * @return type
