@@ -43,6 +43,7 @@ abstract class blockcatalogue_list {
     protected $availables = array();
     protected $potentialmembers;
     protected $defaultfavorites = array();
+    protected $open = 1;
 
     /**
      * If an element's name is mentionned in his list 'potentialmembers' table,
