@@ -49,6 +49,7 @@ $sitecontext = context_system::instance();
 $usereditor = has_capability('block/catalogue:edit', $sitecontext);
 $thislist = block_catalogue_instanciate_list($thislistname);
 $open = $thislist->get_open();
+$categories = $thislist->get_categories();
 $availables = $thislist->get_availables();
 ?>
 
@@ -110,10 +111,10 @@ foreach ($categories as $category) {
         <img src ="pix/open.png" alt="open" style="float: right"  height="15" width="15">
     </div>
     <?php
-    if ($category == $usedcategory) {
+    if (($category == $usedcategory)||$open) {
         $display = 'block';
     } else {
-        $display = $open;
+        $display = 'none';
     }
     echo "<div id ='$categorylocalname' style='width:100%;display:$display'><br>";
     echo "<div class='block_catalogue_categorycontent'>";
