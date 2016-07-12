@@ -27,8 +27,8 @@
  * @author     Brice Errandonea <brice.errandonea@u-cergy.fr>, Salma El-mrabah <salma.el-mrabah@u-cergy.fr>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
- * File : list/reports/lang/en/blockcataloguelist_blocks.php
- * English strings for the list of reports.
+ * File : list/grades/lang/en/blockcataloguelist_blocks.php
+ * English strings for the 'grades' list.
  */
 
 defined('MOODLE_INTERNAL') || die();
