@@ -52,6 +52,7 @@ class blockcatalogue_list_customlabels extends blockcatalogue_list {
             $this->potentialmembers[$category] = array();
         }
         $this->defaultfavorites = array('definition', 'keypoints', 'worktodo');
+        $this->open = false;
     }
 
     /**
