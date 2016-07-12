@@ -46,6 +46,7 @@ class blockcatalogue_list_blocks extends blockcatalogue_list {
             'communicate' => array('online_users', 'news_items', 'calendar_upcoming', 'messages', 'search_forums',
                                    'recent_activity', 'comments', 'rate_course', 'ucpslotbooking')
         );
+        $this->open = false;
     }
 
     /**
