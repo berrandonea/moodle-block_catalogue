@@ -48,11 +48,7 @@ require_login($course);
 $sitecontext = context_system::instance();
 $usereditor = has_capability('block/catalogue:edit', $sitecontext);
 $thislist = block_catalogue_instanciate_list($thislistname);
-$open = 'block';
-$categories = $thislist->get_categories();
-if (count($categories) > 1) {
-    $open = 'none';
-}
+$open = $thislist->get_open();
 $availables = $thislist->get_availables();
 ?>
 
