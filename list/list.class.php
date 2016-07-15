@@ -443,11 +443,11 @@ abstract class blockcatalogue_list {
 
     /**
      * Get a text string that's specific to this list, in the current language.
-     * 
+     *
      * These lists are meant to become subplugins in the future. Hence, each one has its own lang folder.
      * The standard get_string() function won't find the lang strings in these specific folders but this
      * function will.
-     * 
+     *
      * @global object $CFG
      * @param string $identifier
      * @return string
