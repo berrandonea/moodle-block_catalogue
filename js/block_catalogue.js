@@ -46,13 +46,13 @@ function getXhr(){
         xhr = new XMLHttpRequest();
     } else if(window.ActiveXObject) {
         try {
-                xhr = new ActiveXObject("Msxml2.XMLHTTP");
-            } catch (e) {
-                xhr = new ActiveXObject("Microsoft.XMLHTTP");
-            }
+            xhr = new ActiveXObject("Msxml2.XMLHTTP");
+        } catch (e) {
+            xhr = new ActiveXObject("Microsoft.XMLHTTP");
+        }
     } else {
-       alert("Error : your browser doesn't support XMLHTTPRequest...");
-       xhr = false;
+        alert("Error : your browser doesn't support XMLHTTPRequest...");
+        xhr = false;
     }
 }
 
