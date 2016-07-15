@@ -258,7 +258,7 @@ function block_catalogue_main_table($listnames, $course) {
                     $rowtitles = array();
                     $maintable .= '<tr>';
                 }
-            }
+            }            
             $listfavorites = $list->get_favorites();
             foreach ($listfavorites as $listfavorite) {
                 $favorite = new stdClass();
@@ -268,6 +268,11 @@ function block_catalogue_main_table($listnames, $course) {
             }
         }
     }
+    $maintable .= '<tr>';
+    foreach ($rowtitles as $rowtitle) {
+        $maintable .= "<td style='text-align:center'>$rowtitle</td>";
+    }
+    $maintable .= '</tr>';
     $maintable .= '<tr><td colspan=2> </td></tr>';
     $favtitle = get_string('favorites', 'block_catalogue');
     $favstyle = 'text-align:center;font-weight:bold';

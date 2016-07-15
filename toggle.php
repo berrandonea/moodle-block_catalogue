@@ -45,33 +45,35 @@ $default = required_param('default', PARAM_INT);
 $sitecontext = context_system::instance();
 $usereditor = has_capability("block/catalogue:toggle$toggler", $sitecontext);
 
-// Current state for this element.
-$table = "block_catalogue_$toggler";
-$params = array('listname' => $listname, 'elementname' => $elementname);
-if ($toggler == 'fav') {
-    $params['userid'] = $USER->id;
-}
-$recorded = $DB->get_record($table, $params);
-
-// Toggle.
-if ($recorded) {
-    $DB->delete_records($table, array('id' => $recorded->id));
-} else {
-    $record = new stdClass();
+if ($usereditor) {
+    // Current state for this element.
+    $table = "block_catalogue_$toggler";
+    $params = array('listname' => $listname, 'elementname' => $elementname);
     if ($toggler == 'fav') {
-        $record->userid = $USER->id;
+        $params['userid'] = $USER->id;        
     }
-    $record->listname = $listname;
-    $record->elementname = $elementname;
-    $record->id = $DB->insert_record($table, $record);
-}
+    $recorded = $DB->get_record($table, $params);
 
-if ($recorded xor $default) {
-    $picture = "on_$toggler.png";
-    $label = get_string("on_$toggler", 'block_catalogue');
-} else {
-    $picture = "off_$toggler.png";
-    $label = get_string("off_$toggler", 'block_catalogue');
+    // Toggle.
+    if ($recorded) {
+        $DB->delete_records($table, array('id' => $recorded->id));
+    } else {
+        $record = new stdClass();
+        if ($toggler == 'fav') {
+            $record->userid = $USER->id;
+        }
+        $record->listname = $listname;
+        $record->elementname = $elementname;
+        $record->id = $DB->insert_record($table, $record);
+    }
+
+    if ($recorded xor $default) {
+        $picture = "on_$toggler.png";
+        $label = get_string("on_$toggler", 'block_catalogue');
+    } else {
+        $picture = "off_$toggler.png";
+        $label = get_string("off_$toggler", 'block_catalogue');
+    }
 }
 
 // New content for toggler div.
