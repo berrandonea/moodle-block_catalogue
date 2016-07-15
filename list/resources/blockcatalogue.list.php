@@ -35,7 +35,7 @@ require_once($CFG->dirroot."/blocks/catalogue/list/list.class.php");
 
 /**
  * Class definition for the resources list.
- * 
+ *
  * @copyright 2016 Brice Errandonea <brice.errandonea@u-cergy.fr>, Salma El-mrabah <salma.el-mrabah@u-cergy.fr>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
