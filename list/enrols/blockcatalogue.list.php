@@ -188,10 +188,23 @@ class blockcatalogue_list_enrols extends blockcatalogue_list {
         $targetpage = $CFG->wwwroot;
         $goodprefix = array('enrol', 'group', 'user');
         if (in_array($nameparts[0], $goodprefix)) {
-            foreach ($nameparts as $namepart) {
-                $targetpage .= "/$namepart";
-                if ($namepart == 'edit') {
-                    unset($args['id']);
+            if (isset($nameparts[2])) {
+                $neweditinstance = ($nameparts[0] == 'enrol')
+                                && ($CFG->branch > 30)
+                                && ($nameparts[2] == 'edit');
+            } else {
+                $neweditinstance = false;
+            }
+            if ($neweditinstance) {
+                $targetpage .= "/enrol/editinstance";
+                unset ($args['id']);
+                $args['type'] = $nameparts[1];
+            } else {
+                foreach ($nameparts as $namepart) {
+                    $targetpage .= "/$namepart";
+                    if ($namepart == 'edit') {
+                        unset($args['id']);
+                    }
                 }
             }
             $targetpage .= '.php';
