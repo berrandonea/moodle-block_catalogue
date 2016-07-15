@@ -148,10 +148,6 @@ class blockcatalogue_list_blocks extends blockcatalogue_list {
         global $CFG;
         $component = "block_$blockname";
         switch ($nature) {
-            case 'description' :
-                $vendordescription = get_string('modulename_help', $component);
-                return $this->control_string($vendordescription);
-
             case 'link' :
                 $cataloguelink = $this->langstring("link_$blockname");
                 $control = substr($cataloguelink, 0, 2);
