@@ -24,26 +24,58 @@
  * Displays a catalogue of all the blocks, modules, reports and customlabels the teacher can use in his course.
  *
  * @package    block_catalogue
- * @author     Brice Errandonea <brice.errandonea@u-cergy.fr>, Salma El-mrabah <salma.el-mrabah@u-cergy.fr>
+ * @copyright 2016 Brice Errandonea <brice.errandonea@u-cergy.fr>, Salma El-mrabah <salma.el-mrabah@u-cergy.fr>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
  * File : list/list.class.php
  * Abstract mother class for all the catalogue's lists.
  */
 
+/**
+ * Abstract mother class for all the catalogue's lists.
+ *
+ * The catalogue contains several lists.
+ * Each list contains a few categories.
+ * Each category contains items (also called "elements")
+ *
+ * @copyright 2016 Brice Errandonea <brice.errandonea@u-cergy.fr>, Salma El-mrabah <salma.el-mrabah@u-cergy.fr>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @abstract
+ */
 abstract class blockcatalogue_list {
 
+    /** @var boolean If true, this list will be skipped. */
     protected $skip = false;
+
+    /** @var string The name of this list (blocks, reports, ...) */
     protected $name;
+
+    /** @var string Common prefix for the list's items names (if they have one) */
     protected $prefix;
+
+    /** @var string Standard remote url to check for documentation. */
     protected $standarddocdir = 'https://docs.moodle.org';
+
+    /** @var string Remote url to check for documentation about third-party plugins. */
     protected $plugindocdir = 'https://moodle.org/plugins';
+
+    /** @var string The content of a remote documentation file about a plugin. */
     protected $pluginfile;
+
+    /** @var array of strings Names of categories for this list's items. */
     protected $categories;
+
+    /** @var array of strings Names of the available items. */
     protected $availables = array();
+
+    /** @var array of arrays of strings Names of elements that will be placed in each category if they are availables. */
     protected $potentialmembers;
+
+    /** @var array of strings Names of a few elements that be marked as favorites by default. */
     protected $defaultfavorites = array();
-    protected $open = 1;
+
+    /** @var boolean If true, this list's categories will be displayed open on page load. */
+    protected $open = true;
 
     /**
      * If an element's name is mentionned in his list 'potentialmembers' table,
@@ -80,8 +112,8 @@ abstract class blockcatalogue_list {
 
     /**
      * Checks wether a localized string has really been found.
-     * @param type $string
-     * @return type
+     * @param string $string
+     * @return string
      */
     public function control_string($string) {
         $control = substr($string, 0, 2);
@@ -177,9 +209,9 @@ abstract class blockcatalogue_list {
 
     /**
      * Get a data from this list's lang directory.
-     * @param type $elementname
-     * @param type $nature
-     * @return type
+     * @param string $elementname
+     * @param string $nature
+     * @return string
      */
     public function get_lang_data($elementname, $nature) {
         global $CFG;
@@ -230,7 +262,7 @@ abstract class blockcatalogue_list {
     }
 
     /**
-     * Return names of the default favorites for this list
+     * Returns names of the default favorites for this list.
      * @return array of strings
      */
     public function get_default_favorites() {
@@ -348,7 +380,7 @@ abstract class blockcatalogue_list {
 
     /**
      * Get this list's technical name.
-     * @return type
+     * @return string
      */
     public function get_name() {
         return $this->name;
@@ -411,6 +443,11 @@ abstract class blockcatalogue_list {
 
     /**
      * Get a text string that's specific to this list, in the current language.
+     * 
+     * These lists are meant to become subplugins in the future. Hence, each one has its own lang folder.
+     * The standard get_string() function won't find the lang strings in these specific folders but this
+     * function will.
+     * 
      * @global object $CFG
      * @param string $identifier
      * @return string
@@ -443,10 +480,11 @@ abstract class blockcatalogue_list {
     /**
      * Stores a data found in the Moodle plugins directory in the local database, for quicker access in the future.
      * @global object $DB
-     * @param type $elementname
-     * @param type $nature
-     * @param type $lang
-     * @param type $value
+     * @param string $elementname
+     * @param string $nature
+     * @param string $lang
+     * @param string $value
+     * Doesn't return anything.
      */
     public function memorize_data($elementname, $nature, $lang, $value) {
         global $DB;
@@ -470,7 +508,8 @@ abstract class blockcatalogue_list {
 
     /**
      * Sorts the elements of a given category by their names in the current language.
-     * @param type $category
+     * @param string $category
+     * Doesn't return anything.
      */
     public function sort_by_localname($category) {
         $localnames = array();
