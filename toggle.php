@@ -50,7 +50,7 @@ if ($usereditor) {
     $table = "block_catalogue_$toggler";
     $params = array('listname' => $listname, 'elementname' => $elementname);
     if ($toggler == 'fav') {
-        $params['userid'] = $USER->id;        
+        $params['userid'] = $USER->id;
     }
     $recorded = $DB->get_record($table, $params);
 

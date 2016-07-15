@@ -258,7 +258,7 @@ function block_catalogue_main_table($listnames, $course) {
                     $rowtitles = array();
                     $maintable .= '<tr>';
                 }
-            }            
+            }
             $listfavorites = $list->get_favorites();
             foreach ($listfavorites as $listfavorite) {
                 $favorite = new stdClass();
