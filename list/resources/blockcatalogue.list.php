@@ -24,16 +24,25 @@
  * Displays a catalogue of all the blocks, modules, reports and customlabels the teacher can use in his course.
  *
  * @package    block_catalogue
- * @author     Brice Errandonea <brice.errandonea@u-cergy.fr>, Salma El-mrabah <salma.el-mrabah@u-cergy.fr>
+ * @copyright 2016 Brice Errandonea <brice.errandonea@u-cergy.fr>, Salma El-mrabah <salma.el-mrabah@u-cergy.fr>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
  * File : list/activities/blockcatalogue.list.php
- * Class definition for the activities and resources list.
+ * Class definition for the resources list.
  */
 
 require_once($CFG->dirroot."/blocks/catalogue/list/list.class.php");
 
+/**
+ * Class definition for the resources list.
+ * 
+ * @copyright 2016 Brice Errandonea <brice.errandonea@u-cergy.fr>, Salma El-mrabah <salma.el-mrabah@u-cergy.fr>
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class blockcatalogue_list_resources extends blockcatalogue_list {
+    /**
+     * Constructor for the class.
+     */
     public function __construct() {
         $this->name = 'resources';
         $this->prefix = 'mod';
