@@ -16,14 +16,14 @@
 
 /**
  * @package    block_catalogue
- * @copyright  2009 David Mudrak <david@moodle.com>
+ * @copyright  2016 Brice Errandonea <brice.errandonea@u-cergy.fr>, Salma Tazi <salma.el-mrabah@u-cergy.fr>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component  = 'block_catalogue';
-$plugin->release    = '1.0';
-$plugin->version    = 2016062700;
+$plugin->release    = '1.0.1';
+$plugin->version    = 2016071500;
 $plugin->requires   = 2014051200;
 $plugin->maturity   = MATURITY_STABLE;
