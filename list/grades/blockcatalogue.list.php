@@ -24,7 +24,7 @@
  * Displays a catalogue of all the blocks, modules, reports and customlabels the teacher can use in his course.
  *
  * @package    block_catalogue
- * @author     Brice Errandonea <brice.errandonea@u-cergy.fr>, Salma El-mrabah <salma.el-mrabah@u-cergy.fr>
+ * @copyright 2016 Brice Errandonea <brice.errandonea@u-cergy.fr>, Salma El-mrabah <salma.el-mrabah@u-cergy.fr>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
  * File : list/grades/blockcatalogue.list.php
@@ -33,6 +33,12 @@
 
 require_once($CFG->dirroot."/blocks/catalogue/list/list.class.php");
 
+/**
+ * Class definition for the resources list.
+ *
+ * @copyright 2016 Brice Errandonea <brice.errandonea@u-cergy.fr>, Salma El-mrabah <salma.el-mrabah@u-cergy.fr>
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class blockcatalogue_list_grades extends blockcatalogue_list {
     public function __construct() {
         $this->name = 'grades';
@@ -45,7 +51,8 @@ class blockcatalogue_list_grades extends blockcatalogue_list {
         $this->potentialmembers['outcome'] = array('gradesetting_outcome',
                                                    'gradesetting_outcomecourse',
                                                    'gradereport_outcomes',
-                                                   'report_competency');
+                                                   'report_competency',
+                                                   'admintool_coursecompetencies');
         $this->defaultfavorites = array();
     }
 
@@ -117,6 +124,7 @@ class blockcatalogue_list_grades extends blockcatalogue_list {
         $params = array('capability' => 'moodle/competency:usercompetencyview');
         $supportscompetencies = $DB->record_exists('role_capabilities', $params);
         if ($supportscompetencies) {
+            $this->availables['outcome'][] = "admintool_coursecompetencies";
             $competenciesviewer = has_capability('moodle/competency:usercompetencyview', $coursecontext);
             if ($competenciesviewer) {
                 $this->availables['outcome'][] = "report_competency";
@@ -167,6 +175,9 @@ class blockcatalogue_list_grades extends blockcatalogue_list {
         $nameparts = $this->divide_name($elementname);
         if ($nameparts[0] == 'badges') {
             return get_string('managebadges', 'badges');
+        }
+        if ($nameparts[0] == 'admintool') {
+            return get_string('coursecompetencies', 'tool_lp');
         }
         if ($nameparts[0] == 'gradesetting') {
             $identifier = array('outcomecourse' => 'outcomescourse',
@@ -232,6 +243,10 @@ class blockcatalogue_list_grades extends blockcatalogue_list {
                 } else {
                     $targetpage = "$CFG->wwwroot/grade/edit/".$nameparts[1]."/index.php";
                 }
+                break;
+            case 'admintool':
+                $targetpage = "$CFG->wwwroot/admin/tool/lp/coursecompetencies.php";
+                $args['courseid'] = $COURSE->id;
                 break;
             default:
                 return null;
