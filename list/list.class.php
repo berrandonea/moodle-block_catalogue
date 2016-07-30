@@ -448,33 +448,12 @@ abstract class blockcatalogue_list {
      * The standard get_string() function won't find the lang strings in these specific folders but this
      * function will.
      *
-     * @global object $CFG
      * @param string $identifier
      * @return string
      */
     public function langstring($identifier) {
-        global $CFG;
-        $lang = current_language();
-        $langdir = "$CFG->dirroot/blocks/catalogue/list/$this->name/lang";
-        $langfilename = "blockcataloguelist_$this->name.php";
-        $langpath = "$langdir/$lang/$langfilename";
-        $enlangpath = "$langdir/en/$langfilename";
-        if (!file_exists($langpath)) {
-            $langpath = "$enlangpath";
-        }
-        if (!file_exists($langpath)) {
-            return "[[$identifier]]";
-        }
-        include($langpath);
-        if (isset($string[$identifier])) {
-            return $string[$identifier];
-        } else {
-            include($enlangpath);
-            if (isset($string[$identifier])) {
-                return $string[$identifier];
-            }
-        }
-        return "[[$identifier]]";
+        $langstring = get_string($this->name.'_'.$identifier, 'block_catalogue');
+        return $langstring;
     }
 
     /**
