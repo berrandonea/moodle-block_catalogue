@@ -24,7 +24,7 @@
  * Displays a catalogue of all the blocks, modules, reports and customlabels the teacher can use in his course.
  *
  * @package    block_catalogue
- * @author     Brice Errandonea <brice.errandonea@u-cergy.fr>, Salma El-mrabah <salma.el-mrabah@u-cergy.fr>
+ * @copyright     Brice Errandonea <brice.errandonea@u-cergy.fr>, Salma El-mrabah <salma.el-mrabah@u-cergy.fr>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
  * File : list/activities/blockcatalogue.list.php
