@@ -92,12 +92,13 @@ class blockcatalogue_list_resources extends blockcatalogue_list {
     /**
      * Searches the local code for data about an element
      * @global object $CFG
+     * @global object $OUTPUT
      * @param string $modname
      * @param string $nature
      * @return string
      */
     public function get_local_data($modname, $nature) {
-        global $CFG;
+        global $CFG, $OUTPUT;
         $component = "mod_$modname";
         switch ($nature) {
             case 'description' :
@@ -114,8 +115,7 @@ class blockcatalogue_list_resources extends blockcatalogue_list {
                 }
 
             case 'iconurl' :
-                $localicondir = "mod/$modname/pix";
-                $iconurl = $this->get_local_iconurl($localicondir, $modname);
+		$iconurl = $OUTPUT->pix_url('icon', "mod_$modname");
                 return $iconurl;
 
             default :
