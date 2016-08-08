@@ -45,8 +45,8 @@ $editing = optional_param('editing', 0, PARAM_INT);
 
 $course = get_course($courseid);
 require_login($course);
-$sitecontext = context_system::instance();
-$usereditor = has_capability('block/catalogue:edit', $sitecontext);
+$coursecontext = context_course::instance($courseid);
+$usereditor = has_capability('block/catalogue:edit', $coursecontext);
 $thislist = block_catalogue_instanciate_list($thislistname);
 $open = $thislist->get_open();
 $categories = $thislist->get_categories();

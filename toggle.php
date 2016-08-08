@@ -34,7 +34,7 @@
 require_once('../../config.php');
 require_once('lib.php');
 
-global $DB, $USER;
+global $COURSE, $DB, $USER;
 
 $listname = required_param('list', PARAM_TEXT);
 $elementname = required_param('element', PARAM_TEXT);
@@ -42,8 +42,8 @@ $toggler = required_param('toggler', PARAM_TEXT);
 $default = required_param('default', PARAM_INT);
 
 // Check permission.
-$sitecontext = context_system::instance();
-$usereditor = has_capability("block/catalogue:toggle$toggler", $sitecontext);
+$coursecontext = context_course::instance($COURSE->id);
+$usereditor = has_capability("block/catalogue:toggle$toggler", $coursecontext);
 
 if ($usereditor) {
     // Current state for this element.
