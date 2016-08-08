@@ -38,6 +38,13 @@ $settings->add(new admin_setting_heading(
         ));
 
 $settings->add(new admin_setting_configtext(
+            'catalogue/maintitle',
+            get_string('maintitle', 'block_catalogue'),
+            get_string('descmaintitle', 'block_catalogue'),
+            get_string('pluginname', 'block_catalogue')
+        ));
+
+$settings->add(new admin_setting_configtext(
             'catalogue/displayedlists',
             get_string('displayedlists', 'block_catalogue'),
             get_string('descdisplayedlists', 'block_catalogue'),
