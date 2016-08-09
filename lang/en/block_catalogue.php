@@ -219,3 +219,11 @@ $string['reports_description_report_roster'] = 'Roster of the students. Names ca
 $string['resources_listname'] = 'Resources';
 $string['resources_resource'] = 'Resources';
 $string['resources_use'] = 'Add to course';
+
+$string['mods_listname'] = 'Modules';
+$string['mods_resource'] = 'Resources';
+$string['mods_exercise'] = 'Exercises';
+$string['mods_collaborative'] = 'Collaboration';
+$string['mods_other'] = 'Other';
+$string['mods_use'] = 'Add to course';
+

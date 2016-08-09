@@ -196,3 +196,11 @@ $string['reports_description_report_roster'] = 'Trombinoscope des étudiants.';
 $string['resources_listname'] = 'Ressources';
 $string['resources_resource'] = 'Ressources';
 $string['resources_use'] = 'Ajouter au cours';
+
+$string['mods_listname'] = 'Modules';
+$string['mods_resource'] = 'Ressources';
+$string['mods_exercise'] = 'Exercices';
+$string['mods_collaborative'] = 'Outils collaboratifs';
+$string['mods_other'] = 'Autres';
+$string['mods_use'] = 'Ajouter au cours';
+
