@@ -49,7 +49,7 @@ class block_catalogue extends block_base {
     }
 
     public function specialization() {
-        $this->title = get_string('config_blocktitle_default', 'block_catalogue');
+        $this->title = get_config('catalogue', 'maintitle');
     }
 
     public function applicable_formats() {
