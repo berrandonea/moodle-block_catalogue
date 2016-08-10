@@ -262,12 +262,14 @@ function block_catalogue_main_table($listnames, $course) {
                     $maintable .= '<tr>';
                 }
             }
-            $listfavorites = $list->get_favorites();
-            foreach ($listfavorites as $listfavorite) {
-                $favorite = new stdClass();
-                $favorite->listname = $listname;
-                $favorite->elementname = $listfavorite;
-                $favorites[] = $favorite;
+            if (has_capability("block/catalogue:togglefav", $coursecontext)) {
+                $listfavorites = $list->get_favorites();
+                foreach ($listfavorites as $listfavorite) {
+                    $favorite = new stdClass();
+                    $favorite->listname = $listname;
+                    $favorite->elementname = $listfavorite;
+                    $favorites[] = $favorite;
+                }
             }
         }
     }
@@ -276,11 +278,13 @@ function block_catalogue_main_table($listnames, $course) {
         $maintable .= "<td style='text-align:center'>$rowtitle</td>";
     }
     $maintable .= '</tr>';
-    $maintable .= '<tr><td colspan=2> </td></tr>';
-    $favtitle = get_string('favorites', 'block_catalogue');
-    $favstyle = 'text-align:center;font-weight:bold';
-    $helper = $OUTPUT->help_icon('favorites', 'block_catalogue');
-    $maintable .= "<tr><td colspan=2 style='$favstyle'>$favtitle $helper</td></tr>";
+    if (has_capability("block/catalogue:togglefav", $coursecontext)) {
+        $maintable .= '<tr><td colspan=2> </td></tr>';
+        $favtitle = get_string('favorites', 'block_catalogue');
+        $favstyle = 'text-align:center;font-weight:bold';
+        $helper = $OUTPUT->help_icon('favorites', 'block_catalogue');
+        $maintable .= "<tr><td colspan=2 style='$favstyle'>$favtitle $helper</td></tr>";
+    }    
     if ($favorites) {
         $maintable .= block_catalogue_show_favorites($favorites);
     } else {
