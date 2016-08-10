@@ -38,6 +38,7 @@ $string['catalogue'] = 'Catalogue';
 $string['config_blocktitle_default'] = 'Catalogue';
 $string['catalogue:addinstance'] = 'Ajouter un bloc Catalogue';
 $string['catalogue:myaddinstance'] = 'Ajouter un bloc Catalogue à mon tableau de bord';
+$string['catalogue:view'] = 'Voir le bloc Catalogue';
 $string['catalogue:edit'] = 'Changer des descriptions ou des liens dans le bloc Catalogue';
 $string['catalogue:togglefav'] = 'Ajouter ou retirer des favoris dans le bloc Catalogue';
 $string['catalogue:togglehide'] = 'Cacher ou montrer des éléments dans le bloc Catalogue';

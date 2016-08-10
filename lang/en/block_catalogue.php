@@ -38,6 +38,7 @@ $string['catalogue'] = 'Catalogue';
 $string['config_blocktitle_default'] = 'Catalogue';
 $string['catalogue:addinstance'] = 'Add a new Catalogue block';
 $string['catalogue:myaddinstance'] = 'Add a new Catalogue block to the My Moodle page';
+$string['catalogue:view'] = 'View the catalogue block';
 $string['catalogue:edit'] = 'Edit descriptions and links in the catalogue block';
 $string['catalogue:togglefav'] = 'Add or remove favorites in block Catalogue';
 $string['catalogue:togglehide'] = 'Hide or show elements in block Catalogue';
