@@ -288,10 +288,11 @@ function block_catalogue_main_table($listnames, $course) {
     }    
     if ($favorites) {
         $maintable .= block_catalogue_show_favorites($favorites);
-    } else {
+    } else if (has_capability("block/catalogue:togglefav", $coursecontext)) {
         $nofavs = get_string('nofavs', 'block_catalogue');
-        $maintable .= "<tr><td colspan=2>$nofavs</td></tr></table>";
+        $maintable .= "<tr><td colspan=2>$nofavs</td></tr>";
     }
+    $maintable .= '</table>';
     return $maintable;
 }
 
@@ -364,7 +365,6 @@ function block_catalogue_show_favorites($favorites) {
     if ($nbfavs % $nbcolumns) {
         $favstring .= "<td></td></tr>";
     }
-    $favstring .= '</table>';
     return $favstring;
 }
 
