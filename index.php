@@ -103,31 +103,33 @@ block_catalogue_display_tabs($courseid, $thislistname, $editing);
 
 // Main content.
 foreach ($categories as $category) {
-    $categorylocalname = $thislist->langstring($category);
-    ?>
-    <br>
-    <div onclick="flipflop('<?php echo "$categorylocalname"; ?>');" class='block_catalogue_flipflop'>
-        <?php echo $categorylocalname; ?>
-        <img src ="pix/open.png" alt="open" style="float: right"  height="15" width="15">
-    </div>
-    <?php
-    if (($category == $usedcategory)||$open) {
-        $display = 'block';
-    } else {
-        $display = 'none';
-    }
-    echo "<div id ='$categorylocalname' style='width:100%;display:$display'><br>";
-    echo "<div class='block_catalogue_categorycontent'>";
     if ($availables[$category]) {
+        $categorylocalname = $thislist->langstring($category);
+        ?>
+        <br>
+        <div onclick="flipflop('<?php echo "$categorylocalname"; ?>');" class='block_catalogue_flipflop'>
+            <?php echo $categorylocalname; ?>
+            <img src ="pix/open.png" alt="open" style="float: right"  height="15" width="15">
+        </div>
+        <?php
+        if (($category == $usedcategory)||$open) {
+            $display = 'block';
+        } else {
+            $display = 'none';
+        }
+        echo "<div id ='$categorylocalname' style='width:100%;display:$display'><br>";
+        echo "<div class='block_catalogue_categorycontent'>";
+    
         if (!$editing) {
             echo '<div class="block_catalogue_hoverlabel">';
             echo get_string('hover', 'block_catalogue');
             echo '</div>';
         }
         block_catalogue_display_category($course, $usereditor, $thislist, $availables[$category]);
+    
+        echo '</div>';
+        echo '</div>';
     }
-    echo '</div>';
-    echo '</div>';
 }
 
 // Footer.
