@@ -97,9 +97,9 @@ class blockcatalogue_list_grades extends blockcatalogue_list {
     public function filter_report($context, $prefix, $name) {
         if ($prefix == 'gradesetting') {
             if ($name == 'scale') {
-                return has_capability('moodle/course:managescales');
+                return has_capability('moodle/course:managescales', $context);
             } else {
-                return has_capability('moodle/grade:manage');
+                return has_capability('moodle/grade:manage', $context);
             }
         }
         $capable = has_capability("gradereport/$name:view", $context);
