@@ -240,6 +240,7 @@ function block_catalogue_link_editor($url, $elementname, $link) {
  */
 function block_catalogue_main_table($listnames, $course) {
     global $OUTPUT;
+    $coursecontext = context_course::instance($course->id);
     $maintable = '<table width="100%" style="border-collapse:collapse"><tr>';
     $nblists = count($listnames);
     $nbshownlists = 0;
