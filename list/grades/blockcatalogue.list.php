@@ -96,9 +96,12 @@ class blockcatalogue_list_grades extends blockcatalogue_list {
      */
     public function filter_report($context, $prefix, $name) {
         if ($prefix == 'gradesetting') {
-            return true;
+            if ($name == 'scale') {
+                return has_capability('moodle/course:managescales');
+            } else {
+                return has_capability('moodle/grade:manage');
+            }
         }
-
         $capable = has_capability("gradereport/$name:view", $context);
         return $capable;
     }
@@ -198,14 +201,14 @@ class blockcatalogue_list_grades extends blockcatalogue_list {
      * @param object $coursecontext
      * @param string $prefix
      */
-    public function sortout_reports($coursecontext, $prefix) {
+    public function sortout_reports($coursecontext, $prefix) {        
         if ($prefix == 'gradesetting') {
             $reports = $this->get_grade_settings();
         } else {
             $reports = core_component::get_plugin_list($prefix);
         }
-        foreach ($reports as $name => $path) {
-            $elementname = $prefix.'_'.$name;
+        foreach ($reports as $name => $path) {            
+            $elementname = $prefix.'_'.$name;            
             if ($this->filter_report($coursecontext, $prefix, $name)) {
                 $common = $this->common_sortout($elementname);
                 if (!$common) {
