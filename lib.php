@@ -204,7 +204,10 @@ function block_catalogue_instanciate_list($listname) {
         $classname = "blockcatalogue_list_$listname";
         $instance = new $classname();
         if (!$instance->get_skip()) {
-            return $instance;
+            $elements = $instance->get_availables();
+            if (count($elements, COUNT_RECURSIVE) > count($elements, COUNT_NORMAL)) {
+                return $instance;
+            }            
         }
     }
     return null;
