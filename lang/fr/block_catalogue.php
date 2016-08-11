@@ -175,6 +175,7 @@ $string['grades_description_gradereport_overview'] = "Vue globale des notes de l
 $string['grades_description_gradereport_grader'] = "Les notes des apprenants sur le cours.";
 $string['grades_description_gradereport_user'] = "Permet de voir les notes d'un participant sur l'ensemble des activités notées du cours.";
 $string['grades_description_badges_index'] = "Créer et gérer des badges pour ce cours, avec leurs critères d'attribution aux étudiants.";
+$string['grades_description_badges_mybadges'] = "Voir mes badges.";
 $string['grades_description_gradesetting_outcome'] = "Montre les objectifs définis sur la plateforme et disponibles pour votre cours.";
 $string['grades_description_gradesetting_outcomecourse'] = "Montre les objectifs utilisés dans votre cours.";
 $string['grades_description_gradereport_outcomes'] = "Montre dans quelle proportion chaque objectif a été atteint par les étudiants.";

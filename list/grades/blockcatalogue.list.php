@@ -245,7 +245,7 @@ class blockcatalogue_list_grades extends blockcatalogue_list {
                 $targetpage = "$CFG->wwwroot/grade/report/".$nameparts[1]."/index.php";
                 break;
             case 'badges':
-                $targetpage = "$CFG->wwwroot/badges/index.php";
+                $targetpage = "$CFG->wwwroot/badges/".$nameparts[1].".php";
                 $args['type'] = 2;
                 break;
             case 'gradesetting':

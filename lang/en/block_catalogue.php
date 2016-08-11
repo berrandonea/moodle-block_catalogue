@@ -197,6 +197,7 @@ $string['grades_description_gradereport_history'] = "A grader report for Moodle 
 $string['grades_description_gradereport_overview'] = "Global view of a student's grades in all his online courses (depending on your viewing rights).";
 $string['grades_description_gradereport_grader'] = "Gradebook for this course.";
 $string['grades_description_gradereport_user'] = "Grades for one student in this course.";
+$string['grades_description_badges_mybadges'] = "Check my own badges.";
 $string['grades_description_badges_index'] = "Create and manage badges for this course.";
 $string['grades_description_gradesetting_outcome'] = "Shows outcomes defined on the site and available for your course.";
 $string['grades_description_gradesetting_outcomecourse'] = "Manage which outcomes are used in your course.";
