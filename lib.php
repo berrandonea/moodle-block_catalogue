@@ -249,7 +249,7 @@ function block_catalogue_main_table($listnames, $course) {
     foreach ($listnames as $listname) {
         $list = block_catalogue_instanciate_list($listname);
         if ($list) {
-            $listcategories = $instance->get_availables();
+            $listcategories = $list->get_availables();
             $nbelements = count($listcategories, COUNT_RECURSIVE) - count($listcategories, COUNT_NORMAL);
             if ($nbelements == 1) {
                 $favorite = new stdClass();
