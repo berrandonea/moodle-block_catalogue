@@ -122,7 +122,10 @@ class blockcatalogue_list_grades extends blockcatalogue_list {
         }
         $this->sortout_reports($coursecontext, 'gradereport');
         $this->sortout_reports($coursecontext, 'gradesetting');
-        $this->availables['outcome'][] = 'badges_index';
+        $this->availables['outcome'][] = 'badges_mybadges';
+        if (has_capability('moodle/badges:createbadge', $coursecontext)) {
+            $this->availables['outcome'][] = 'badges_index';
+        }        
         // Competencies.
         $params = array('capability' => 'moodle/competency:usercompetencyview');
         $supportscompetencies = $DB->record_exists('role_capabilities', $params);
@@ -176,24 +179,29 @@ class blockcatalogue_list_grades extends blockcatalogue_list {
      */
     public function get_element_localname($elementname) {
         $nameparts = $this->divide_name($elementname);
-        if ($nameparts[0] == 'badges') {
-            return get_string('managebadges', 'badges');
-        }
-        if ($nameparts[0] == 'admintool') {
-            return get_string('coursecompetencies', 'tool_lp');
-        }
-        if ($nameparts[0] == 'gradesetting') {
-            $identifier = array('outcomecourse' => 'outcomescourse',
+        switch($nameparts[0]) {
+            case 'badges':
+                if ($nameparts[1] == 'index') {
+                    return get_string('managebadges', 'badges');
+                } else {
+                    return get_string($nameparts[1], 'badges');
+                }                
+                break;
+            case 'admintool':
+                return get_string('coursecompetencies', 'tool_lp');
+                break;
+            case 'gradesetting':
+                $identifier = array('outcomecourse' => 'outcomescourse',
                                 'outcome' => 'outcomes',
                                 'tree' => 'categoriesanditems',
                                 'settings' => 'coursegradesettings',
                                 'scale' => 'coursescales',
                                 'letter' => 'letters');
-            $localname = get_string($identifier[$nameparts[1]], 'grades');
-        } else {
-            $localname = get_string('pluginname', "$elementname");
-        }
-        return $localname;
+                return get_string($identifier[$nameparts[1]], 'grades');
+                break;
+            default:
+                return get_string('pluginname', "$elementname");
+        }        
     }
 
     /**
