@@ -249,21 +249,32 @@ function block_catalogue_main_table($listnames, $course) {
     foreach ($listnames as $listname) {
         $list = block_catalogue_instanciate_list($listname);
         if ($list) {
-            $maintable .= '<td style="text-align:center">'.$list->main_table_icon($course).'</td>';
-            $nbshownlists++;
-            $column = $nbshownlists % 2;
-            $rowtitles[$column] = $list->main_table_title($course);
-            if (($column == 0) && ($nbshownlists < $nblists)) {
-                $maintable .= '</tr>';
-                foreach ($rowtitles as $rowtitle) {
-                    $maintable .= "<td style='text-align:center'>$rowtitle</td>";
+            $listcategories = $instance->get_availables();
+            $nbelements = count($listcategories, COUNT_RECURSIVE) - count($listcategories, COUNT_NORMAL);
+            if ($nbelements == 1) {
+                $favorite = new stdClass();
+                $favorite->listname = $listname;
+                foreach ($listcategories as $listcategory) {
+                    if (isset($listcategory[0])) {
+                        $favorite->elementname = $listcategory[0];
+                        $favorites[] = $favorite;
+                    }
                 }
-                if ($nbshownlists < $nblists) {
-                    $rowtitles = array();
-                    $maintable .= '<tr>';
+            } else {
+                $maintable .= '<td style="text-align:center">'.$list->main_table_icon($course).'</td>';
+                $nbshownlists++;
+                $column = $nbshownlists % 2;
+                $rowtitles[$column] = $list->main_table_title($course);
+                if (($column == 0) && ($nbshownlists < $nblists)) {
+                    $maintable .= '</tr>';
+                    foreach ($rowtitles as $rowtitle) {
+                        $maintable .= "<td style='text-align:center'>$rowtitle</td>";
+                    }
+                    if ($nbshownlists < $nblists) {
+                        $rowtitles = array();
+                        $maintable .= '<tr>';
+                    }
                 }
-            }
-            if (has_capability("block/catalogue:togglefav", $coursecontext)) {
                 $listfavorites = $list->get_favorites();
                 foreach ($listfavorites as $listfavorite) {
                     $favorite = new stdClass();
