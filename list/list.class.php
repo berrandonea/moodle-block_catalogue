@@ -472,7 +472,7 @@ abstract class blockcatalogue_list {
             if (isset($string[$identifier])) {
                 return $string[$identifier];
             }
-        }        
+        }
         return "[[$identifier]]";
     }
 

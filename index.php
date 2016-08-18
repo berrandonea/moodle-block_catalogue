@@ -119,14 +119,14 @@ foreach ($categories as $category) {
         }
         echo "<div id ='$categorylocalname' style='width:100%;display:$display'><br>";
         echo "<div class='block_catalogue_categorycontent'>";
-    
+
         if (!$editing) {
             echo '<div class="block_catalogue_hoverlabel">';
             echo get_string('hover', 'block_catalogue');
             echo '</div>';
         }
         block_catalogue_display_category($course, $usereditor, $thislist, $availables[$category]);
-    
+
         echo '</div>';
         echo '</div>';
     }

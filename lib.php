@@ -207,7 +207,7 @@ function block_catalogue_instanciate_list($listname) {
             $elements = $instance->get_availables();
             if (count($elements, COUNT_RECURSIVE) > count($elements, COUNT_NORMAL)) {
                 return $instance;
-            }            
+            }
         }
     }
     return null;
@@ -296,7 +296,7 @@ function block_catalogue_main_table($listnames, $course) {
         $favstyle = 'text-align:center;font-weight:bold';
         $helper = $OUTPUT->help_icon('favorites', 'block_catalogue');
         $maintable .= "<tr><td colspan=2 style='$favstyle'>$favtitle $helper</td></tr>";
-    }    
+    }
     if ($favorites) {
         $maintable .= block_catalogue_show_favorites($favorites);
     } else if (has_capability("block/catalogue:togglefav", $coursecontext)) {

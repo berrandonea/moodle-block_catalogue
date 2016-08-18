@@ -41,7 +41,8 @@ class blockcatalogue_list_activities extends blockcatalogue_list {
         $this->potentialmembers = array(
             'exercise' => array('adaptivequiz', 'assign', 'assignment', 'lesson', 'quiz',
                                 'workshop', 'elang', 'realtimequiz', 'taskchain'),
-            'collaborative' => array('chat', 'data', 'forum', 'bigbluebuttonbn', 'glossary', 'depotetudiant', 'etherpadlite', 'wiki')
+            'collaborative' => array('chat', 'data', 'forum', 'bigbluebuttonbn',
+                'glossary', 'depotetudiant', 'etherpadlite', 'wiki')
         );
         $this->defaultfavorites = array('assign', 'quiz');
         $this->open = false;
@@ -109,7 +110,7 @@ class blockcatalogue_list_activities extends blockcatalogue_list {
                 } else {
                     return null;
                 }
-
+                
             case 'iconurl' :
 		$iconurl = $OUTPUT->pix_url('icon', "mod_$modname");
                 return $iconurl;

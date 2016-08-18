@@ -38,7 +38,7 @@ require_once('lib.php');
 // Check params.
 $listname = required_param('list', PARAM_ALPHA);
 $courseid = required_param('course', PARAM_INT);
-$mod = required_param('mod', '', PARAM_TEXT);
+$mod = required_param('mod', PARAM_TEXT);
 $type = optional_param('type', '', PARAM_TEXT);
 
 if ($listname == 'blocks') {

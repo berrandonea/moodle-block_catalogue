@@ -125,7 +125,7 @@ class blockcatalogue_list_grades extends blockcatalogue_list {
         $this->availables['outcome'][] = 'badges_mybadges';
         if (has_capability('moodle/badges:createbadge', $coursecontext)) {
             $this->availables['outcome'][] = 'badges_index';
-        }        
+        }
         // Competencies.
         $params = array('capability' => 'moodle/competency:usercompetencyview');
         $supportscompetencies = $DB->record_exists('role_capabilities', $params);
@@ -205,7 +205,7 @@ class blockcatalogue_list_grades extends blockcatalogue_list {
                 break;
             default:
                 return get_string('pluginname', "$elementname");
-        }        
+        }
     }
 
     /**
@@ -213,14 +213,14 @@ class blockcatalogue_list_grades extends blockcatalogue_list {
      * @param object $coursecontext
      * @param string $prefix
      */
-    public function sortout_reports($coursecontext, $prefix) {        
+    public function sortout_reports($coursecontext, $prefix) {
         if ($prefix == 'gradesetting') {
             $reports = $this->get_grade_settings();
         } else {
             $reports = core_component::get_plugin_list($prefix);
         }
-        foreach ($reports as $name => $path) {            
-            $elementname = $prefix.'_'.$name;            
+        foreach ($reports as $name => $path) {
+            $elementname = $prefix.'_'.$name;
             if ($this->filter_report($coursecontext, $prefix, $name)) {
                 $common = $this->common_sortout($elementname);
                 if (!$common) {
