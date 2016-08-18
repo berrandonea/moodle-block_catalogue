@@ -84,6 +84,13 @@ echo '<h2>'.get_string('chooseplace', 'block_catalogue').'</h2>';
 echo '<ul>';
 foreach ($sections as $section) {
     $sectionname = get_section_name($section->course, $section->section);
+    if (!$section->visible) {
+        $style = 'font-style:italic';
+    } else if ($COURSE->marker == $section->section) {
+        $style = 'font-weight:bold';
+    } else {
+        $style = '';
+    }
     $args = array('add' => $mod,
                   'type' => $type,
                   'course' => $section->course,
@@ -91,7 +98,7 @@ foreach ($sections as $section) {
                   'return' => 0,
                   'sr' => 0);
     $url = new moodle_url($targetpage, $args);
-    echo "<li style='padding-bottom:25px'><a href='$url'>$sectionname</a></li>";
+    echo "<li style='padding-bottom:25px'><a href='$url' style='$style'>$sectionname</a></li>";
 }
 echo '</ul>';
 echo $OUTPUT->footer();

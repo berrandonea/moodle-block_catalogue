@@ -114,11 +114,11 @@ $sections = $DB->get_recordset('course_sections', array('course' => $courseid));
 foreach ($sections as $section) {
     $sectionname = get_section_name($section->course, $section->section);
     if (!$section->visible) {
-        $weight = '200';
+        $style = 'font-style:italic';
     } else if ($COURSE->marker == $section->section) {
-        $weight = 'bold';
+        $style = 'font-weight:bold';
     } else {
-        $weight = 'normal';
+        $style = '';
     }
     // Set section specific argument.
     switch ($elementname) {
@@ -148,7 +148,7 @@ foreach ($sections as $section) {
             break;
     }
     $url = new moodle_url($targetpage, $args);
-    echo "<li style='padding-bottom:25px'><a href='$url' style='font-weight:$weight'>$sectionname</a></li>";
+    echo "<li style='padding-bottom:25px'><a href='$url' style='$style'>$sectionname</a></li>";
 }
 
 echo '</ul>';
