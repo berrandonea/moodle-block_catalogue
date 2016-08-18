@@ -58,26 +58,31 @@ switch ($elementname) {
         $condition = $canupdate;
         $page = 'editsection';
         $args = array('sr' => 0, 'delete' => 1);
+        break;
 
     case 'edit':
         $condition = $canupdate;
         $page = 'editsection';
         $args = array('sr' => 0);
+        break;
 
     case 'highlight':
         $condition = $canupdate;
         $page = 'view';
         $args = array('id' => $courseid, 'sesskey' => sesskey());
+        break;
 
     case 'hideshow':
         $condition = has_capability('moodle/course:sectionvisibility', $coursecontext);
         $page = 'view';
         $args = array('id' => $courseid, 'sesskey' => sesskey());
+        break;
 
     case 'picture':
         $condition = $canupdate;
         $page = 'format/grid/editimage';
-        $args = array('contextid' => $coursecontext->id, 'userid' => $USER->id);                             
+        $args = array('contextid' => $coursecontext->id, 'userid' => $USER->id);
+        break;
 
     default:
         $condition = false;
