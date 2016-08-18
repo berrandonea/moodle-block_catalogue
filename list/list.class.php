@@ -452,8 +452,27 @@ abstract class blockcatalogue_list {
      * @return string
      */
     public function langstring($identifier) {
-        $langstring = get_string($this->name.'_'.$identifier, 'block_catalogue');
-        return $langstring;
+        global $CFG;
+        $lang = current_language();
+        $langdir = "$CFG->dirroot/blocks/catalogue/lang";
+        $langpath = "$langdir/$lang/block_catalogue.php";
+        $enlangpath = "$langdir/en/block_catalogue.php";
+        if (!file_exists($langpath)) {
+            $langpath = $enlangpath;
+        }
+        if (!file_exists($langpath)) {
+            return "[[$identifier]]";
+        }
+        include($langpath);
+        if (isset($string[$identifier])) {
+            return $string[$identifier];
+        } else {
+            include($enlangpath);
+            if (isset($string[$identifier])) {
+                return $string[$identifier];
+            }
+        }        
+        return "[[$identifier]]";
     }
 
     /**

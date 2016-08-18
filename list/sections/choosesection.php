@@ -105,6 +105,7 @@ echo '<h2>'.get_string('chooseplace', 'block_catalogue').'</h2>';
 echo '<ul>';
 $targetpage = "$CFG->wwwroot/course/$page.php";
 
+$sections = $DB->get_recordset('course_sections', array('course' => $courseid));
 foreach ($sections as $section) {
     $sectionname = get_section_name($section->course, $section->section);
     if (!$section->visibility) {
