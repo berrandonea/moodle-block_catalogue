@@ -75,7 +75,7 @@ class blockcatalogue_list_sections extends blockcatalogue_list {
         }
         if (has_capability('moodle/course:sectionvisibility', $coursecontext)) {
             $this->availables['coursesections'][] = 'hideshow';
-        }        
+        }
         foreach ($this->categories as $category) {
             $this->sort_by_localname($category);
         }
@@ -91,7 +91,7 @@ class blockcatalogue_list_sections extends blockcatalogue_list {
     public function get_element_localname($elementname) {
         return get_string($this->name.'_'.$elementname, 'block_catalogue');
     }
-    
+
     /**
      * Searches the local code for data about an element
      * @global object $CFG
@@ -100,7 +100,7 @@ class blockcatalogue_list_sections extends blockcatalogue_list {
      * @param string $nature
      * @return string
      */
-    public function get_local_data($elementname, $nature) {        
+    public function get_local_data($elementname, $nature) {
         switch ($nature) {
             case 'description' :
                 $description = get_string($this->name.'_description_'.$elementname, 'block_catalogue');
@@ -128,11 +128,11 @@ class blockcatalogue_list_sections extends blockcatalogue_list {
             $targetpage = "$CFG->wwwroot/course/changenumsections.php";
             $args = array('courseid' => $COURSE->id,
                           'increase' => 1,
-                          'sesskey' => sesskey());            
+                          'sesskey' => sesskey());
         } else {
             $targetpage = "$CFG->wwwroot/blocks/catalogue/list/sections/choosesection.php";
             $args = array('course' => $COURSE->id, 'action' => $elementname);
-        }        
+        }
         $url = new moodle_url($targetpage, $args);
         return $url;
     }

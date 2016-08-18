@@ -41,7 +41,8 @@ class blockcatalogue_list_mods extends blockcatalogue_list {
         $this->potentialmembers = array(
             'exercise' => array('adaptivequiz', 'assign', 'assignment', 'lesson', 'quiz',
                                 'workshop', 'elang', 'realtimequiz', 'taskchain'),
-            'collaborative' => array('chat', 'data', 'forum', 'bigbluebuttonbn', 'glossary', 'depotetudiant', 'etherpadlite', 'wiki')
+            'collaborative' => array('chat', 'data', 'forum', 'bigbluebuttonbn', 'glossary',
+                'depotetudiant', 'etherpadlite', 'wiki')
         );
         $this->defaultfavorites = array('folder', 'assign', 'quiz');
         $this->open = false;
@@ -81,7 +82,7 @@ class blockcatalogue_list_mods extends blockcatalogue_list {
         }
         foreach ($this->categories as $category) {
             $this->sort_by_localname($category);
-        }        
+        }
         return true;
     }
 
@@ -111,7 +112,7 @@ class blockcatalogue_list_mods extends blockcatalogue_list {
                 }
 
             case 'iconurl' :
-		$iconurl = $OUTPUT->pix_url('icon', "mod_$modname");
+                $iconurl = $OUTPUT->pix_url('icon', "mod_$modname");
                 return $iconurl;
 
             default :
@@ -139,9 +140,9 @@ class blockcatalogue_list_mods extends blockcatalogue_list {
         if (!file_exists($libfile)) {
             return false;
         }
-        include_once($libfile);        
+        include_once($libfile);
         $supportfunction = $elementname.'_supports';
-        if ($supportfunction(FEATURE_MOD_ARCHETYPE) == MOD_ARCHETYPE_RESOURCE) {            
+        if ($supportfunction(FEATURE_MOD_ARCHETYPE) == MOD_ARCHETYPE_RESOURCE) {
             $this->availables['resource'][] = $elementname;
             return true;
         }
