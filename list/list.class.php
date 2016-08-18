@@ -452,10 +452,11 @@ abstract class blockcatalogue_list {
      * @return string
      */
     public function langstring($identifier) {
+        global $CFG;
         $lang = current_language();
-        $langfile = "../lang/$lang/block_catalogue.php";
+        $langfile = "$CFG->wwwroot/blocks/catalogue/lang/$lang/block_catalogue.php";
         if (file_exists($langfile)) {
-            include_once $langfile;
+            require_once($langfile);
             if (isset($string[$identifier])) {
                 $langstring = get_string($this->name.'_'.$identifier, 'block_catalogue');
                 return $langstring;
