@@ -183,17 +183,21 @@ class blockcatalogue_list_grades extends blockcatalogue_list {
             case 'badges':
                 if ($nameparts[1] == 'index') {
                     return get_string('managebadges', 'badges');
+                } else if ($nameparts[1] == 'mybadges') {
+                    return get_string('grades_mybadges', 'block_catalogue');
                 } else {
                     return get_string($nameparts[1], 'badges');
-                }                
+                }
                 break;
             case 'admintool':
                 return get_string('coursecompetencies', 'tool_lp');
                 break;
             case 'gradesetting':
+                if ($nameparts[1] == 'tree') {
+                    return get_string('grades_categoriesanditems', 'block_catalogue');
+                }
                 $identifier = array('outcomecourse' => 'outcomescourse',
                                 'outcome' => 'outcomes',
-                                'tree' => 'categoriesanditems',
                                 'settings' => 'coursegradesettings',
                                 'scale' => 'coursescales',
                                 'letter' => 'letters');
