@@ -108,7 +108,7 @@ $targetpage = "$CFG->wwwroot/course/$page.php";
 $sections = $DB->get_recordset('course_sections', array('course' => $courseid));
 foreach ($sections as $section) {
     $sectionname = get_section_name($section->course, $section->section);
-    if (!$section->visibility) {
+    if (!$section->visible) {
         $weight = '200';
     } else if ($COURSE->marker == $section->section) {
         $weight = 'bold';
@@ -130,7 +130,7 @@ foreach ($sections as $section) {
             $args['marker'] = $section->section;
             break;
         case 'hideshow':
-            if ($section->visibility) {
+            if ($section->visible) {
                 $args['hide'] = $section->section;
             } else {
                 $args['show'] = $section->section;
