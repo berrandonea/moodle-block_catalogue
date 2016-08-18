@@ -108,7 +108,7 @@ class blockcatalogue_list_sections extends blockcatalogue_list {
             case 'link' :
                 return null;
             case 'iconurl' :
-                $iconurl = $this->get_local_iconurl(null, $elementname);
+                $iconurl = $this->get_local_iconurl('', $elementname);
                 return $iconurl;
             default :
                 return null;
