@@ -454,6 +454,7 @@ abstract class blockcatalogue_list {
     public function langstring($identifier) {
         global $CFG;
         $lang = current_language();
+        $identifier = $this->name.'_'.$identifier;
         $langdir = "$CFG->dirroot/blocks/catalogue/lang";
         $langpath = "$langdir/$lang/block_catalogue.php";
         $enlangpath = "$langdir/en/block_catalogue.php";
