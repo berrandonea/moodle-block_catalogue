@@ -85,6 +85,9 @@ echo '<ul>';
 foreach ($sections as $section) {
     $sectionname = get_section_name($section->course, $section->section);
     if (!$section->visible) {
+        if (!has_capability('moodle/course:viewhiddensections', $coursecontext)) {
+            continue;
+        }
         $style = 'font-style:italic';
     } else if ($COURSE->marker == $section->section) {
         $style = 'font-weight:bold';
