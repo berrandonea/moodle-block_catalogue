@@ -48,7 +48,7 @@ $settings->add(new admin_setting_configtext(
             'catalogue/displayedlists',
             get_string('displayedlists', 'block_catalogue'),
             get_string('descdisplayedlists', 'block_catalogue'),
-            'resources,activities,enrols,grades,reports,blocks'
+            'sections,mods,enrols,grades,reports,blocks'
         ));
 
 $settings->add(new admin_setting_configcheckbox(

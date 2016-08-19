@@ -53,6 +53,7 @@ if ($listname == 'blocks') {
 $course = get_course($courseid);
 require_login($course);
 $coursepage = "$CFG->wwwroot/course/view.php?id=$courseid";
+$coursecontext = context_course::instance($courseid);
 $list = block_catalogue_instanciate_list($listname);
 $permitted = $list->can_add($elementname);
 if (!$permitted) {

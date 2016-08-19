@@ -255,8 +255,8 @@ function block_catalogue_main_table($listnames, $course) {
                 $favorite = new stdClass();
                 $favorite->listname = $listname;
                 foreach ($listcategories as $listcategory) {
-                    if (isset($listcategory[0])) {
-                        $favorite->elementname = $listcategory[0];
+                    if (count($listcategory)) {
+                        $favorite->elementname = current($listcategory);
                         $favorites[] = $favorite;
                     }
                 }

@@ -41,7 +41,7 @@ class blockcatalogue_list_enrols extends blockcatalogue_list {
         $this->potentialmembers = array();
         $this->potentialmembers['methods'] = array('enrol_instances', 'enrol_manual', 'enrol_self',
                                                    'local_mass_enroll', 'blocks_enrol_demands');
-        $this->defaultfavorites = array();
+        $this->defaultfavorites = array('enrol_users');
     }
 
     /**
