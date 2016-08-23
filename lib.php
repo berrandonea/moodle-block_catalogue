@@ -346,14 +346,16 @@ function block_catalogue_section_toc($sectionid) {
     $cmids = explode(',', $section->sequence);
     foreach($cmids as $cmid) {
         $cm = $DB->get_record('course_modules', array('id' => $cmid));
-        $module = $DB->get_record('modules', array('id' => $cm->module));
-        if ($module->name == 'customlabel') {
-            $customlabel = $DB->get_record('customlabel', array('id' => $cm->instance));
-            block_catalogue_extract_titles($customlabel->processedcontent);
-        } else if ($module->name == 'label') {
-            $label = $DB->get_record('label', array('id' => $cm->instance));
-            block_catalogue_extract_titles($label->intro);
-        }
+        if ($cm) {
+            $module = $DB->get_record('modules', array('id' => $cm->module));
+            if ($module->name == 'customlabel') {
+                $customlabel = $DB->get_record('customlabel', array('id' => $cm->instance));
+                block_catalogue_extract_titles($customlabel->processedcontent);
+            } else if ($module->name == 'label') {
+                $label = $DB->get_record('label', array('id' => $cm->instance));
+                block_catalogue_extract_titles($label->intro);
+            }
+        }        
     }
 }
 
