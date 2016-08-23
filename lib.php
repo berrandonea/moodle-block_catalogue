@@ -173,27 +173,30 @@ function block_catalogue_display_toggler($picture, $label) {
 }
 
 /**
- * Extracts the <h1> and <h2> titles from a source string and displays them as <h3> and <h4>.
+ * Extracts the <h1>, <h2> and <h3> titles from a source string 
+ * and displays them as <h4>, <h5> and <h6>.
  * @param string $srcstring
+ * @param int $titlelevel
  */
 function block_catalogue_extract_titles($srcstring) {
-    $h1bigchunks = explode('<h1', $srcstring);
-    foreach ($h1bigchunks as $h1bigchunk) {
-        $h1medchunk = strstr($h1bigchunk, '>');
-        $h1smallchunk = substr($h1medchunk, 1);
-        if ($h1smallchunk) {
-            $h1 = explode('</h1>', $h1smallchunk);        
-            echo '<h3>'.$h1[0].'</h3>';
-            $h2bigchunks = explode('<h2>', $h1[1]);
-            foreach ($h2bigchunks as $h2bigchunk) {
-                $h2medchunk = strstr($h2bigchunk, '>');
-                $h2smallchunk = substr($h2medchunk, 1);
-                if ($h2smallchunk) {
-                    $h2 = explode('</h2>', $h2smallchunk);
-                    echo '<h4>'.$h2[0].'</h4>';
-                }                
+    $supportedtags = array('<h1>', '<h1 ', '<h2>', '<h2 ', '<h3>', '<h3 ');
+    $fromtag = strstr($srcstring, "<h");
+    if ($fromtag) {
+        $tag = substr($fromtag, 0, 4);
+        if (in_array($tag, $supportedtags)) {
+            $titlelevel = substr($tag, 2, 1);
+            $fromendoftag = strstr($fromtag, '>');
+            $aftertag = substr($fromendoftag, 1);
+            $title = strstr($aftertag, "</h", true);
+            if ($title) {
+                $displaylevel = $titlelevel + 3;
+                echo "<h$displaylevel>$title</h$displaylevel>";
             }
-        }        
+            $stringend = strstr($aftertag, "</h", false);
+        } else {
+            $stringend = substr($fromtag, 4);
+        }
+        block_catalogue_extract_titles($stringend);
     }
 }
 
