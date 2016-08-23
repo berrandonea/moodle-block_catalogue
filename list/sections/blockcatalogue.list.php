@@ -48,7 +48,7 @@ class blockcatalogue_list_sections extends blockcatalogue_list {
         $this->prefix = 'section';
         $this->categories = array('coursesections');
         $this->potentialmembers = array();
-        $this->defaultfavorites = array('goto','add');
+        $this->defaultfavorites = array('goto', 'add');
     }
 
     /**
