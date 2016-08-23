@@ -233,7 +233,7 @@ function block_catalogue_instanciate_list($listname) {
         if ($instance->get_skip()) {
             return null;
         }
-        if ($instance->count_elements()) {
+        if ($instance->visible_elements()) {
             return $instance;
         }
     }
