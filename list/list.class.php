@@ -105,7 +105,7 @@ abstract class blockcatalogue_list {
         $nbelements = 0;
         foreach ($this->availables as $elementnames) {
             foreach ($elementnames as $elementname) {
-                if (!$this->get_hidden()) {
+                if (!$this->get_hidden($elementname)) {
                     $nbelements++;
                 }
             }
