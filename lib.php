@@ -67,8 +67,7 @@ function block_catalogue_display_category($course, $usereditor, $list, $elementn
 function block_catalogue_display_element($course, $usereditor, $list, $elementname) {
     global $DB;
     $listname = $list->get_name();
-    $params = array('listname' => $listname, 'elementname' => $elementname);
-    $hidden = $DB->get_record('block_catalogue_hide', $params);
+    $hidden = $list->get_hidden($elementname);
     $url = "index.php?name=$listname&course=$course->id";
     $list->flush_pluginfile();
     $description = $list->get_element_data($elementname, 'description');
@@ -231,11 +230,11 @@ function block_catalogue_instanciate_list($listname) {
         include_once($classfile);
         $classname = "blockcatalogue_list_$listname";
         $instance = new $classname();
-        if (!$instance->get_skip()) {
-            $elements = $instance->get_availables();
-            if (count($elements, COUNT_RECURSIVE) > count($elements, COUNT_NORMAL)) {
-                return $instance;
-            }
+        if ($instance->get_skip()) {
+            return null;
+        }
+        if ($instance->count_elements()) {
+            return $instance;
         }
     }
     return null;
@@ -278,7 +277,7 @@ function block_catalogue_main_table($listnames, $course) {
         $list = block_catalogue_instanciate_list($listname);
         if ($list) {
             $listcategories = $list->get_availables();
-            $nbelements = count($listcategories, COUNT_RECURSIVE) - count($listcategories, COUNT_NORMAL);
+            $nbelements = $list->count_elements();
             if ($nbelements == 1) {
                 $favorite = new stdClass();
                 $favorite->listname = $listname;
@@ -355,7 +354,7 @@ function block_catalogue_section_toc($sectionid) {
                 $label = $DB->get_record('label', array('id' => $cm->instance));
                 block_catalogue_extract_titles($label->intro);
             }
-        }        
+        }
     }
 }
 

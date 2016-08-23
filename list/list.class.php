@@ -95,6 +95,32 @@ abstract class blockcatalogue_list {
     }
 
     /**
+     * How many elements in this list can the current user ... use ?
+     * $return int
+     */
+    public function count_elements() {
+        global $COURSE;
+        if (!$this->availables) {
+            $this->fill_availables();
+        }
+        $coursecontext = context_course::instance($COURSE->id);
+        $usereditor = has_capability('block/catalogue:edit', $coursecontext);
+        if ($usereditor) {
+            $nbelements = count($this->availables, COUNT_RECURSIVE) - count($this->availables, COUNT_NORMAL);
+            return $nbelements;
+        }
+        $nbelements = 0;
+        foreach ($this->availables as $elementnames) {
+            foreach ($elementnames as $elementname) {
+                if (!$this->get_hidden()) {
+                    $nbelements++;
+                }
+            }
+        }
+        return $nbelements;
+    }
+
+    /**
      * Do we have to skip this list ?
      * @return boolean
      */
@@ -200,7 +226,7 @@ abstract class blockcatalogue_list {
      * current list, sorted out by category.
      * @return array of arrays of strings
      */
-    public function get_availables() {
+    public function get_availables() {        
         if (!$this->availables) {
             $this->fill_availables();
         }
@@ -343,6 +369,17 @@ abstract class blockcatalogue_list {
             }
         }
         return $favorites;
+    }
+
+    /**
+     * Is this element hidden by the site manager ?
+     * @param string $elementname
+     * @return boolean
+     */
+    public function get_hidden($elementname) {
+        $params = array('listname' => $this->name, 'elementname' => $elementname);
+        $hidden = $DB->get_record('block_catalogue_hide', $params);
+        return $hidden;
     }
 
     /**
