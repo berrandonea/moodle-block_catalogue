@@ -34,6 +34,7 @@
 
 require_once('../../../../config.php');
 require_once("blockcatalogue.list.php");
+require_once("../../lib.php");
 
 // Check params.
 $courseid = required_param('course', PARAM_INT);
@@ -152,8 +153,12 @@ foreach ($sections as $section) {
     }
     $url = new moodle_url($targetpage, $args);
     echo "<li style='padding-bottom:25px'><a href='$url' style='$style'>$sectionname</a></li>";
+    if ($elementname == 'goto') {
+        block_catalogue_section_toc($section->id);
+    }
 }
 
 echo '</ul>';
 echo $OUTPUT->footer();
 $sections->close();
+

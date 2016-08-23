@@ -173,6 +173,31 @@ function block_catalogue_display_toggler($picture, $label) {
 }
 
 /**
+ * Extracts the <h1> and <h2> titles from a source string and displays them as <h3> and <h4>.
+ * @param string $srcstring
+ */
+function block_catalogue_extract_titles($srcstring) {
+    $h1bigchunks = explode('<h1', $srcstring);
+    foreach ($h1bigchunks as $h1bigchunk) {
+        $h1medchunk = strstr($h1bigchunk, '>');
+        $h1smallchunk = substr($h1medchunk, 1);
+        if ($h1smallchunk) {
+            $h1 = explode('</h1>', $h1smallchunk);        
+            echo '<h3>'.$h1[0].'</h3>';
+            $h2bigchunks = explode('<h2>', $h1[1]);
+            foreach ($h2bigchunks as $h2bigchunk) {
+                $h2medchunk = strstr($h2bigchunk, '>');
+                $h2smallchunk = substr($h2medchunk, 1);
+                if ($h2smallchunk) {
+                    $h2 = explode('</h2>', $h2smallchunk);
+                    echo '<h4>'.$h2[0].'</h4>';
+                }                
+            }
+        }        
+    }
+}
+
+/**
  * Get the available lists for this catalogue and sort them.
  * @global object $CFG
  * @param array of strings $sortorder
@@ -305,6 +330,28 @@ function block_catalogue_main_table($listnames, $course) {
     }
     $maintable .= '</table>';
     return $maintable;
+}
+
+/**
+ * Displays a section's table of content.
+ * @param int $sectionid
+ */
+function block_catalogue_section_toc($sectionid) {
+    global $DB;
+    $section = $DB->get_record('course_sections', array('id' => $sectionid));
+    block_catalogue_extract_titles($section->description);    
+    $cmids = explode(',', $section->sequence);
+    foreach($cmids as $cmid) {
+        $cm = $DB->get_record('course_modules', array('id' => $cmid));
+        $module = $DB->get_record('modules', array('id' => $cm->module));
+        if ($module->name == 'customlabel') {
+            $customlabel = $DB->get_record('customlabel', array('id' => $cm->instance));
+            block_catalogue_extract_titles($customlabel->processedcontent);
+        } else if ($module->name == 'label') {
+            $label = $DB->get_record('label', array('id' => $cm->instance));
+            block_catalogue_extract_titles($label->intro);
+        }
+    }
 }
 
 /**
