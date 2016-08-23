@@ -342,7 +342,7 @@ function block_catalogue_main_table($listnames, $course) {
 function block_catalogue_section_toc($sectionid) {
     global $DB;
     $section = $DB->get_record('course_sections', array('id' => $sectionid));
-    block_catalogue_extract_titles($section->description);    
+    block_catalogue_extract_titles($section->summary);
     $cmids = explode(',', $section->sequence);
     foreach($cmids as $cmid) {
         $cm = $DB->get_record('course_modules', array('id' => $cmid));
