@@ -377,6 +377,7 @@ abstract class blockcatalogue_list {
      * @return boolean
      */
     public function get_hidden($elementname) {
+        global $DB;
         $params = array('listname' => $this->name, 'elementname' => $elementname);
         $hidden = $DB->get_record('block_catalogue_hide', $params);
         return $hidden;
