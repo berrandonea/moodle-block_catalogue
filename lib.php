@@ -277,16 +277,12 @@ function block_catalogue_main_table($listnames, $course) {
         $list = block_catalogue_instanciate_list($listname);
         if ($list) {
             $listcategories = $list->get_availables();
-            $nbelements = $list->count_elements();
-            if ($nbelements == 1) {
+            $visibleelements = $list->visible_elements();
+            if (count($visibleelements) == 1) {
                 $favorite = new stdClass();
                 $favorite->listname = $listname;
-                foreach ($listcategories as $listcategory) {
-                    if (count($listcategory)) {
-                        $favorite->elementname = current($listcategory);
-                        $favorites[] = $favorite;
-                    }
-                }
+                $favorite->elementname = current($visibleelements);
+                $favorites[] = $favorite;                
             } else {
                 $maintable .= '<td style="text-align:center">'.$list->main_table_icon($course).'</td>';
                 $nbshownlists++;

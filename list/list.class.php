@@ -95,22 +95,22 @@ abstract class blockcatalogue_list {
     }
 
     /**
-     * How many elements in this list can the current user ... use ?
-     * $return int
+     * Returns the available elements that are not hidden by the manager, regardless of their categories.
+     * @return array of strings
      */
-    public function count_elements() {
+    public function visible_elements() {
         if (!$this->availables) {
             $this->fill_availables();
         }        
-        $nbelements = 0;
-        foreach ($this->availables as $elementnames) {
+        $visibles = array();
+        foreach ($this->availables as $elementnames) {            
             foreach ($elementnames as $elementname) {
                 if (!$this->get_hidden($elementname)) {
-                    $nbelements++;
+                    $visibles[] = $elementname;
                 }
             }
         }
-        return $nbelements;
+        return $visibles;
     }
 
     /**
