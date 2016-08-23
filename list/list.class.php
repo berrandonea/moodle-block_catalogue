@@ -101,9 +101,9 @@ abstract class blockcatalogue_list {
     public function visible_elements() {
         if (!$this->availables) {
             $this->fill_availables();
-        }        
+        }
         $visibles = array();
-        foreach ($this->availables as $elementnames) {            
+        foreach ($this->availables as $elementnames) {
             foreach ($elementnames as $elementname) {
                 if (!$this->get_hidden($elementname)) {
                     $visibles[] = $elementname;
@@ -219,7 +219,7 @@ abstract class blockcatalogue_list {
      * current list, sorted out by category.
      * @return array of arrays of strings
      */
-    public function get_availables() {        
+    public function get_availables() {
         if (!$this->availables) {
             $this->fill_availables();
         }

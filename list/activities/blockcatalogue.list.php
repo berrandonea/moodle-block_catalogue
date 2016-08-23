@@ -103,16 +103,16 @@ class blockcatalogue_list_activities extends blockcatalogue_list {
                 return $this->control_string($description);
 
             case 'link' :
-                $sm = get_string_manager();
-                if ($sm->string_exists('modulename_link', $component)) {
+                $manager = get_string_manager();
+                if ($manager->string_exists('modulename_link', $component)) {
                     $link = "$this->standarddocdir/$CFG->branch/$CFG->lang/".get_string('modulename_link', $component);
                     return $link;
                 } else {
                     return null;
                 }
-                
+
             case 'iconurl' :
-		$iconurl = $OUTPUT->pix_url('icon', "mod_$modname");
+                $iconurl = $OUTPUT->pix_url('icon', "mod_$modname");
                 return $iconurl;
 
             default :

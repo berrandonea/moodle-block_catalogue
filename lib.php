@@ -172,7 +172,7 @@ function block_catalogue_display_toggler($picture, $label) {
 }
 
 /**
- * Extracts the <h1>, <h2> and <h3> titles from a source string 
+ * Extracts the <h1>, <h2> and <h3> titles from a source string
  * and displays them as <h4>, <h5> and <h6>.
  * @param string $srcstring
  * @param int $titlelevel
@@ -277,12 +277,12 @@ function block_catalogue_main_table($listnames, $course) {
         $list = block_catalogue_instanciate_list($listname);
         if ($list) {
             $listcategories = $list->get_availables();
-            $visibleelements = $list->visible_elements();
-            if (count($visibleelements) == 1) {
+            $visibles = $list->visible_elements();
+            if (count($visibles) == 1) {
                 $favorite = new stdClass();
                 $favorite->listname = $listname;
-                $favorite->elementname = current($visibleelements);
-                $favorites[] = $favorite;                
+                $favorite->elementname = current($visibles);
+                $favorites[] = $favorite;
             } else {
                 $maintable .= '<td style="text-align:center">'.$list->main_table_icon($course).'</td>';
                 $nbshownlists++;
@@ -339,7 +339,7 @@ function block_catalogue_section_toc($sectionid) {
     $section = $DB->get_record('course_sections', array('id' => $sectionid));
     block_catalogue_extract_titles($section->summary);
     $cmids = explode(',', $section->sequence);
-    foreach($cmids as $cmid) {
+    foreach ($cmids as $cmid) {
         $cm = $DB->get_record('course_modules', array('id' => $cmid));
         if ($cm) {
             $module = $DB->get_record('modules', array('id' => $cm->module));
