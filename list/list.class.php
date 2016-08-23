@@ -99,16 +99,9 @@ abstract class blockcatalogue_list {
      * $return int
      */
     public function count_elements() {
-        global $COURSE;
         if (!$this->availables) {
             $this->fill_availables();
-        }
-        $coursecontext = context_course::instance($COURSE->id);
-        $usereditor = has_capability('block/catalogue:edit', $coursecontext);
-        if ($usereditor) {
-            $nbelements = count($this->availables, COUNT_RECURSIVE) - count($this->availables, COUNT_NORMAL);
-            return $nbelements;
-        }
+        }        
         $nbelements = 0;
         foreach ($this->availables as $elementnames) {
             foreach ($elementnames as $elementname) {
