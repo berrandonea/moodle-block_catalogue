@@ -38,15 +38,16 @@ require_once('lib.php');
 // Check params.
 $listname = required_param('list', PARAM_ALPHA);
 $courseid = required_param('course', PARAM_INT);
-$mod = required_param('mod', PARAM_TEXT);
-$type = optional_param('type', '', PARAM_TEXT);
-
 if ($listname == 'blocks') {
     $elementname = required_param('block', PARAM_TEXT);
-} else if ($type) {
-    $elementname = $type;
 } else {
-    $elementname = $mod;
+    $mod = required_param('mod', PARAM_TEXT);
+    $type = optional_param('type', '', PARAM_TEXT);
+    if ($type) {
+        $elementname = $type;
+    } else {
+        $elementname = $mod;
+    }
 }
 
 // Access control.
