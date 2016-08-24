@@ -30,11 +30,15 @@ Successfully tested on Moodle 2.6.1+, 2.9, 2.9.4, 3.1+
 
 The site administrator can choose which ones of these lists will be displayed in the block, and in which order.
 
-New in version 1.1 :
-- 2 new lists : Modules and Sections.
-- You can change the block displayed title (Replace "Catalogue" by something else).
-- 
-
+What's new in version 1.1 ?
+- 2 new available lists : Modules and Sections. Of course, if you use the "Modules" list on your site, you're not supposed to use the "Resources" and "Activities" ones.
+- You can change the block's displayed title (replace "Catalogue" by something else).
+- All language strings are now gathered in the main lang directory.
+- Better capabilities checking.
+- Students can now see the block, but only a few lists and elements, depending on their capabilities.
+- If a given user (e.g. a student) can only see one element in a given list, this unique element is marked as a favorite and the list is not displayed.
+- If your theme customs the mod icons, these customed icons will also be used in the Catalogue.
+- Fixed bug : in some cases, the list names in the last row were not displayed in the block.
 
 
 
