@@ -39,7 +39,7 @@ What's new in version 1.1 ?
 - If a given user (e.g. a student) can only see one element in a given list, this unique element is marked as a favorite and the list is not displayed.
 - If your theme customs the mod icons, these customed icons will also be used in the Catalogue.
 - Fixed bug : in some cases, the list names in the last row were not displayed in the block.
-- On it's section selection screen, element "section_goto" shows you the h1, h2 and h3 titles each section contains, thus helping you choosing the section you want to go to if it's name alone is not speaking enough (e.g. weekly course format) and providing you a table of contents for your course.
+- On it's section selection screen, element "section_goto" shows you the h1, h2 and h3 titles each section contains, thus helping you choosing the section you want to reach if it's name alone doesn't speak enough (e.g. weekly course format) and providing you with a table of contents for your course.
 
 
 
