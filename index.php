@@ -51,17 +51,7 @@ $thislist = block_catalogue_instanciate_list($thislistname);
 $open = $thislist->get_open();
 $categories = $thislist->get_categories();
 $availables = $thislist->get_availables();
-?>
 
-<script src="<?php echo $CFG->wwwroot; ?>/blocks/catalogue/js/block_catalogue.js"></script>
-
-<style>
-    <?php
-    require_once('block_catalogue.css');
-    ?>
-</style>
-
-<?php
 // Apply changes.
 $usedcategory = null;
 if ($edit && $elementname && $usereditor && confirm_sesskey() && data_submitted()) {
@@ -83,6 +73,8 @@ $thislistlocalname = $thislist->get_localname();
 $PAGE->set_title($thislistlocalname);
 $PAGE->set_pagelayout('standard');
 $PAGE->set_heading($thislistlocalname);
+$PAGE->requires->js("/blocks/catalogue/js/block_catalogue.js");
+$PAGE->requires->css("/blocks/catalogue/block_catalogue.css");
 
 // Manager interface button.
 if ($usereditor) {
