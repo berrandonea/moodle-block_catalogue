@@ -442,8 +442,8 @@ abstract class blockcatalogue_list {
             } else {
                 $filename = "$this->plugindocdir/$elementname";
             }
-            $filecontent = file_get_contents($filename);
-            if (strpos($filecontent, "<title>Plugin not found</title>")) {
+            $filecontent = @file_get_contents($filename);
+            if (!$filecontent || strpos($filecontent, "<title>Plugin not found</title>")) {
                 $filecontent = '';
             }
             $this->pluginfile = $filecontent;
