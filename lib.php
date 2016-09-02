@@ -478,7 +478,7 @@ function block_catalogue_toggler($list, $elementname, $toggler) {
         }
         echo '<div style="text-align:center">';
         echo "<div id='$toggler"."tog-$elementname' "
-                . "onclick='javascript:toggle(".'"'.$listname.'", "'.$elementname.'", "'.$toggler.'", "'.$default.'"'.")'>";
+                . "onclick='javascript:toggle(".'"'.$listname.'", "'.$elementname.'", "'.$toggler.'", "'.$COURSE->id.'", "'.$default.'"'.")'>";
         block_catalogue_display_toggler($picture, $label);
         echo '</div>';
         echo '</div>';

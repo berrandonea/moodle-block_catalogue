@@ -60,7 +60,7 @@ function showdescr(description) {
     alert(description);
 }
 
-function toggle(listname, elementname, toggler, isdefault) {
+function toggle(listname, elementname, toggler, courseid, isdefault) {
     getXhr();
     xhr.onreadystatechange = function() {
         if(xhr.readyState == 4 && xhr.status == 200) {
@@ -71,6 +71,6 @@ function toggle(listname, elementname, toggler, isdefault) {
     }
     xhr.open("POST", "toggle.php", true);
     xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
-    args = "list=" + listname + "&element=" + elementname + "&toggler=" + toggler + "&default=" + isdefault;
+    args = "list=" + listname + "&element=" + elementname + "&toggler=" + toggler + "&courseid=" + courseid + "&default=" + isdefault;
     xhr.send(args);
 }

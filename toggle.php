@@ -34,15 +34,16 @@
 require_once('../../config.php');
 require_once('lib.php');
 
-global $COURSE, $DB, $USER;
+global $DB, $USER;
 
 $listname = required_param('list', PARAM_TEXT);
 $elementname = required_param('element', PARAM_TEXT);
 $toggler = required_param('toggler', PARAM_TEXT);
+$courseid = required_param('courseid', PARAM_INT);
 $default = required_param('default', PARAM_INT);
 
 // Check permission.
-$coursecontext = context_course::instance($COURSE->id);
+$coursecontext = context_course::instance($courseid);
 $usereditor = has_capability("block/catalogue:toggle$toggler", $coursecontext);
 
 if ($usereditor) {
