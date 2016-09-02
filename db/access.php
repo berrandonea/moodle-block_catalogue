@@ -60,8 +60,7 @@ $capabilities = array(
     'block/catalogue:togglefav' => array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_COURSE,
-        'archetypes' => array(
-            'student' => CAP_ALLOW,
+        'archetypes' => array(            
             'teacher' => CAP_ALLOW,
             'editingteacher' => CAP_ALLOW,
             'manager' => CAP_ALLOW
@@ -79,6 +78,16 @@ $capabilities = array(
         ),
     ),
 
+    'block/catalogue:viewlists' => array(
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_COURSE,
+        'archetypes' => array(            
+            'teacher' => CAP_ALLOW,
+            'editingteacher' => CAP_ALLOW,
+            'manager' => CAP_ALLOW
+        ),
+    ),
+    
     'block/catalogue:togglehide' => array(
         'riskbitmask' => RISK_CONFIG,
         'captype' => 'write',

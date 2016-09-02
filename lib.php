@@ -273,6 +273,7 @@ function block_catalogue_main_table($listnames, $course) {
     $nbshownlists = 0;
     $favorites = array();
     $rowtitles = array();
+    $viewlists = has_capability("block/catalogue:viewlists", $coursecontext);
     foreach ($listnames as $listname) {
         $list = block_catalogue_instanciate_list($listname);
         if ($list) {
@@ -284,20 +285,22 @@ function block_catalogue_main_table($listnames, $course) {
                 $favorite->elementname = current($visibles);
                 $favorites[] = $favorite;
             } else {
-                $maintable .= '<td style="text-align:center">'.$list->main_table_icon($course).'</td>';
-                $nbshownlists++;
-                $column = $nbshownlists % 2;
-                $rowtitles[$column] = $list->main_table_title($course);
-                if (($column == 0) && ($nbshownlists < $nblists)) {
-                    $maintable .= '</tr>';
-                    foreach ($rowtitles as $rowtitle) {
-                        $maintable .= "<td style='text-align:center'>$rowtitle</td>";
+                if ($viewlists) {
+                    $maintable .= '<td style="text-align:center">'.$list->main_table_icon($course).'</td>';
+                    $nbshownlists++;
+                    $column = $nbshownlists % 2;
+                    $rowtitles[$column] = $list->main_table_title($course);
+                    if (($column == 0) && ($nbshownlists < $nblists)) {
+                        $maintable .= '</tr>';
+                        foreach ($rowtitles as $rowtitle) {
+                            $maintable .= "<td style='text-align:center'>$rowtitle</td>";
+                        }
+                        if ($nbshownlists < $nblists) {
+                            $rowtitles = array();
+                            $maintable .= '<tr>';
+                        }
                     }
-                    if ($nbshownlists < $nblists) {
-                        $rowtitles = array();
-                        $maintable .= '<tr>';
-                    }
-                }
+                }                
                 $listfavorites = $list->get_favorites();
                 foreach ($listfavorites as $listfavorite) {
                     $favorite = new stdClass();
@@ -313,7 +316,7 @@ function block_catalogue_main_table($listnames, $course) {
         $maintable .= "<td style='text-align:center'>$rowtitle</td>";
     }
     $maintable .= '</tr>';
-    if (has_capability("block/catalogue:togglefav", $coursecontext)) {
+    if ($viewlists) {
         $maintable .= '<tr><td colspan=2> </td></tr>';
         $favtitle = get_string('favorites', 'block_catalogue');
         $favstyle = 'text-align:center;font-weight:bold';
@@ -322,7 +325,7 @@ function block_catalogue_main_table($listnames, $course) {
     }
     if ($favorites) {
         $maintable .= block_catalogue_show_favorites($favorites);
-    } else if (has_capability("block/catalogue:togglefav", $coursecontext)) {
+    } else if ($viewlists && has_capability("block/catalogue:togglefav", $coursecontext)) {
         $nofavs = get_string('nofavs', 'block_catalogue');
         $maintable .= "<tr><td colspan=2>$nofavs</td></tr>";
     }

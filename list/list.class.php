@@ -191,7 +191,13 @@ abstract class blockcatalogue_list {
      * @return string HTML code
      */
     public function display_favorite($elementname) {
-        $title = $this->get_localname().' : '.$this->get_element_localname($elementname);
+        global $COURSE;
+        $coursecontext = context_course::instance($COURSE->id);
+        $title = '';
+        if (has_capability('block/catalogue:viewlists', $coursecontext)) {
+            $title .= $this->get_localname().' : ';
+        }
+        $title .= $this->get_element_localname($elementname);
         $iconurl = $this->get_element_data($elementname, 'iconurl');
         $favstring = "<img src='$iconurl' ".'title="'.$title.'" width="35px">';
         return $favstring;
@@ -343,22 +349,34 @@ abstract class blockcatalogue_list {
      * @return array of strings
      */
     public function get_favorites() {
-        global $DB, $USER;
-        $defaultfavorites = $this->defaultfavorites;
+        global $COURSE, $DB, $USER;
+        
         $favorites = array();
-        $table = 'block_catalogue_fav';
-        $params = array('userid' => $USER->id, 'listname' => $this->name);
-        foreach ($defaultfavorites as $defaultfavorite) {
-            $params['elementname'] = $defaultfavorite;
-            if (!$DB->record_exists($table, $params)) {
-                $favorites[] = $defaultfavorite;
+        $coursecontext = context_course::instance($COURSE->id);
+        
+        if (has_capability("block/catalogue:viewlists", $coursecontext)) {
+            $defaultfavorites = $this->defaultfavorites;            
+            $table = 'block_catalogue_fav';
+            $params = array('userid' => $USER->id, 'listname' => $this->name);
+            foreach ($defaultfavorites as $defaultfavorite) {
+                $params['elementname'] = $defaultfavorite;
+                if (!$DB->record_exists($table, $params)) {
+                    $favorites[] = $defaultfavorite;
+                }
             }
-        }
-        unset($params['elementname']);
-        $bddfavorites = $DB->get_records($table, $params);
-        foreach ($bddfavorites as $bddfavorite) {
-            if (!in_array($bddfavorite->elementname, $defaultfavorites)) {
-                $favorites[] = $bddfavorite->elementname;
+            unset($params['elementname']);
+            $bddfavorites = $DB->get_records($table, $params);
+            foreach ($bddfavorites as $bddfavorite) {
+                if (!in_array($bddfavorite->elementname, $defaultfavorites)) {
+                    $favorites[] = $bddfavorite->elementname;
+                }
+            }
+        } else {
+            // If the user can't view the lists, all the elements availables for him are favorites
+            foreach ($this->availables as $categoryelements) {
+                foreach ($categoryelements as $elementname) {
+                    $favorites[] = $elementname;
+                }
             }
         }
         return $favorites;
