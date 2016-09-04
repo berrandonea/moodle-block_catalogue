@@ -45,6 +45,7 @@ function xmldb_block_catalogue_upgrade($oldversion, $block) {
             $rc->capability = $capabilityname;
             $rc->permission = $permission;
             $rc->timemodified = time();
+            $rc->modifierid = $USER->id;
             $params = array('contextid' => 1, 'roleid' => $rc->roleid, 'capability' => $capabilityname);
             $oldcapability = $DB->get_record($table, $params);
             if ($oldcapability) {
