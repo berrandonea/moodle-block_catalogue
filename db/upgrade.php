@@ -37,14 +37,13 @@ require_once ('access.php');
 $table = 'role_capabilities';
 
 foreach ($capabilities as $capabilityname => $capability) {
-    foreach ($capability['archetypes'] as $rolename => $permission) {        
+    foreach ($capability['archetypes'] as $rolename => $permission) {
         $rc = new stdClass();
         $rc->contextid = 1;
         $rc->roleid = $DB->get_field('role', 'id', array('shortname' => $rolename));
         $rc->capabiliy = $capabilityname;
         $rc->permission = $permission;
         $rc->timemodified = time();
-        $rc->modifierid = $USER->id;
         $params = array('contextid' => 1, 'roleid' => $rc->roleid, 'capability' => $capabilityname);
         $oldcapability = $DB->get_record($table, $params);
         if ($oldcapability) {
@@ -52,12 +51,8 @@ foreach ($capabilities as $capabilityname => $capability) {
                 $rc->id = $oldcapability->id;
                 $DB->update_record($table, $rc);
             }
-        } else {
+        } else if ($capabilityname) {
             $DB->insert_record($table, $rc);
         }
-    }    
+    }
 }
-$sql = "SELECT * FROM `mdl_role_capabilities` WHERE capability LIKE '%/catalogue:%'";
-$result = $DB->get_records_sql($sql);
-print_object($result);
-exit;
