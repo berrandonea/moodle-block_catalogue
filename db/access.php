@@ -81,13 +81,13 @@ $capabilities = array(
     'block/catalogue:viewlists' => array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_COURSE,
-        'archetypes' => array(            
+        'archetypes' => array(
             'teacher' => CAP_ALLOW,
             'editingteacher' => CAP_ALLOW,
             'manager' => CAP_ALLOW
         ),
     ),
-    
+
     'block/catalogue:togglehide' => array(
         'riskbitmask' => RISK_CONFIG,
         'captype' => 'write',
