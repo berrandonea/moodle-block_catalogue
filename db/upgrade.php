@@ -32,9 +32,32 @@
  * Defines what to do when upgrading the block to a new version.
  */
 
-require_once 'access.php';
+require_once ('access.php');
 
-foreach ($capabilities as $capability) {
-    print_object($capability['archetypes']);
+$table = 'role_capabilities';
+
+foreach ($capabilities as $capabilityname => $capability) {
+    foreach ($capability['archetypes'] as $rolename => $permission) {        
+        $rc = new stdClass();
+        $rc->contextid = 1;
+        $rc->roleid = $DB->get_field('role', 'id', array('shortname' => $rolename));
+        $rc->capabiliy = $capabilityname;
+        $rc->permission = $permission;
+        $rc->timemodified = time();
+        $rc->modifierid = $USER->id;
+        $params = array('contextid' => 1, 'roleid' => $rc->roleid, 'capability' => $capabilityname);
+        $oldcapability = $DB->get_record($table, $params);
+        if ($oldcapability) {
+            if ($oldcapability->permission != $permission) {
+                $rc->id = $oldcapability->id;
+                $DB->update_record($table, $rc);
+            }
+        } else {
+            $DB->insert_record($table, $rc);
+        }
+    }    
 }
+$sql = "SELECT * FROM `mdl_role_capabilities` WHERE capability LIKE '%/catalogue:%'";
+$result = $DB->get_records_sql($sql);
+print_object($result);
 exit;
