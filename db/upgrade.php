@@ -41,7 +41,7 @@ foreach ($capabilities as $capabilityname => $capability) {
         $rc = new stdClass();
         $rc->contextid = 1;
         $rc->roleid = $DB->get_field('role', 'id', array('shortname' => $rolename));
-        $rc->capabiliy = $capabilityname;
+        $rc->capability = $capabilityname;
         $rc->permission = $permission;
         $rc->timemodified = time();
         $params = array('contextid' => 1, 'roleid' => $rc->roleid, 'capability' => $capabilityname);
@@ -51,7 +51,7 @@ foreach ($capabilities as $capabilityname => $capability) {
                 $rc->id = $oldcapability->id;
                 $DB->update_record($table, $rc);
             }
-        } else if ($capabilityname) {
+        } else {
             $DB->insert_record($table, $rc);
         }
     }
