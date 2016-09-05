@@ -138,6 +138,12 @@ function block_catalogue_display_tabs($courseid, $thislistname, $editing) {
     foreach ($listnames as $listname) {
         $list = block_catalogue_instanciate_list($listname);
         if ($list) {
+            if (!$editing) {
+                $visibles = $list->visible_elements();
+                if (count($visibles) < 2) {
+                    continue;
+                }
+            }
             echo "<td>";
             echo "<a href = 'index.php?name=$listname&&course=$courseid&editing=$editing'>";
             echo '<table><tr>';
@@ -263,9 +269,10 @@ function block_catalogue_link_editor($url, $elementname, $link) {
  * Displays the main table in the small block.
  * @param array of strings $listnames
  * @param object $course
+ * @param string $bgcolor
  * @return string HTML code
  */
-function block_catalogue_main_table($listnames, $course) {
+function block_catalogue_main_table($listnames, $course, $bgcolor) {
     global $OUTPUT;
     $coursecontext = context_course::instance($course->id);
     $maintable = '<table width="100%" style="border-collapse:collapse"><tr>';
@@ -274,6 +281,7 @@ function block_catalogue_main_table($listnames, $course) {
     $favorites = array();
     $rowtitles = array();
     $viewlists = has_capability("block/catalogue:viewlists", $coursecontext);
+    $iconstyle = "text-align:center;background-color:$bgcolor";
     foreach ($listnames as $listname) {
         $list = block_catalogue_instanciate_list($listname);
         if ($list) {
@@ -286,14 +294,14 @@ function block_catalogue_main_table($listnames, $course) {
                 $favorites[] = $favorite;
             } else {
                 if ($viewlists) {
-                    $maintable .= '<td style="text-align:center">'.$list->main_table_icon($course).'</td>';
+                    $maintable .= "<td style='$iconstyle'>".$list->main_table_icon($course).'</td>';
                     $nbshownlists++;
                     $column = $nbshownlists % 2;
                     $rowtitles[$column] = $list->main_table_title($course);
                     if (($column == 0) && ($nbshownlists < $nblists)) {
                         $maintable .= '</tr>';
                         foreach ($rowtitles as $rowtitle) {
-                            $maintable .= "<td style='text-align:center'>$rowtitle</td>";
+                            $maintable .= "<td style='$iconstyle'>$rowtitle</td>";
                         }
                         if ($nbshownlists < $nblists) {
                             $rowtitles = array();
@@ -313,7 +321,7 @@ function block_catalogue_main_table($listnames, $course) {
     }
     $maintable .= '<tr>';
     foreach ($rowtitles as $rowtitle) {
-        $maintable .= "<td style='text-align:center'>$rowtitle</td>";
+        $maintable .= "<td style='$iconstyle'>$rowtitle</td>";
     }
     $maintable .= '</tr>';
     if ($viewlists) {
@@ -324,10 +332,10 @@ function block_catalogue_main_table($listnames, $course) {
         $maintable .= "<tr><td colspan=2 style='$favstyle'>$favtitle $helper</td></tr>";
     }
     if ($favorites) {
-        $maintable .= block_catalogue_show_favorites($favorites);
+        $maintable .= block_catalogue_show_favorites($favorites, $bgcolor);
     } else if ($viewlists && has_capability("block/catalogue:togglefav", $coursecontext)) {
         $nofavs = get_string('nofavs', 'block_catalogue');
-        $maintable .= "<tr><td colspan=2>$nofavs</td></tr>";
+        $maintable .= "<tr><td colspan=2 style='$iconstyle'>$nofavs</td></tr>";
     }
     $maintable .= '</table>';
     return $maintable;
@@ -397,12 +405,12 @@ function block_catalogue_show_description($usereditor, $description, $url, $elem
  * @param array of objects $favorites
  * @return string HTML code
  */
-function block_catalogue_show_favorites($favorites) {
+function block_catalogue_show_favorites($favorites, $bgcolor) {
     $nbfavs = count($favorites);
     $nbshownfavs = 0;
     $favlists = array();
     $favstring = '</table><table width="100%">';
-    $style = 'max-width:50px;text-align:center';
+    $style = "max-width:50px;text-align:center;background-color:$bgcolor";
     $nbcolumns = 3;
     foreach ($favorites as $favorite) {
         if (!isset($favlists[$favorite->listname])) {
@@ -424,7 +432,11 @@ function block_catalogue_show_favorites($favorites) {
         }
     }
     if ($nbfavs % $nbcolumns) {
-        $favstring .= "<td></td></tr>";
+        while ($nbfavs % $nbcolumns) {
+            $favstring .= "<td style='$style'></td>";
+            $nbfavs++;
+        }
+        $favstring .= "</tr>";
     }
     return $favstring;
 }

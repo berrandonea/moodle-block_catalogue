@@ -24,6 +24,6 @@ defined('MOODLE_INTERNAL') || die();
 
 $plugin->component  = 'block_catalogue';
 $plugin->release    = '1.1';
-$plugin->version    = 2016090405;
+$plugin->version    = 2016090500;
 $plugin->requires   = 2014022000;
 $plugin->maturity   = MATURITY_STABLE;

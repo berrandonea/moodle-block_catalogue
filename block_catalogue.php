@@ -72,12 +72,13 @@ class block_catalogue extends block_base {
         $format = course_get_format($this->page->course);
         $course = $format->get_course();
         $displayedlists = get_config('catalogue', 'displayedlists');
+        $bgcolor = get_config('catalogue', 'bgcolor');
         $sortorder = explode(',', $displayedlists);
         $listnames = block_catalogue_get_listnames($sortorder);
         $coursecontext = context_course::instance($course->id);
         $canview = has_capability('block/catalogue:view', $coursecontext);
         if ($listnames && $canview) {
-            $this->content->text = block_catalogue_main_table($listnames, $course);
+            $this->content->text = block_catalogue_main_table($listnames, $course, $bgcolor);
         } else {
             $this->content->text = '';
         }
