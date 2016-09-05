@@ -79,3 +79,9 @@ if ($usereditor) {
 
 // New content for toggler div.
 block_catalogue_display_toggler($picture, $label);
+if ($toggler == 'fav') {
+    echo '£µ£';
+    $params = array('plugin' => 'catalogue', 'name' => 'bgcolor');
+    $bgcolor = get_config('catalogue', 'bgcolor');
+    //block_catalogue_show_favorites($favorites, $bgcolor);
+}

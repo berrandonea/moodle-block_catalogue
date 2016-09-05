@@ -32,6 +32,16 @@
  */
 
 /**
+ * Get all the current favorites.
+ * @return array of objects
+ */
+function block_catalogue_all_favorites() {
+    global $COURSE;
+    $listnames = block_catalogue_get_listnames();
+    $coursecontext = context_course::instance($COURSE->id);
+}
+
+/**
  * Displays all the elements of a given category on the index page.
  * @param object $course
  * @param boolean $usereditor
@@ -211,8 +221,10 @@ function block_catalogue_extract_titles($srcstring) {
  * @param array of strings $sortorder
  * @return array of strings
  */
-function block_catalogue_get_listnames($sortorder) {
+function block_catalogue_get_listnames() {
     global $CFG;
+    $displayedlists = get_config('catalogue', 'displayedlists');        
+    $sortorder = explode(',', $displayedlists);
     $listnames = array();
     $path = "$CFG->dirroot/blocks/catalogue/list";
     foreach ($sortorder as $listname) {
@@ -331,13 +343,15 @@ function block_catalogue_main_table($listnames, $course, $bgcolor) {
         $helper = $OUTPUT->help_icon('favorites', 'block_catalogue');
         $maintable .= "<tr><td colspan=2 style='$favstyle'>$favtitle $helper</td></tr>";
     }
+    $maintable .= '</table>';
     if ($favorites) {
+        $maintable .= "<div id='block-catalogue-favorites'>";
         $maintable .= block_catalogue_show_favorites($favorites, $bgcolor);
+        $maintable .= '</div>';
     } else if ($viewlists && has_capability("block/catalogue:togglefav", $coursecontext)) {
         $nofavs = get_string('nofavs', 'block_catalogue');
-        $maintable .= "<tr><td colspan=2 style='$iconstyle'>$nofavs</td></tr>";
-    }
-    $maintable .= '</table>';
+        $maintable .= "<p style='$iconstyle'>$nofavs</p>";
+    }    
     return $maintable;
 }
 
@@ -409,7 +423,7 @@ function block_catalogue_show_favorites($favorites, $bgcolor) {
     $nbfavs = count($favorites);
     $nbshownfavs = 0;
     $favlists = array();
-    $favstring = '</table><table width="100%">';
+    $favstring = '<table width="100%">';
     $style = "max-width:50px;text-align:center;background-color:$bgcolor";
     $nbcolumns = 3;
     foreach ($favorites as $favorite) {
@@ -438,6 +452,7 @@ function block_catalogue_show_favorites($favorites, $bgcolor) {
         }
         $favstring .= "</tr>";
     }
+    $favstring .= '</table>';
     return $favstring;
 }
 

@@ -65,8 +65,13 @@ function toggle(listname, elementname, toggler, courseid, isdefault) {
     xhr.onreadystatechange = function() {
         if(xhr.readyState == 4 && xhr.status == 200) {
             response = xhr.responseText;
+            newdata = response.split("£µ£");
             docelementid = toggler + 'tog-' + elementname;
-            document.getElementById(docelementid).innerHTML = response;
+            document.getElementById(docelementid).innerHTML = newdata[0];
+            if (newdata[1]) {
+                favzoneid = 'block-catalogue-favorites';
+                document.getElementById(favzoneid).innerHTML = newdata[1];
+            }
         }
     }
     xhr.open("POST", "toggle.php", true);
