@@ -65,8 +65,8 @@ $string['getremotedata'] = 'Look for remote data';
 $string['descgetremotedata'] = 'If set, will search the Moodle online documentation and the Moodle plugin directory for data about the items in the catalogue, causing a longer loading delay for the page. Once found, a data is stored locally and not searched anymore.';
 $string['bgcolor'] = 'Background color';
 $string['descbgcolor'] = 'Will appear in the block, behind the icons.';
-$string['courseviewonly'] = 'Background color';
-$string['desccourseviewonly'] = 'Will appear in the block, behind the icons.';
+$string['courseviewonly'] = 'Course home pages only.';
+$string['desccourseviewonly'] = 'If set, the block will only appear on course home pages. If not, it can show up anywhere on the site, depending on the user\'s capabilities in the given context.';
 
 $string['edit1'] = 'Close manager interface';
 $string['edit0'] = 'Open manager interface';
