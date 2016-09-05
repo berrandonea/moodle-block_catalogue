@@ -32,9 +32,9 @@
  * Defines what to do when upgrading the block to a new version.
  */
 
-function xmldb_block_catalogue_upgrade($oldversion, $block) {    
+function xmldb_block_catalogue_upgrade($oldversion, $block) {
     global $DB, $USER;
-    require_once ('access.php');    
+    require_once('access.php');
     $table = 'role_capabilities';
 
     foreach ($capabilities as $capabilityname => $capability) {
@@ -58,6 +58,6 @@ function xmldb_block_catalogue_upgrade($oldversion, $block) {
             }
         }
     }
-    
+
     return true;
 }

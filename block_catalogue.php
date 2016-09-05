@@ -64,7 +64,7 @@ class block_catalogue extends block_base {
             if (($pagetype[0] != 'course')||($pagetype[1] != 'view')) {
                 return '';
             }
-        }        
+        }
         if ($this->content !== null) {
             return $this->content;
         }

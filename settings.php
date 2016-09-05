@@ -60,12 +60,12 @@ $settings->add(new admin_setting_configcheckbox(
 
 $settings->add(new admin_setting_configcolourpicker(
         'catalogue/bgcolor',
-        get_string('bgcolor','block_catalogue'),
-        get_string('descbgcolor','block_catalogue'),
+        get_string('bgcolor', 'block_catalogue'),
+        get_string('descbgcolor', 'block_catalogue'),
         'whitesmoke',
         array(
-            'selector'=>'html,body',
-            'style'=>'backgroundColor'
+            'selector' => 'html,body',
+            'style' => 'backgroundColor'
         )
     ));
 

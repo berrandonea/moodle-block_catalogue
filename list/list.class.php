@@ -350,12 +350,12 @@ abstract class blockcatalogue_list {
      */
     public function get_favorites() {
         global $COURSE, $DB, $USER;
-        
+
         $favorites = array();
         $coursecontext = context_course::instance($COURSE->id);
-        
+
         if (has_capability("block/catalogue:viewlists", $coursecontext)) {
-            $defaultfavorites = $this->defaultfavorites;            
+            $defaultfavorites = $this->defaultfavorites;
             $table = 'block_catalogue_fav';
             $params = array('userid' => $USER->id, 'listname' => $this->name);
             foreach ($defaultfavorites as $defaultfavorite) {
@@ -372,7 +372,7 @@ abstract class blockcatalogue_list {
                 }
             }
         } else {
-            // If the user can't view the lists, all the elements availables for him are favorites
+            // If the user can't view the lists, all the elements availables for him are favorites.
             foreach ($this->availables as $categoryelements) {
                 foreach ($categoryelements as $elementname) {
                     $favorites[] = $elementname;

@@ -308,7 +308,7 @@ function block_catalogue_main_table($listnames, $course, $bgcolor) {
                             $maintable .= '<tr>';
                         }
                     }
-                }                
+                }
                 $listfavorites = $list->get_favorites();
                 foreach ($listfavorites as $listfavorite) {
                     $favorite = new stdClass();
@@ -493,7 +493,8 @@ function block_catalogue_toggler($list, $elementname, $toggler) {
         }
         echo '<div style="text-align:center">';
         echo "<div id='$toggler"."tog-$elementname' "
-                . "onclick='javascript:toggle(".'"'.$listname.'", "'.$elementname.'", "'.$toggler.'", "'.$COURSE->id.'", "'.$default.'"'.")'>";
+                . "onclick='javascript:toggle(".'"'.$listname.'", "'.$elementname.'", "'
+                .$toggler.'", "'.$COURSE->id.'", "'.$default.'"'.")'>";
         block_catalogue_display_toggler($picture, $label);
         echo '</div>';
         echo '</div>';
