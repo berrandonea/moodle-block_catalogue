@@ -41,6 +41,15 @@ What's new in version 1.1 ?
 - Fixed bug : in some cases, the list names in the last row were not displayed in the block.
 - On it's section selection screen, element "section_goto" shows you the h1, h2 and h3 titles each section contains, thus helping you choosing the section you want to reach if it's name alone doesn't speak enough (e.g. weekly course format) and providing you with a table of contents for your course.
 
-
-
-
+What's new in version 1.2 ?
+- Students don't see lists at all and the few items they can use are all favorites. (new "viewlists" capability)
+- If a given user, who has the "viewlists" capability, can only see one element in a given list, this unique element is marked as favorite and the list is displayed only in the manager interface.
+- Non-editing teachers can view the block.
+- On upgrade, permissions are set to their new default values.
+- Bug fix : Under some circumstances, toggling favorites didn't work.
+- Bug fix : No more warning when detecting a plugin that's unknown to the Moodle's plugin directory.
+- Bug fix : the way CSS and javascript were called could cause troubles with some themes.
+- No more french strings in the lang folder. Translations are managed by Moodle's AMOS system.
+- The block can now appear on any page of the site, not just course home pages.
+- New setting : "Course home pages only". Set it if you want to restore the previous behaviour.
+- New setting : a background color for the block (choose one that fits your theme).
