@@ -39,6 +39,7 @@ $string['config_blocktitle_default'] = 'Catalogue';
 $string['catalogue:addinstance'] = 'Add a new Catalogue block';
 $string['catalogue:myaddinstance'] = 'Add a new Catalogue block to the My Moodle page';
 $string['catalogue:view'] = 'View the catalogue block';
+$string['catalogue:viewlists'] = 'View the catalogue\'s lists (and not just the favorites)';
 $string['catalogue:edit'] = 'Edit descriptions and links in the catalogue block';
 $string['catalogue:togglefav'] = 'Add or remove favorites in block Catalogue';
 $string['catalogue:togglehide'] = 'Hide or show elements in block Catalogue';
@@ -62,6 +63,11 @@ $string['displayedlists'] = 'Displayed lists';
 $string['descdisplayedlists'] = 'Possible values : activities, blocks, customlabels (requires mod_customlabel), enrols, grades, mods(activities and resources together), reports, resources, sections. Write them with no blanck space, separated by commas.';
 $string['getremotedata'] = 'Look for remote data';
 $string['descgetremotedata'] = 'If set, will search the Moodle online documentation and the Moodle plugin directory for data about the items in the catalogue, causing a longer loading delay for the page. Once found, a data is stored locally and not searched anymore.';
+$string['bgcolor'] = 'Background color';
+$string['descbgcolor'] = 'Will appear in the block, behind the icons.';
+$string['courseviewonly'] = 'Background color';
+$string['desccourseviewonly'] = 'Will appear in the block, behind the icons.';
+
 $string['edit1'] = 'Close manager interface';
 $string['edit0'] = 'Open manager interface';
 
