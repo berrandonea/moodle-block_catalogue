@@ -69,3 +69,9 @@ $settings->add(new admin_setting_configcolourpicker(
         )
     ));
 
+$settings->add(new admin_setting_configcheckbox(
+            'catalogue/courseviewonly',
+            get_string('courseviewonly', 'block_catalogue'),
+            get_string('desccourseviewonly', 'block_catalogue'),
+            '0'
+        ));
