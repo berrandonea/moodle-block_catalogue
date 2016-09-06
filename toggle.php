@@ -34,7 +34,7 @@
 require_once('../../config.php');
 require_once('lib.php');
 
-global $DB, $USER;
+global $DB, $PAGE, $USER;
 
 $listname = required_param('list', PARAM_TEXT);
 $elementname = required_param('element', PARAM_TEXT);
@@ -43,6 +43,9 @@ $courseid = required_param('courseid', PARAM_INT);
 $default = required_param('default', PARAM_INT);
 
 // Check permission.
+$course = $DB->get_record('course', array('id' => $courseid));
+$PAGE->set_course($course);
+require_login($course);
 $coursecontext = context_course::instance($courseid);
 $usereditor = has_capability("block/catalogue:toggle$toggler", $coursecontext);
 
