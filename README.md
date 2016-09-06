@@ -42,7 +42,7 @@ What's new in version 1.1 ?
 - On it's section selection screen, element "section_goto" shows you the h1, h2 and h3 titles each section contains, thus helping you choosing the section you want to reach if it's name alone doesn't speak enough (e.g. weekly course format) and providing you with a table of contents for your course.
 
 What's new in version 1.2 ?
-- Students don't see lists at all and the few items they can use are all favorites. (new "viewlists" capability)
+- Students can't see lists at all and the few items they can use are all favorites. (new "viewlists" capability)
 - If a given user, who has the "viewlists" capability, can only see one element in a given list, this unique element is marked as favorite and the list is displayed only in the manager interface.
 - Non-editing teachers can view the block.
 - On upgrade, permissions are set to their new default values.
