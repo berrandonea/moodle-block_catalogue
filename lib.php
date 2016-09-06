@@ -35,10 +35,30 @@
  * Get all the current favorites.
  * @return array of objects
  */
-function block_catalogue_all_favorites() {
-    global $COURSE;
-    $listnames = block_catalogue_get_listnames();
-    $coursecontext = context_course::instance($COURSE->id);
+function block_catalogue_all_favorites($listnames) {
+    $favorites = array();
+    foreach ($listnames as $listname) {
+        $list = block_catalogue_instanciate_list($listname);
+        if ($list) {
+            $listcategories = $list->get_availables();
+            $visibles = $list->visible_elements();
+            if (count($visibles) == 1) {
+                $favorite = new stdClass();
+                $favorite->listname = $listname;
+                $favorite->elementname = current($visibles);
+                $favorites[] = $favorite;
+            } else {                
+                $listfavorites = $list->get_favorites();
+                foreach ($listfavorites as $listfavorite) {
+                    $favorite = new stdClass();
+                    $favorite->listname = $listname;
+                    $favorite->elementname = $listfavorite;
+                    $favorites[] = $favorite;
+                }
+            }
+        }
+    }
+    return $favorites;
 }
 
 /**
@@ -286,26 +306,24 @@ function block_catalogue_link_editor($url, $elementname, $link) {
  */
 function block_catalogue_main_table($listnames, $course, $bgcolor) {
     global $OUTPUT;
-    $coursecontext = context_course::instance($course->id);
-    $maintable = '<table width="100%" style="border-collapse:collapse"><tr>';
-    $nblists = count($listnames);
-    $nbshownlists = 0;
-    $favorites = array();
-    $rowtitles = array();
-    $viewlists = has_capability("block/catalogue:viewlists", $coursecontext);
+
+    $favorites = block_catalogue_all_favorites($listnames);
+    
     $iconstyle = "text-align:center;background-color:$bgcolor";
-    foreach ($listnames as $listname) {
-        $list = block_catalogue_instanciate_list($listname);
-        if ($list) {
-            $listcategories = $list->get_availables();
-            $visibles = $list->visible_elements();
-            if (count($visibles) == 1) {
-                $favorite = new stdClass();
-                $favorite->listname = $listname;
-                $favorite->elementname = current($visibles);
-                $favorites[] = $favorite;
-            } else {
-                if ($viewlists) {
+    $maintable = '<table width="100%" style="border-collapse:collapse"><tr>';
+    $coursecontext = context_course::instance($course->id);
+    $viewlists = has_capability("block/catalogue:viewlists", $coursecontext);
+    if ($viewlists) {
+        $nblists = count($listnames);
+        $nbshownlists = 0;
+        reset($listnames);
+        $rowtitles = array();
+        foreach ($listnames as $listname) {
+            $list = block_catalogue_instanciate_list($listname);
+            if ($list) {
+                $listcategories = $list->get_availables();
+                $visibles = $list->visible_elements();
+                if (count($visibles) > 1) {
                     $maintable .= "<td style='$iconstyle'>".$list->main_table_icon($course).'</td>';
                     $nbshownlists++;
                     $column = $nbshownlists % 2;
@@ -321,28 +339,20 @@ function block_catalogue_main_table($listnames, $course, $bgcolor) {
                         }
                     }
                 }
-                $listfavorites = $list->get_favorites();
-                foreach ($listfavorites as $listfavorite) {
-                    $favorite = new stdClass();
-                    $favorite->listname = $listname;
-                    $favorite->elementname = $listfavorite;
-                    $favorites[] = $favorite;
-                }
             }
         }
-    }
-    $maintable .= '<tr>';
-    foreach ($rowtitles as $rowtitle) {
-        $maintable .= "<td style='$iconstyle'>$rowtitle</td>";
-    }
-    $maintable .= '</tr>';
-    if ($viewlists) {
+        $maintable .= '<tr>';
+        foreach ($rowtitles as $rowtitle) {
+            $maintable .= "<td style='$iconstyle'>$rowtitle</td>";
+        }
+        $maintable .= '</tr>';
         $maintable .= '<tr><td colspan=2> </td></tr>';
         $favtitle = get_string('favorites', 'block_catalogue');
         $favstyle = 'text-align:center;font-weight:bold';
         $helper = $OUTPUT->help_icon('favorites', 'block_catalogue');
         $maintable .= "<tr><td colspan=2 style='$favstyle'>$favtitle $helper</td></tr>";
     }
+    
     $maintable .= '</table>';
     if ($favorites) {
         $maintable .= "<div id='block-catalogue-favorites'>";
