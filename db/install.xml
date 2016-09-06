@@ -51,7 +51,7 @@
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="userid" TYPE="int" LENGTH="11" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="listname" TYPE="char" LENGTH="20" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="elementname" TYPE="char" LENGTH="20" NOTNULL="true" SEQUENCE="false" COMMENT="les éléments"/>
+        <FIELD NAME="elementname" TYPE="char" LENGTH="40" NOTNULL="true" SEQUENCE="false" COMMENT="les éléments"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
@@ -61,7 +61,7 @@
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="listname" TYPE="char" LENGTH="20" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="elementname" TYPE="char" LENGTH="20" NOTNULL="true" SEQUENCE="false" COMMENT="les éléments"/>
+        <FIELD NAME="elementname" TYPE="char" LENGTH="40" NOTNULL="true" SEQUENCE="false" COMMENT="les éléments"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>

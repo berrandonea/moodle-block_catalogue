@@ -59,5 +59,15 @@ function xmldb_block_catalogue_upgrade($oldversion, $block) {
         }
     }
 
+    $dbman = $DB->get_manager();
+    if ($oldversion < 2016090600) {
+        $tablefav = new xmldb_table('block_catalogue_fav');
+        $tablehide = new xmldb_table('block_catalogue_hide');
+        $field = new xmldb_field('elementname', XMLDB_TYPE_CHAR, '40', null, XMLDB_NOTNULL, null, null, 'listname');
+        $dbman->change_field_precision($tablefav, $field);
+        $dbman->change_field_precision($tablehide, $field);
+        upgrade_block_savepoint(true, 2016090600, 'catalogue');
+    }
+
     return true;
 }
