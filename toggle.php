@@ -85,8 +85,8 @@ block_catalogue_display_toggler($picture, $label);
 if ($toggler == 'fav') {
     echo '£µ£';
     $listnames = block_catalogue_get_listnames();
-    $favorites = block_catalogue_all_favorites($listnames);
+    $listsandfavorites = block_catalogue_all_favorites($listnames);
     $bgcolor = get_config('catalogue', 'bgcolor');
-    $favstring = block_catalogue_show_favorites($favorites, $bgcolor);
+    $favstring = block_catalogue_show_favorites($listsandfavorites->favorites, $bgcolor);
     echo $favstring;
 }

@@ -37,9 +37,11 @@
  */
 function block_catalogue_all_favorites($listnames) {
     $favorites = array();
+    $lists = array();
     foreach ($listnames as $listname) {
         $list = block_catalogue_instanciate_list($listname);
         if ($list) {
+            $lists[] = $list;
             $listcategories = $list->get_availables();
             $visibles = $list->visible_elements();
             if (count($visibles) == 1) {
@@ -47,7 +49,7 @@ function block_catalogue_all_favorites($listnames) {
                 $favorite->listname = $listname;
                 $favorite->elementname = current($visibles);
                 $favorites[] = $favorite;
-            } else {                
+            } else {
                 $listfavorites = $list->get_favorites();
                 foreach ($listfavorites as $listfavorite) {
                     $favorite = new stdClass();
@@ -58,7 +60,10 @@ function block_catalogue_all_favorites($listnames) {
             }
         }
     }
-    return $favorites;
+    $listsandfavorites = new stdClass();
+    $listsandfavorites->lists = $lists;
+    $listsandfavorites->favorites = $favorites;
+    return $listsandfavorites;
 }
 
 /**
@@ -243,7 +248,7 @@ function block_catalogue_extract_titles($srcstring) {
  */
 function block_catalogue_get_listnames() {
     global $CFG;
-    $displayedlists = get_config('catalogue', 'displayedlists');        
+    $displayedlists = get_config('catalogue', 'displayedlists');
     $sortorder = explode(',', $displayedlists);
     $listnames = array();
     $path = "$CFG->dirroot/blocks/catalogue/list";
@@ -307,36 +312,34 @@ function block_catalogue_link_editor($url, $elementname, $link) {
 function block_catalogue_main_table($listnames, $course, $bgcolor) {
     global $OUTPUT;
 
-    $favorites = block_catalogue_all_favorites($listnames);
-    
+    $listsandfavorites = block_catalogue_all_favorites($listnames);
+    $lists = $listsandfavorites->lists;
+    $favorites = $listsandfavorites->favorites;
     $iconstyle = "text-align:center;background-color:$bgcolor";
     $maintable = '<table width="100%" style="border-collapse:collapse"><tr>';
     $coursecontext = context_course::instance($course->id);
     $viewlists = has_capability("block/catalogue:viewlists", $coursecontext);
+
     if ($viewlists) {
         $nblists = count($listnames);
         $nbshownlists = 0;
-        reset($listnames);
         $rowtitles = array();
-        foreach ($listnames as $listname) {
-            $list = block_catalogue_instanciate_list($listname);
-            if ($list) {
-                $listcategories = $list->get_availables();
-                $visibles = $list->visible_elements();
-                if (count($visibles) > 1) {
-                    $maintable .= "<td style='$iconstyle'>".$list->main_table_icon($course).'</td>';
-                    $nbshownlists++;
-                    $column = $nbshownlists % 2;
-                    $rowtitles[$column] = $list->main_table_title($course);
-                    if (($column == 0) && ($nbshownlists < $nblists)) {
-                        $maintable .= '</tr>';
-                        foreach ($rowtitles as $rowtitle) {
-                            $maintable .= "<td style='$iconstyle'>$rowtitle</td>";
-                        }
-                        if ($nbshownlists < $nblists) {
-                            $rowtitles = array();
-                            $maintable .= '<tr>';
-                        }
+        foreach ($lists as $list) {
+            $listcategories = $list->get_availables();
+            $visibles = $list->visible_elements();
+            if (count($visibles) > 1) {
+                $maintable .= "<td style='$iconstyle'>".$list->main_table_icon($course).'</td>';
+                $nbshownlists++;
+                $column = $nbshownlists % 2;
+                $rowtitles[$column] = $list->main_table_title($course);
+                if (($column == 0) && ($nbshownlists < $nblists)) {
+                    $maintable .= '</tr>';
+                    foreach ($rowtitles as $rowtitle) {
+                        $maintable .= "<td style='$iconstyle'>$rowtitle</td>";
+                    }
+                    if ($nbshownlists < $nblists) {
+                        $rowtitles = array();
+                        $maintable .= '<tr>';
                     }
                 }
             }
@@ -352,7 +355,7 @@ function block_catalogue_main_table($listnames, $course, $bgcolor) {
         $helper = $OUTPUT->help_icon('favorites', 'block_catalogue');
         $maintable .= "<tr><td colspan=2 style='$favstyle'>$favtitle $helper</td></tr>";
     }
-    
+
     $maintable .= '</table>';
     if ($favorites) {
         $maintable .= "<div id='block-catalogue-favorites'>";
@@ -361,7 +364,7 @@ function block_catalogue_main_table($listnames, $course, $bgcolor) {
     } else if ($viewlists && has_capability("block/catalogue:togglefav", $coursecontext)) {
         $nofavs = get_string('nofavs', 'block_catalogue');
         $maintable .= "<p style='$iconstyle'>$nofavs</p>";
-    }    
+    }
     return $maintable;
 }
 
