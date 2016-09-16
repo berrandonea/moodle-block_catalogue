@@ -97,7 +97,7 @@ block_catalogue_display_tabs($courseid, $thislistname, $editing);
 // Main content.
 foreach ($categories as $category) {
     if ($availables[$category]) {
-        $categorylocalname = $thislist->langstring($category);
+        $categorylocalname = get_string($thislistname.'_'.$category, 'block_catalogue');
         ?>
         <br>
         <div onclick="flipflop('<?php echo "$categorylocalname"; ?>');" class='block_catalogue_flipflop'>

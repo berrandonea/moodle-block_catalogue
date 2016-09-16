@@ -137,16 +137,16 @@ class blockcatalogue_list_customlabels extends blockcatalogue_list {
                 $localname = $this->get_element_localname($elementname);
                 $lastcharacter = substr($localname, -1);
                 if ($lastcharacter == 's' || $lastcharacter == 'x') {
-                    $description = $this->langstring('help_plural');
+                    $description = get_string('customlabels_help_plural', 'block_catalogue');
                 } else {
-                    $description = $this->langstring('help_singular');
+                    $description = get_string('customlabels_help_singular', 'block_catalogue');
                 }
                 $description .= " ".$this->get_element_localname($elementname);
-                $description .= " ".$this->langstring('inyourcourse');
+                $description .= " ".get_string('customlabels_inyourcourse', 'block_catalogue');
                 return $description;
 
             case 'link' :
-                $link = $this->langstring('doclink');
+                $link = get_string('customlabels_doclink', 'block_catalogue');
                 return $link;
 
             case 'iconurl' :

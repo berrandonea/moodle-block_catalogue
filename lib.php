@@ -111,7 +111,7 @@ function block_catalogue_display_element($course, $usereditor, $list, $elementna
     $list->flush_pluginfile();
     $localname = $list->get_element_localname($elementname);
     $useurl = $list->usage_url($elementname);
-    $uselabel = $list->langstring('use');
+    $uselabel = get_string($listname.'_use', 'block_catalogue');
 
     echo '<table class="block_catalogue_elementtable">';
     echo '<tr class="block_catalogue_elementheader">';

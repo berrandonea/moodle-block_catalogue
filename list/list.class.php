@@ -167,7 +167,7 @@ abstract class blockcatalogue_list {
      */
     public function main_table_title($course) {
         $url = $this->index_url($course);
-        $label = $this->langstring('listname');
+        $label = $this->get_localname();
         $text = "<a href = '$url'>";
         $text .= $label;
         $text .= '</a>';
@@ -240,7 +240,7 @@ abstract class blockcatalogue_list {
      */
     public function get_lang_data($elementname, $nature) {
         global $CFG;
-        $cataloguestring = $this->langstring($nature.'_'.$elementname);
+        $cataloguestring = get_string($this->name.'_'.$nature.'_'.$elementname, 'block_catalogue');
         $controledstring = $this->control_string($cataloguestring);
         if (!$controledstring) {
             return null;
@@ -423,7 +423,7 @@ abstract class blockcatalogue_list {
      * @return string
      */
     public function get_localname() {
-        $localname = $this->langstring('listname');
+        $localname = get_string($this->name.'_listname', 'block_catalogue');
         return $localname;
     }
 
@@ -460,7 +460,7 @@ abstract class blockcatalogue_list {
             } else {
                 $filename = "$this->plugindocdir/$elementname";
             }
-            $filecontent = @file_get_contents($filename);
+            $filecontent = file_get_contents($filename);
             if (!$filecontent || strpos($filecontent, "<title>Plugin not found</title>")) {
                 $filecontent = '';
             }

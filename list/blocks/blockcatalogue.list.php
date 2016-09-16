@@ -146,10 +146,9 @@ class blockcatalogue_list_blocks extends blockcatalogue_list {
      */
     public function get_local_data($blockname, $nature) {
         global $CFG;
-        $component = "block_$blockname";
         switch ($nature) {
             case 'link' :
-                $cataloguelink = $this->langstring("link_$blockname");
+                $cataloguelink = get_string($this->name."_link_$blockname", 'block_catalogue');
                 $control = substr($cataloguelink, 0, 2);
                 if ($cataloguelink && ($control != '[[')) {
                     $fulllink = "$this->standarddocdir/$CFG->branch/$cataloguelink";
