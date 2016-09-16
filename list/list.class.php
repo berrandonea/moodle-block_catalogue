@@ -491,41 +491,6 @@ abstract class blockcatalogue_list {
     }
 
     /**
-     * Get a text string that's specific to this list, in the current language.
-     *
-     * These lists are meant to become subplugins in the future. Hence, each one has its own lang folder.
-     * The standard get_string() function won't find the lang strings in these specific folders but this
-     * function will.
-     *
-     * @param string $identifier
-     * @return string
-     */
-    public function langstring($identifier) {
-        global $CFG;
-        $lang = current_language();
-        $identifier = $this->name.'_'.$identifier;
-        $langdir = "$CFG->dirroot/blocks/catalogue/lang";
-        $langpath = "$langdir/$lang/block_catalogue.php";
-        $enlangpath = "$langdir/en/block_catalogue.php";
-        if (!file_exists($langpath)) {
-            $langpath = $enlangpath;
-        }
-        if (!file_exists($langpath)) {
-            return "[[$identifier]]";
-        }
-        include($langpath);
-        if (isset($string[$identifier])) {
-            return $string[$identifier];
-        } else {
-            include($enlangpath);
-            if (isset($string[$identifier])) {
-                return $string[$identifier];
-            }
-        }
-        return "[[$identifier]]";
-    }
-
-    /**
      * Stores a data found in the Moodle plugins directory in the local database, for quicker access in the future.
      * @global object $DB
      * @param string $elementname
