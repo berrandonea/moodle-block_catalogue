@@ -67,17 +67,14 @@ $string['bgcolor'] = 'Background color';
 $string['descbgcolor'] = 'Will appear in the block, behind the icons.';
 $string['courseviewonly'] = 'Course home pages only.';
 $string['desccourseviewonly'] = 'If set, the block will only appear on course home pages. If not, it can show up anywhere on the site, depending on the user\'s capabilities in the given context.';
-
 $string['edit1'] = 'Close manager interface';
 $string['edit0'] = 'Open manager interface';
-
 $string['activities_listname'] = 'Activities';
 $string['activities_exercise'] = 'Exercises';
 $string['activities_collaborative'] = 'Collaboration';
 $string['activities_resource'] = 'Resources';
 $string['activities_other'] = 'Other';
 $string['activities_use'] = 'Add to course';
-
 $string['blocks_listname'] = 'Blocks';
 $string['blocks_monitor'] = 'Monitor learners';
 $string['blocks_communicate'] = 'Communicate with learners';
@@ -163,7 +160,6 @@ $string['blocks_link_social_activities'] = 'en/Social_activities_block';
 $string['blocks_link_tags'] = 'en/Tags_block';
 $string['blocks_link_tag_flickr'] = 'en/Flickr_block';
 $string['blocks_link_tag_youtube'] = 'en/Youtube_block';
-
 $string['customlabels_listname'] = 'Custom labels';
 $string['customlabels_pedagogic'] = 'Pedagogy elements';
 $string['customlabels_structure'] = 'Structural elements';
@@ -173,7 +169,6 @@ $string['customlabels_help_singular'] = 'Please use this to display a';
 $string['customlabels_help_plural'] = 'Please use this to display';
 $string['customlabels_inyourcourse'] = 'in your course.';
 $string['customlabels_doclink'] = 'https://docs.moodle.org/26/en/Customlabel_module_%28Course_elements%29';
-
 $string['enrols_listname'] = 'Enrolments';
 $string['enrols_methods'] = 'Enrolment methods';
 $string['enrols_users'] = 'Users and groups';
@@ -188,7 +183,6 @@ $string['enrols_description_enrol_self_edit'] = "Set a passwords for the student
 $string['enrols_description_mass_enroll'] = "Massive enrolment from a CSV file.";
 $string['enrols_description_group_copygroup'] = "Import groups from another course.";
 $string['enrols_description_block_demands'] = "If students asked for enrolment in this course, answer them here.";
-
 $string['grades_listname'] = 'Grades';
 $string['grades_gradereport'] = 'Grade reports';
 $string['grades_gradesetting'] = 'Grade settings';
@@ -210,7 +204,6 @@ $string['grades_description_badges_index'] = "Create and manage badges for this 
 $string['grades_description_gradesetting_outcome'] = "Shows outcomes defined on the site and available for your course.";
 $string['grades_description_gradesetting_outcomecourse'] = "Manage which outcomes are used in your course.";
 $string['grades_description_gradereport_outcomes'] = "Shows how well each course outcome has been achieved by students.";
-
 $string['reports_listname'] = 'Reports';
 $string['reports_report'] = 'Reports';
 $string['reports_use'] = 'Check';
@@ -225,18 +218,15 @@ $string['reports_description_report_stats'] = "Some figures about the course.";
 $string['reports_description_report_exportlist'] = "Export the students list for a group (or the whole course) as a CSV file.";
 $string['reports_description_report_courseoverview'] = "Shows in which courses a given user is enroled, with notes if there are things to do in theses courses.";
 $string['reports_description_report_roster'] = 'Roster of the students. Names can be hidden to help you learn them.';
-
 $string['resources_listname'] = 'Resources';
 $string['resources_resource'] = 'Resources';
 $string['resources_use'] = 'Add to course';
-
 $string['mods_listname'] = 'Modules';
 $string['mods_resource'] = 'Resources';
 $string['mods_exercise'] = 'Exercises';
 $string['mods_collaborative'] = 'Collaboration';
 $string['mods_other'] = 'Other';
 $string['mods_use'] = 'Add to course';
-
 $string['sections_listname'] = 'Sections';
 $string['sections_coursesections'] = 'Course sections';
 $string['sections_use'] = 'OK';
