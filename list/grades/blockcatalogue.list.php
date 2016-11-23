@@ -258,6 +258,10 @@ class blockcatalogue_list_grades extends blockcatalogue_list {
                 } else {
                     $targetpage = "$CFG->wwwroot/grade/edit/".$nameparts[1]."/index.php";
                 }
+                if ($nameparts[1] == 'letter') {
+                    $coursecontext = context_course::instance($COURSE->id);
+                    $args['id'] = $coursecontext->id;
+                }
                 break;
             case 'admintool':
                 $targetpage = "$CFG->wwwroot/admin/tool/lp/coursecompetencies.php";
@@ -266,6 +270,7 @@ class blockcatalogue_list_grades extends blockcatalogue_list {
             default:
                 return null;
         }
+
         $url = new moodle_url($targetpage, $args);
         return $url;
     }
