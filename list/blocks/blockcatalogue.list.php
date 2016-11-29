@@ -42,7 +42,7 @@ class blockcatalogue_list_blocks extends blockcatalogue_list {
         $this->potentialmembers = array(
             'monitor' => array('progress', 'badges', 'selfcompletion', 'xp', 'completionstatus', 'grade_me',
                                'analytics_graphs', 'ranking', 'report_certificates', 'gismo', 'engagement', 'mentees',
-                               'participants', 'autoattend', 'configurable_reports'),
+                               'participants', 'autoattend', 'configurable_reports', 'dedication'),
             'communicate' => array('online_users', 'news_items', 'calendar_upcoming', 'messages', 'search_forums',
                                    'recent_activity', 'comments', 'rate_course', 'ucpslotbooking')
         );
