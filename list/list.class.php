@@ -461,10 +461,15 @@ abstract class blockcatalogue_list {
             } else {
                 $filename = "$this->plugindocdir/$elementname";
             }
-            $filecontent = file_get_contents($filename);
-            if (!$filecontent || strpos($filecontent, "<title>Plugin not found</title>")) {
-                $filecontent = '';
-            }
+            $fileheaders = get_headers($filename);
+            if (strpos($fileheaders[0], '200')) {
+				$filecontent = file_get_contents($filename);
+				if (!$filecontent || strpos($filecontent, "<title>Plugin not found</title>")) {
+					$filecontent = '';
+				}
+			} else {
+				$filecontent = '';
+			}            
             $this->pluginfile = $filecontent;
         }
         if ($filecontent) {
