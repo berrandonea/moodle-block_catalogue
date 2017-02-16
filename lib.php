@@ -143,7 +143,7 @@ function block_catalogue_display_element($course, $usereditor, $list, $elementna
         $colspan--;
     }
     echo "<td colspan='$colspan' style='text-align:center'>";
-    echo "<a href='$useurl'><button>$uselabel</button></a>";
+    echo "<a href='$useurl'><button class='btn btn-secondary'>$uselabel</button></a>";
     echo '</td>';
     if ($usereditor) {
         echo "<td>";
