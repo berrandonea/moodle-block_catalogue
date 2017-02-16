@@ -148,19 +148,18 @@ class blockcatalogue_list_blocks extends blockcatalogue_list {
         global $CFG;
         switch ($nature) {
             case 'link' :
-                $cataloguelink = get_string($this->name."_link_$blockname", 'block_catalogue');
-                $control = substr($cataloguelink, 0, 2);
-                if ($cataloguelink && ($control != '[[')) {
-                    $fulllink = "$this->standarddocdir/$CFG->branch/$cataloguelink";
+				$identifier = $this->name."_link_$blockname";
+				if (get_string_manager()->string_exists($identifier, 'block_catalogue')) {
+					$cataloguelink = get_string($identifier, 'block_catalogue');
+					$fulllink = "$this->standarddocdir/$CFG->branch/$cataloguelink";
                     return $fulllink;
-                }
-                return null;
-
+				} else {
+					return null;
+				}
             case 'iconurl' :
                 $localicondir = "blocks/$blockname/pix";
                 $iconurl = $this->get_local_iconurl($localicondir, $blockname);
                 return $iconurl;
-
             default :
                 return null;
         }
