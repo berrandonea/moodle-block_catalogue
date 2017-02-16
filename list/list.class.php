@@ -239,17 +239,18 @@ abstract class blockcatalogue_list {
      * @return string
      */
     public function get_lang_data($elementname, $nature) {
-        global $CFG;
-        $cataloguestring = get_string($this->name.'_'.$nature.'_'.$elementname, 'block_catalogue');
-        $controledstring = $this->control_string($cataloguestring);
-        if (!$controledstring) {
-            return null;
-        }
-        if (($nature == 'link') && (substr($controledstring, 0, 4) != 'http')) {
+        global $CFG;        
+		$cataloguestringname = $this->name.'_'.$nature.'_'.$elementname;
+        if (get_string_manager()->string_exists($cataloguestringname, 'block_catalogue')) {
+			$cataloguestring = get_string($cataloguestringname, 'block_catalogue');
+		} else {
+			return null;
+		}        
+        if (($nature == 'link') && (substr($cataloguestring, 0, 4) != 'http')) {
             $fulllink = "$this->standarddocdir/$CFG->branch/$controledstring";
             return $fulllink;
         }
-        return $controledstring;
+        return $cataloguestring;
     }
 
     /**
