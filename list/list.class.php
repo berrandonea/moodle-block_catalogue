@@ -247,7 +247,7 @@ abstract class blockcatalogue_list {
 			return null;
 		}        
         if (($nature == 'link') && (substr($cataloguestring, 0, 4) != 'http')) {
-            $fulllink = "$this->standarddocdir/$CFG->branch/$controledstring";
+            $fulllink = "$this->standarddocdir/$CFG->branch/$cataloguestring";
             return $fulllink;
         }
         return $cataloguestring;
