@@ -24,7 +24,7 @@
  * Displays a catalogue of all the blocks, modules, reports and customlabels the teacher can use in his course.
  *
  * @package    block_catalogue
- * @author     Brice Errandonea <brice.errandonea@u-cergy.fr>, Salma El-mrabah <salma.el-mrabah@u-cergy.fr>
+ * @copyright  Brice Errandonea <brice.errandonea@u-cergy.fr>, Salma El-mrabah <salma.el-mrabah@u-cergy.fr>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
  * File : lib.php
@@ -67,7 +67,39 @@ function block_catalogue_all_favorites($listnames) {
 }
 
 /**
+ * Moves newly created modules to their expected place in section sequences.
+ * @global object $DB
+ * @param object course
+ */
+function block_catalogue_check_sequences($course) {
+	global $DB;
+	$sections = $DB->get_records('course_sections', array('course' => $course->id));
+	$rebuild = false;
+    foreach ($sections as $section) {
+		if (false !== strpos($section->sequence, 'X')) {
+			$sequence = explode(',', $section->sequence);
+			$newcmid = array_pop($sequence);
+			$newsequence = '';
+			foreach ($sequence as $cmid) {
+				if ($cmid == 'X') {
+					$newsequence .= "$newcmid,";
+				} else {
+					$newsequence .= "$cmid,";
+				}
+			}
+			$section->sequence = substr($newsequence, 0, -1);
+			$DB->update_record('course_sections', $section);
+			$rebuild = true;
+		}
+	}
+	if ($rebuild) {
+		rebuild_course_cache();
+	}
+}
+
+/**
  * Displays all the elements of a given category on the index page.
+ * @global object $DB
  * @param object $course
  * @param boolean $usereditor
  * @param object $list
@@ -94,6 +126,7 @@ function block_catalogue_display_category($course, $usereditor, $list, $elementn
 
 /**
  * Displays one element on the index page.
+ * @global object $DB
  * @param object $course
  * @param boolean $usereditor
  * @param object $list
@@ -159,6 +192,7 @@ function block_catalogue_display_element($course, $usereditor, $list, $elementna
 /**
  * Tabs to select a list at the top of the index page.
  * @global object $CFG
+ * @global object $DB
  * @param int $courseid
  * @param string $thislistname
  */

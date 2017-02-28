@@ -38,6 +38,7 @@ class blockcatalogue_list_blocks extends blockcatalogue_list {
     public function __construct() {
         $this->name = 'blocks';
         $this->prefix = 'block';
+        $this->color = '#C00000';
         $this->categories = array('monitor', 'communicate', 'other');
         $this->potentialmembers = array(
             'monitor' => array('progress', 'badges', 'selfcompletion', 'xp', 'completionstatus', 'grade_me',

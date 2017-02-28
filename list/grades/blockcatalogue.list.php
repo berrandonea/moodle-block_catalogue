@@ -43,6 +43,7 @@ class blockcatalogue_list_grades extends blockcatalogue_list {
     public function __construct() {
         $this->name = 'grades';
         $this->prefix = '';
+	$this->color = '#70ad47';
         $this->categories = array('gradesetting', 'gradereport', 'outcome');
         $this->potentialmembers = array();
         foreach ($this->categories as $category) {
@@ -54,6 +55,7 @@ class blockcatalogue_list_grades extends blockcatalogue_list {
                                                    'report_competency',
                                                    'admintool_coursecompetencies');
         $this->defaultfavorites = array();
+        $this->open = false;
     }
 
     /**

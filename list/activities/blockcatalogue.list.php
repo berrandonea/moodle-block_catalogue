@@ -37,6 +37,7 @@ class blockcatalogue_list_activities extends blockcatalogue_list {
     public function __construct() {
         $this->name = 'activities';
         $this->prefix = 'mod';
+	$this->color = '#4472c4';
         $this->categories = array('exercise', 'collaborative', 'other');
         $this->potentialmembers = array(
             'exercise' => array('adaptivequiz', 'assign', 'assignment', 'lesson', 'quiz',

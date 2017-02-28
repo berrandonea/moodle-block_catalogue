@@ -37,6 +37,7 @@ class blockcatalogue_list_enrols extends blockcatalogue_list {
     public function __construct() {
         $this->name = 'enrols';
         $this->prefix = 'enrol';
+        $this->color = '#5b9bd5';
         $this->categories = array('users', 'methods');
         $this->potentialmembers = array();
         $this->potentialmembers['methods'] = array('enrol_instances', 'enrol_manual', 'enrol_self',

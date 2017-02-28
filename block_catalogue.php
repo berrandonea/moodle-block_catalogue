@@ -24,7 +24,7 @@
  * Displays a catalogue of all the blocks, modules, reports and customlabels the teacher can use in his course.
  *
  * @package    block_catalogue
- * @author     Brice Errandonea <brice.errandonea@u-cergy.fr>, Salma El-mrabah <salma.el-mrabah@u-cergy.fr>
+ * @copyright  Brice Errandonea <brice.errandonea@u-cergy.fr>, Salma El-mrabah <salma.el-mrabah@u-cergy.fr>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
  * File : block_catalogue.php
@@ -57,7 +57,7 @@ class block_catalogue extends block_base {
     }
 
     public function get_content() {
-        global $PAGE;
+        global $DB, $PAGE;
         $courseviewonly = get_config('catalogue', 'courseviewonly');
         if ($courseviewonly) {
             $pagetype = explode('-', $PAGE->pagetype);
@@ -74,6 +74,9 @@ class block_catalogue extends block_base {
         }
         $format = course_get_format($this->page->course);
         $course = $format->get_course();
+
+        block_catalogue_check_sequences($course);
+
         $listnames = block_catalogue_get_listnames();
         $coursecontext = context_course::instance($course->id);
         $canview = has_capability('block/catalogue:view', $coursecontext);

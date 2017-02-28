@@ -77,6 +77,9 @@ abstract class blockcatalogue_list {
     /** @var boolean If true, this list's categories will be displayed open on page load. */
     protected $open = true;
 
+    /** @var string The main color for this list. */
+    protected $color = '#FFFFFF';
+
     /**
      * If an element's name is mentionned in his list 'potentialmembers' table,
      * sorts this element out in the associate category and returns true.
@@ -199,7 +202,8 @@ abstract class blockcatalogue_list {
         }
         $title .= $this->get_element_localname($elementname);
         $iconurl = $this->get_element_data($elementname, 'iconurl');
-        $favstring = "<img src='$iconurl' ".'title="'.$title.'" width="35px">';
+        $listcolor = $this->get_color();
+        $favstring = "<img style='border-left: medium solid $listcolor' src='$iconurl' ".'title="'.$title.'" width="35px">';
         return $favstring;
     }
 
@@ -435,6 +439,14 @@ abstract class blockcatalogue_list {
     public function get_name() {
         return $this->name;
     }
+    
+    /**
+     * Get the main color for this list.
+     * @return string
+     */
+    public function get_color() {
+		return $this->color;
+	}
 
     /**
      * Get the prefix for this list. Can be overriden in subclasses, where it can depend on elementname.

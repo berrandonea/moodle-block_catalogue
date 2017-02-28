@@ -74,6 +74,8 @@ $thislistlocalname = $thislist->get_localname();
 $PAGE->set_title($thislistlocalname);
 $PAGE->set_pagelayout('standard');
 $PAGE->set_heading($thislistlocalname);
+$PAGE->navbar->add(get_string('pluginname', 'block_catalogue'));
+$PAGE->navbar->add($thislistlocalname);
 $PAGE->requires->js("/blocks/catalogue/js/block_catalogue.js");
 $PAGE->requires->css("/blocks/catalogue/block_catalogue.css");
 
@@ -100,7 +102,9 @@ foreach ($categories as $category) {
         $categorylocalname = get_string($thislistname.'_'.$category, 'block_catalogue');
         ?>
         <br>
-        <div onclick="flipflop('<?php echo "$categorylocalname"; ?>');" class='block_catalogue_flipflop'>
+        <div onclick="flipflop('<?php echo "$categorylocalname"; ?>');"
+             class='block_catalogue_flipflop' 
+             style='background-color:<?php echo $thislist->get_color(); ?>'>
             <?php echo $categorylocalname; ?>
             <img src ="pix/open.png" alt="open" style="float: right"  height="15" width="15">
         </div>

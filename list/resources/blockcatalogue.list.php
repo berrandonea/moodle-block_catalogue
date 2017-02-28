@@ -46,6 +46,7 @@ class blockcatalogue_list_resources extends blockcatalogue_list {
     public function __construct() {
         $this->name = 'resources';
         $this->prefix = 'mod';
+	$this->color = '#ffc000';
         $this->categories = array('resource');
         $this->potentialmembers = array();
         $this->defaultfavorites = array('folder');
