@@ -49,6 +49,7 @@ class blockcatalogue_list_sections extends blockcatalogue_list {
         $this->categories = array('coursesections');
         $this->potentialmembers = array();
         $this->defaultfavorites = array('goto', 'add');
+        $this->color = '#000000';
     }
 
     /**

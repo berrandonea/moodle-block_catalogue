@@ -68,7 +68,7 @@ $commonurltext = $CFG->wwwroot.$moodlefilename."?add=$mod&type=$type&course=$cou
 
 // Once the user has chosen (clicked) a place.
 if ($sectionid) {
-	$section = $DB->get_record('course_sections', array('id' => $sectionid, 'course' => $courseid), *, MUST_EXIST);
+	$section = $DB->get_record('course_sections', array('id' => $sectionid, 'course' => $courseid));
 	$sequence = explode(',', $section->sequence);
 	if ($aftermod) {
 		$newsequence = '';
@@ -94,6 +94,12 @@ $args = array('list' => $listname, 'course' => $courseid, 'mod' => $mod, 'type' 
 $PAGE->set_url($moodlefilename, $args);
 $PAGE->set_pagelayout('standard');
 $PAGE->set_heading($course->fullname);
+$PAGE->navbar->add(get_string('pluginname', 'block_catalogue'));
+$listlocalname = $list->get_localname();
+$PAGE->navbar->add($listlocalname, 'index.php?name='.$listname.'&course='.$COURSE->id);
+$title = get_string('addnew', 'block_catalogue').' '.$elementlocalname;
+$PAGE->navbar->add($title);
+
 
 // Add block to left column.
 if ($listname == 'blocks') {
@@ -106,7 +112,7 @@ $sections = $DB->get_recordset('course_sections', array('course' => $COURSE->id)
 
 // Page display.
 echo $OUTPUT->header();
-echo '<h1>'.get_string('addnew', 'block_catalogue')." $elementlocalname</h1>";
+echo '<h1>'.$title.'</h1>';
 echo '<h2>'./*get_string('chooseplace', 'block_catalogue')*/"Où voulez-vous l'ajouter ?".'</h2>';
 //echo '<ul>';
 
@@ -116,7 +122,7 @@ $modinfo = get_fast_modinfo($course);
 
 
 $moduleshtml = array();
-echo '<table>'; 
+echo '<table>';
 foreach ($sections as $section) {	
 	$args = array('add' => $mod,
                   'type' => $type,
@@ -125,7 +131,6 @@ foreach ($sections as $section) {
                   'return' => 0,
                   'sr' => 0);
     //$url = new moodle_url($targetpage, $args);
-	
 	
 	echo '<tr>';
 	echo '<td>';
@@ -139,14 +144,8 @@ foreach ($sections as $section) {
 	if (!empty($modinfo->sections[$section->section])) {
 		foreach ($modinfo->sections[$section->section] as $modnumber) {
 			$mod = $modinfo->cms[$modnumber];
-
-			if ($ismoving and $mod->id == $USER->activitycopy) {
-				// do not display moving mod
-				continue;
-			}
-
 			if ($modulehtml = $renderer->course_section_cm_list_item($course,
-							$completioninfo, $mod)) {
+							$completioninfo, $mod, null)) {
 				echo '<td style="padding-left:30px"> &nbsp; &nbsp; '.$modulehtml.'</td>';
 				echo '<td style="padding-left:30px"><button class="btn btn-secondary">Ici</button></td>';
 			}

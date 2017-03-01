@@ -94,7 +94,7 @@ if ($usereditor) {
 
 // Header with tabs.
 echo $OUTPUT->header();
-block_catalogue_display_tabs($courseid, $thislistname, $editing);
+echo block_catalogue_display_tabs($courseid, $thislistname, $editing);
 
 // Main content.
 foreach ($categories as $category) {

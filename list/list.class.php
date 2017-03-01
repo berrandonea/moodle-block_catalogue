@@ -163,7 +163,7 @@ abstract class blockcatalogue_list {
     }
 
     /**
-     * Displays the list's active icon in the small block.
+     * Displays the list's local name in the small block.
      * @global object $CFG
      * @param object $course
      * @return string HTML code
@@ -171,7 +171,8 @@ abstract class blockcatalogue_list {
     public function main_table_title($course) {
         $url = $this->index_url($course);
         $label = $this->get_localname();
-        $text = "<a href = '$url'>";
+        $color = $this->color;
+        $text = "<a href='$url' style='color:$color'>";
         $text .= $label;
         $text .= '</a>';
         return $text;

@@ -203,7 +203,7 @@ function block_catalogue_display_tabs($courseid, $thislistname, $editing) {
     $dborder = $DB->get_field('config_plugins', 'value', $params);
     $sortorder = explode(',', $dborder);
     $listnames = block_catalogue_get_listnames($sortorder);
-    echo '<table width="100%"><tr>';
+    $html = '<table width="100%"><tr>';
     foreach ($listnames as $listname) {
         $list = block_catalogue_instanciate_list($listname);
         if ($list) {
@@ -213,26 +213,28 @@ function block_catalogue_display_tabs($courseid, $thislistname, $editing) {
                     continue;
                 }
             }
-            echo "<td>";
-            echo "<a href = 'index.php?name=$listname&&course=$courseid&editing=$editing'>";
-            echo '<table><tr>';
-            echo "<td class='block_catalogue_listtab'>";
-            echo "<img src='$listdir/$listname/catalogue_icon.png' class='block_catalogue_tabicon'>";
-            echo "</td>";
-            echo '</tr><tr>';
+            $html .= "<td>";
+            $html .= "<a href = '$CFG->wwwroot/blocks/catalogue/index.php?name=$listname&&course=$courseid&editing=$editing'>";
+            $html .= '<table><tr>';
+            $html .= "<td class='block_catalogue_listtab'>";
+            $html .= "<img src='$listdir/$listname/catalogue_icon.png' class='block_catalogue_tabicon'>";
+            $html .= "</td>";
+            $html .= '</tr><tr>';
             if ($listname == $thislistname) {
                 $listnameclass = 'block_catalogue_thislistname';
             } else {
                 $listnameclass = 'block_catalogue_otherlistname';
             }
             $listlocalname = $list->get_localname();
-            echo "<td class='$listnameclass'>".$listlocalname.'</td>';
-            echo '</tr></table>';
-            echo '</a>';
-            echo "</td>";
+            $listcolor = $list->get_color();
+            $html .= "<td class='$listnameclass' style='color:$listcolor'>".$listlocalname.'</td>';
+            $html .= '</tr></table>';
+            $html .= '</a>';
+            $html .= "</td>";
         }
     }
-    echo '</tr></table>';
+    $html .= '</tr></table>';
+    return $html;
 }
 
 /**
