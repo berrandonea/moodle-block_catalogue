@@ -214,7 +214,8 @@ function block_catalogue_display_tabs($courseid, $thislistname, $editing) {
                 }
             }
             $html .= "<td>";
-            $html .= "<a href = '$CFG->wwwroot/blocks/catalogue/index.php?name=$listname&&course=$courseid&editing=$editing'>";
+            $target = $CFG->wwwroot.'/blocks/catalogue/index.php'."?name=$listname&course=$courseid&editing=$editing";
+            $html .= "<a href = '$target'>";
             $html .= '<table><tr>';
             $html .= "<td class='block_catalogue_listtab'>";
             $html .= "<img src='$listdir/$listname/catalogue_icon.png' class='block_catalogue_tabicon'>";
@@ -227,7 +228,7 @@ function block_catalogue_display_tabs($courseid, $thislistname, $editing) {
             }
             $listlocalname = $list->get_localname();
             $listcolor = $list->get_color();
-            $html .= "<td class='$listnameclass' style='color:$listcolor'>".$listlocalname.'</td>';
+            $html .= "<td class='$listnameclass'>"."<a href='$target' style='color:$listcolor'>".$listlocalname.'</a></td>';
             $html .= '</tr></table>';
             $html .= '</a>';
             $html .= "</td>";

@@ -67,7 +67,7 @@ if ($edit && $elementname && $usereditor && confirm_sesskey() && data_submitted(
 }
 
 // Header code.
-$args = array('name' => $thislistname, 'course' => $courseid);
+$args = array('name' => $thislistname, 'course' => $courseid, 'editing' => $editing);
 $moodlefilename = '/blocks/catalogue/index.php';
 $PAGE->set_url($moodlefilename, $args);
 $thislistlocalname = $thislist->get_localname();
@@ -75,7 +75,7 @@ $PAGE->set_title($thislistlocalname);
 $PAGE->set_pagelayout('standard');
 $PAGE->set_heading($thislistlocalname);
 $PAGE->navbar->add(get_string('pluginname', 'block_catalogue'));
-$PAGE->navbar->add($thislistlocalname);
+$PAGE->navbar->add($thislistlocalname, /*'index.php?name='.$listname.'&course='.$COURSE->id*/ $PAGE->url->__toString());
 $PAGE->requires->js("/blocks/catalogue/js/block_catalogue.js");
 $PAGE->requires->css("/blocks/catalogue/block_catalogue.css");
 
@@ -93,8 +93,11 @@ if ($usereditor) {
 }
 
 // Header with tabs.
-echo $OUTPUT->header();
-echo block_catalogue_display_tabs($courseid, $thislistname, $editing);
+$header = $OUTPUT->header();
+echo $header;
+if (!strpos($header, 'block_catalogue_tabicon')) {
+	echo block_catalogue_display_tabs($courseid, $thislistname, $editing);
+}
 
 // Main content.
 foreach ($categories as $category) {
