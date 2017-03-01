@@ -37,7 +37,8 @@ class blockcatalogue_list_mods extends blockcatalogue_list {
     public function __construct() {
         $this->name = 'mods';
         $this->prefix = 'mod';
-        $this->categories = array('resource', 'exercise', 'collaborative', 'other');
+	$this->color = '#4472c4';
+	$this->categories = array('resource', 'exercise', 'collaborative', 'other');
         $this->potentialmembers = array(
             'exercise' => array('adaptivequiz', 'assign', 'assignment', 'lesson', 'quiz',
                                 'workshop', 'elang', 'realtimequiz', 'taskchain'),
