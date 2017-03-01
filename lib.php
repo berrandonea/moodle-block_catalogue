@@ -218,7 +218,13 @@ function block_catalogue_display_tabs($courseid, $thislistname, $editing) {
             $html .= "<a href = '$target'>";
             $html .= '<table><tr>';
             $html .= "<td class='block_catalogue_listtab' style='text-align:center'>";
-            $html .= "<img src='$listdir/$listname/catalogue_icon.png' class='block_catalogue_tabicon' width='40px' height='40px'>";
+            $html .= "<img src='$listdir/$listname/";
+            if ($listname == $thislistname) {
+				$html .= "catalogue_icon.png";
+			} else {
+				$html .= "shaded_icon.png";
+			}            
+            $html .= "' class='block_catalogue_tabicon' width='40px' height='40px'>";
             $html .= "</td>";
             $html .= '</tr><tr>';
             if ($listname == $thislistname) {
