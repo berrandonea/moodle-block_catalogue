@@ -98,13 +98,17 @@ class blockcatalogue_list_activities extends blockcatalogue_list {
     public function get_local_data($modname, $nature) {
         global $CFG, $OUTPUT;
         $component = "mod_$modname";
+        $manager = get_string_manager();
         switch ($nature) {
             case 'description' :
-                $description = get_string('modulename_help', $component);
-                return $this->control_string($description);
+				if ($manager->string_exists('modulename_help', $component)) {
+					$description = get_string('modulename_help', $component);
+					return $description;
+				} else {
+					return null;
+				}
 
-            case 'link' :
-                $manager = get_string_manager();
+            case 'link' :                
                 if ($manager->string_exists('modulename_link', $component)) {
                     $link = "$this->standarddocdir/$CFG->branch/$CFG->lang/".get_string('modulename_link', $component);
                     return $link;

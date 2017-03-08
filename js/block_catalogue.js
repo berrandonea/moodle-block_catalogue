@@ -60,21 +60,30 @@ function showdescr(description) {
     alert(description);
 }
 
-function toggle(listname, elementname, toggler, courseid, isdefault) {
+function toggle(listname, elementname, toggler, courseid, isdefault, phpscript) {
     getXhr();
     xhr.onreadystatechange = function() {
         if(xhr.readyState == 4 && xhr.status == 200) {
-            response = xhr.responseText;
+            response = xhr.responseText;            
             newdata = response.split("£µ£");
             docelementid = toggler + 'tog-' + elementname;
+            favzone = document.getElementById('block-catalogue-favorites');
+            themefavzone = document.getElementById('theme-catalogue-favorites');
             document.getElementById(docelementid).innerHTML = newdata[0];
-            if (newdata[1]) {
-                favzoneid = 'block-catalogue-favorites';
-                document.getElementById(favzoneid).innerHTML = newdata[1];
+            if (newdata[1] && favzone) {
+                //~ favzoneid = 'block-catalogue-favorites';
+                //~ document.getElementById(favzoneid).innerHTML = newdata[1];
+                favzone.innerHTML = newdata[1];
+                
             }
+            if (newdata[2] && themefavzone) {
+				//~ themefavzoneid = 'theme-catalogue-favorites';
+                //~ document.getElementById(themefavzoneid).innerHTML = newdata[2];
+                themefavzone.innerHTML = newdata[2];
+			}
         }
     }
-    xhr.open("POST", "toggle.php", true);
+    xhr.open("POST", phpscript, true);
     xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
     args = "list=" + listname + "&element=" + elementname + "&toggler=" + toggler + "&courseid=" + courseid + "&default=" + isdefault;
     xhr.send(args);

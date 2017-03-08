@@ -133,20 +133,6 @@ abstract class blockcatalogue_list {
     }
 
     /**
-     * Checks wether a localized string has really been found.
-     * @param string $string
-     * @return string
-     */
-    public function control_string($string) {
-        $control = substr($string, 0, 2);
-        if ($control == '[[') {
-            return null;
-        } else {
-            return $string;
-        }
-    }
-
-    /**
      * Displays the list's active icon in the small block.
      * @global object $CFG
      * @param object $course

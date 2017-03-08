@@ -98,10 +98,15 @@ class blockcatalogue_list_mods extends blockcatalogue_list {
     public function get_local_data($modname, $nature) {
         global $CFG, $OUTPUT;
         $component = "mod_$modname";
+        $manager = get_string_manager();
         switch ($nature) {
             case 'description' :
-                $description = get_string('modulename_help', $component);
-                return $this->control_string($description);
+                if ($manager->string_exists('modulename_help', $component)) {
+					$description = get_string('modulename_help', $component);
+					return $description;
+				} else {
+					return null;
+				}
 
             case 'link' :
                 $sm = get_string_manager();

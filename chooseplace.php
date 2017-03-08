@@ -39,11 +39,15 @@ require_once("$CFG->dirroot/course/renderer.php");
 // Check params.
 $listname = required_param('list', PARAM_ALPHA);
 $courseid = required_param('course', PARAM_INT);
+$args = array('list' => $listname, 'course' => $courseid);
 if ($listname == 'blocks') {
     $elementname = required_param('block', PARAM_TEXT);
+    $args['blocks'] = $elementname;
 } else {
     $mod = required_param('mod', PARAM_TEXT);
+    $args['mod'] = $mod;
     $type = optional_param('type', '', PARAM_TEXT);
+    $args['type'] = $type;
     if ($type) {
         $elementname = $type;
     } else {
@@ -63,27 +67,30 @@ $permitted = $list->can_add($elementname);
 if (!$permitted) {
     header("Location: $coursepage");
 }
-$moodlefilename = '/blocks/catalogue/chooseplace.php';
-$commonurltext = $CFG->wwwroot.$moodlefilename."?add=$mod&type=$type&course=$courseid&return=0&sr=0";
+$thisfilename = '/blocks/catalogue/chooseplace.php';
+$targetfilename = '/course/modedit.php';
+$targetcommonurl = "$CFG->wwwroot/course/modedit.php?add=$mod&type=$type&course=$courseid&return=0&sr=0";
 
 // Once the user has chosen (clicked) a place.
 if ($sectionid) {
-	$section = $DB->get_record('course_sections', array('id' => $sectionid, 'course' => $courseid));
+	$section = $DB->get_record('course_sections', array('id' => $sectionid, 'course' => $courseid), '*', MUST_EXIST);
 	$sequence = explode(',', $section->sequence);
+	$sectionlastcmid = end($sequence); //cmid of the current last mod in this section.
+	reset($sequence);
 	if ($aftermod) {
 		$newsequence = '';
 	} else { // If the new mod is placed at the beginning of the section.
-		$newsequence = "X,";
-	}	
+		$newsequence = -$sectionlastcmid.',';
+	}
 	foreach ($sequence as $cmid) {
 		$newsequence .= "$cmid,";
 		if ($cmid == $aftermod) {
-			$newsequence .= "X,";
+			$newsequence .= -$sectionlastcmid.',';
 		}
 	}
-	$section->sequence = substr($newsequence, 0, -1);
+	$section->sequence = substr($newsequence, 0, -1); //Remove the last comma.
 	$DB->update_record('course_sections', $section);
-	$url = $commonurltext."&section=$section->section";
+	$url = $targetcommonurl."&section=$section->section";
 	header("Location: $url");
 }
 
@@ -91,14 +98,14 @@ if ($sectionid) {
 $elementlocalname = $list->get_element_localname($elementname);
 $PAGE->set_title($course->fullname);
 $args = array('list' => $listname, 'course' => $courseid, 'mod' => $mod, 'type' => $type);
-$PAGE->set_url($moodlefilename, $args);
+$PAGE->set_url($thisfilename, $args);
 $PAGE->set_pagelayout('standard');
 $PAGE->set_heading($course->fullname);
 $PAGE->navbar->add(get_string('pluginname', 'block_catalogue'));
 $listlocalname = $list->get_localname();
 $PAGE->navbar->add($listlocalname, 'index.php?name='.$listname.'&course='.$COURSE->id);
 $title = get_string('addnew', 'block_catalogue').' '.$elementlocalname;
-$PAGE->navbar->add($title);
+$PAGE->navbar->add($title, '');
 
 
 // Add block to left column.
@@ -107,31 +114,30 @@ if ($listname == 'blocks') {
     header("Location: $coursepage");
 }
 
-
 $sections = $DB->get_recordset('course_sections', array('course' => $COURSE->id));
 
 // Page display.
 echo $OUTPUT->header();
 echo '<h1>'.$title.'</h1>';
 echo '<h2>'./*get_string('chooseplace', 'block_catalogue')*/"Où voulez-vous l'ajouter ?".'</h2>';
-//echo '<ul>';
 
 $renderer = new core_course_renderer($PAGE, '');
 $completioninfo = new completion_info($course);
 $modinfo = get_fast_modinfo($course);
 
-
+$herebutton = '<button class="btn btn-secondary">'.get_string('here', 'block_catalogue').'</button>';
 $moduleshtml = array();
+$args = array('mod' => $mod,
+              'type' => $type,
+              'course' => $courseid,
+              'list' => $listname);
+
 echo '<table>';
-foreach ($sections as $section) {	
-	$args = array('add' => $mod,
-                  'type' => $type,
-                  'course' => $section->course,
-                  'section' => $section->section,
-                  'return' => 0,
-                  'sr' => 0);
-    //$url = new moodle_url($targetpage, $args);
-	
+foreach ($sections as $section) {
+	if (!$section->visible && !has_capability('moodle/course:viewhiddensections', $coursecontext)) {
+            continue;
+	}
+	$args['sectionid'] = $section->id;
 	echo '<tr>';
 	echo '<td>';
 	if ($section->name) {
@@ -139,19 +145,26 @@ foreach ($sections as $section) {
 	} else {
 		echo "<strong>Section $section->section</strong>";
 	}
-	echo '</td>';
-	echo '<td style="padding-left:30px"><button class="btn btn-secondary">Ici</button></td>';
+	echo '</td><td>';	
+    $args['aftermod'] = 0;
+	$placeurl = new moodle_url($thisfilename, $args);
+	echo '<a style="padding-left:30px;float:left;margin-top:10px;margin-bottom:30px" href="'.$placeurl.'">'.$herebutton.'</a>';
 	if (!empty($modinfo->sections[$section->section])) {
-		foreach ($modinfo->sections[$section->section] as $modnumber) {
-			$mod = $modinfo->cms[$modnumber];
+		foreach ($modinfo->sections[$section->section] as $cmid) {
+			$cminfo = $modinfo->cms[$cmid];
 			if ($modulehtml = $renderer->course_section_cm_list_item($course,
-							$completioninfo, $mod, null)) {
-				echo '<td style="padding-left:30px"> &nbsp; &nbsp; '.$modulehtml.'</td>';
-				echo '<td style="padding-left:30px"><button class="btn btn-secondary">Ici</button></td>';
+							$completioninfo, $cminfo, null)) {
+				$modulehtml = str_replace('<li', '<div', $modulehtml);
+				$modulehtml = str_replace('</li>', '</div>', $modulehtml);
+				echo '<span style="padding-left:30px;float:left;margin-bottom:30px"> &nbsp; &nbsp; '.$modulehtml.'</span>';
+				$args['aftermod'] = $cmid;
+				$placeurl = new moodle_url($thisfilename, $args);
+				echo '<a style="padding-left:30px;float:left;margin-top:10px;margin-bottom:30px" href="'.$placeurl.'">'.$herebutton.'</a>';
 			}
 		}
 	}
-	echo '</tr>';
+	echo '</td></tr>';
+	echo '<tr><td height="50px;color:gray"><hr></td></tr>';
 }
 echo '</table>';
 

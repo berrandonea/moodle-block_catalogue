@@ -72,28 +72,54 @@ function block_catalogue_all_favorites($listnames) {
  * @param object course
  */
 function block_catalogue_check_sequences($course) {
-	global $DB;
-	$sections = $DB->get_records('course_sections', array('course' => $course->id));
-	$rebuild = false;
-    foreach ($sections as $section) {
-		if (false !== strpos($section->sequence, 'X')) {
-			$sequence = explode(',', $section->sequence);
-			$newcmid = array_pop($sequence);
-			$newsequence = '';
-			foreach ($sequence as $cmid) {
-				if ($cmid == 'X') {
-					$newsequence .= "$newcmid,";
-				} else {
-					$newsequence .= "$cmid,";
+	global $DB, $PAGE;
+	$pagepath = $PAGE->url->get_path();
+	if (($pagepath != '/course/modedit.php') && ($pagepath != '/blocks/catalogue/chooseplace.php')) {
+		$sections = $DB->get_records('course_sections', array('course' => $course->id));
+		$rebuild = false;
+		foreach ($sections as $section) {
+			$restorelastcm = false;
+			if (false !== strpos($section->sequence, '-')) {
+				// A new mod has just been added at the end of this section or its creation has just been canceled (see chooseplace.php).
+				// The negative value's place in the sequence is where the user wanted to add this new mod. 
+				$sequence = explode(',', $section->sequence);
+				$sectionlastcmid = array_pop($sequence);
+				if ($sectionlastcmid < 0) {
+					// The new mod was to be added at the end of the section but its creation was cancelled.
+					// All we have to do is to remove this negative value from the sequence (and array_pop() already did it).
 				}
+				$newsequence = '';
+				foreach ($sequence as $cmid) {
+					if ($cmid < 0) {
+						// The new mod was to be added here.
+						if ($cmid + $sectionlastcmid == 0) {
+							// The last mod in this section is still the same it was before, which means the new mod creation has been cancelled.
+							// This negative value must be removed and the last mod (removed by array_pop()) must be restored at the end of the section.
+							$restorelastcm = true;
+						} else {
+							// The new mod has really been created. It's now at the end of the section but we should move it here.
+							$rebuild = true;
+							$newsequence .= "$sectionlastcmid,";
+						}
+					} else {
+						//There's nothing to change here.
+						$newsequence .= "$cmid,";
+					}
+				}
+				if ($restorelastcm) {
+					$section->sequence = $newsequence.$sectionlastcmid;
+				} else {
+					// Remove the last comma.
+					$section->sequence = substr($newsequence, 0, -1);
+				}
+				$DB->update_record('course_sections', $section);
 			}
-			$section->sequence = substr($newsequence, 0, -1);
-			$DB->update_record('course_sections', $section);
-			$rebuild = true;
 		}
-	}
-	if ($rebuild) {
-		rebuild_course_cache();
+
+		if ($rebuild) {
+			// We moved a mod, so we need to rebuild the course cache.
+			rebuild_course_cache();
+		}
 	}
 }
 
@@ -203,7 +229,7 @@ function block_catalogue_display_tabs($courseid, $thislistname, $editing) {
     $dborder = $DB->get_field('config_plugins', 'value', $params);
     $sortorder = explode(',', $dborder);
     $listnames = block_catalogue_get_listnames($sortorder);
-    $html = '<table width="100%"><tr>';
+    $html = '';
     foreach ($listnames as $listname) {
         $list = block_catalogue_instanciate_list($listname);
         if ($list) {
@@ -213,7 +239,7 @@ function block_catalogue_display_tabs($courseid, $thislistname, $editing) {
                     continue;
                 }
             }
-            $html .= "<td>";
+            $html .= "<div style='float:left;margin-right:30px'>";
             $target = $CFG->wwwroot.'/blocks/catalogue/index.php'."?name=$listname&course=$courseid&editing=$editing";
             $html .= "<a href = '$target'>";
             $html .= '<table><tr>';
@@ -237,10 +263,10 @@ function block_catalogue_display_tabs($courseid, $thislistname, $editing) {
             $html .= "<td class='$listnameclass'>"."<a href='$target' style='color:$listcolor'>".$listlocalname.'</a></td>';
             $html .= '</tr></table>';
             $html .= '</a>';
-            $html .= "</td>";
+            $html .= "</div>";
         }
     }
-    $html .= '</tr></table>';
+    //~ $html .= '</tr></table>';
     return $html;
 }
 
@@ -528,8 +554,39 @@ function block_catalogue_show_link($link) {
 }
 
 /**
+ * Another way to display the favorites. Used by theme_catalogue.
+ * @return string HTML code
+ */
+function block_catalogue_theme_favorites() {
+    $favtitle = get_string('favorites', 'block_catalogue');
+    //~ $helper = $OUTPUT->help_icon('favorites', 'block_catalogue');
+    echo  "<span style='font-weight:bold'>$favtitle :</span> &nbsp; ";
+    $html = '';
+	$listnames = block_catalogue_get_listnames();
+	$listsandfavorites = block_catalogue_all_favorites($listnames);
+	$favorites = $listsandfavorites->favorites;
+	$favlists = array();
+	$favstyle = "max-width:50px;text-align:center;margin-right:15px";
+	foreach ($favorites as $favorite) {
+		if (!isset($favlists[$favorite->listname])) {
+			$favlists[$favorite->listname] = block_catalogue_instanciate_list($favorite->listname);
+		}
+		if (!$favlists[$favorite->listname]->favorite_here($favorite->elementname)) {				
+			continue;
+		}
+		$url = $favlists[$favorite->listname]->usage_url($favorite->elementname);
+		$html .= "<a href='$url' style='$favstyle'>";
+		$html .= $favlists[$favorite->listname]->display_favorite($favorite->elementname);
+		$html .= "</a>";
+	}
+	return $html;
+}
+
+/**
  * Prepares display of the add/remove favorite icon or the hide/show button on the index page,
  * then calls block_catalogue_display_toggler() to actually display it.
+ * @global object $CFG
+ * @global object $COURSE
  * @global object $DB
  * @global object $USER
  * @param object $list
@@ -537,7 +594,7 @@ function block_catalogue_show_link($link) {
  * @param string $toggler 'fav' ou 'hide'
  */
 function block_catalogue_toggler($list, $elementname, $toggler) {
-    global $COURSE, $DB, $USER;
+    global $CFG, $COURSE, $DB, $USER;
     $coursecontext = context_course::instance($COURSE->id);
     $permission = has_capability("block/catalogue:toggle$toggler", $coursecontext);
     if ($permission) {
@@ -565,7 +622,7 @@ function block_catalogue_toggler($list, $elementname, $toggler) {
         echo '<div style="text-align:center">';
         echo "<div id='$toggler"."tog-$elementname' "
                 . "onclick='javascript:toggle(".'"'.$listname.'", "'.$elementname.'", "'
-                .$toggler.'", "'.$COURSE->id.'", "'.$default.'"'.")'>";
+                .$toggler.'", "'.$COURSE->id.'", "'.$default.'", "'.$CFG->wwwroot.'/blocks/catalogue/toggle.php"'.")'>";
         block_catalogue_display_toggler($picture, $label);
         echo '</div>';
         echo '</div>';

@@ -74,7 +74,7 @@ class block_catalogue extends block_base {
         }
         $format = course_get_format($this->page->course);
         $course = $format->get_course();
-
+        
         block_catalogue_check_sequences($course);
 
         $listnames = block_catalogue_get_listnames();

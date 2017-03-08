@@ -96,7 +96,9 @@ if ($usereditor) {
 $header = $OUTPUT->header();
 echo $header;
 if (!strpos($header, 'block_catalogue_tabicon')) {
+	echo '<table><tr><td>';
 	echo block_catalogue_display_tabs($courseid, $thislistname, $editing);
+	echo '</td></tr></table>';
 }
 
 // Main content.
@@ -106,7 +108,7 @@ foreach ($categories as $category) {
         ?>
         <br>
         <div onclick="flipflop('<?php echo "$categorylocalname"; ?>');"
-             class='block_catalogue_flipflop' 
+             class='block_catalogue_flipflop'
              style='background-color:<?php echo $thislist->get_color(); ?>'>
             <?php echo $categorylocalname; ?>
             <img src ="pix/open.png" alt="open" style="float: right"  height="15" width="15">

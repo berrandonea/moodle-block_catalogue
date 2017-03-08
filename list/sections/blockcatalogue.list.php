@@ -102,10 +102,15 @@ class blockcatalogue_list_sections extends blockcatalogue_list {
      * @return string
      */
     public function get_local_data($elementname, $nature) {
-        switch ($nature) {
-            case 'description' :
-                $description = get_string($this->name.'_description_'.$elementname, 'block_catalogue');
-                return $this->control_string($description);
+		$manager = get_string_manager();
+        switch ($nature) {			
+            case 'description' :                
+                if ($manager->string_exists('modulename_help', $component)) {
+					$description = get_string('modulename_help', $component);
+					return $description;
+				} else {
+					return null;
+				}
             case 'link' :
                 return null;
             case 'iconurl' :

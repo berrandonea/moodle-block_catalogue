@@ -244,3 +244,4 @@ $string['sections_description_delete'] = 'Definetely delete a given section and 
 $string['sections_description_highlight'] = 'Choose which section of the course you want to highlight for now.';
 $string['sections_description_hideshow'] = 'Change the visibility of a section.';
 $string['sections_description_picture'] = 'Change section picture';
+$string['here'] = 'Here';
