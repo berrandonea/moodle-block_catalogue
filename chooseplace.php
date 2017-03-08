@@ -107,7 +107,6 @@ $PAGE->navbar->add($listlocalname, 'index.php?name='.$listname.'&course='.$COURS
 $title = get_string('addnew', 'block_catalogue').' '.$elementlocalname;
 $PAGE->navbar->add($title, '');
 
-
 // Add block to left column.
 if ($listname == 'blocks') {
     $list->add_block($elementname, $courseid, 'side-pre');
@@ -154,9 +153,7 @@ foreach ($sections as $section) {
 			$cminfo = $modinfo->cms[$cmid];
 			if ($modulehtml = $renderer->course_section_cm_list_item($course,
 							$completioninfo, $cminfo, null)) {
-				$modulehtml = str_replace('<li', '<div', $modulehtml);
-				$modulehtml = str_replace('</li>', '</div>', $modulehtml);
-				echo '<span style="padding-left:30px;float:left;margin-bottom:30px"> &nbsp; &nbsp; '.$modulehtml.'</span>';
+				block_catalogue_chooseplace_modicon($modulehtml, $cmid);
 				$args['aftermod'] = $cmid;
 				$placeurl = new moodle_url($thisfilename, $args);
 				echo '<a style="padding-left:30px;float:left;margin-top:10px;margin-bottom:30px" href="'.$placeurl.'">'.$herebutton.'</a>';
