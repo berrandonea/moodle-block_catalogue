@@ -165,38 +165,6 @@ foreach ($sections as $section) {
 }
 echo '</table>';
 
-
-//~ echo "<table>";
-//~ 
-//~ foreach ($sections as $section) {
-    //~ $sectionname = get_section_name($section->course, $section->section);
-    //~ if (!$section->visible) {
-        //~ if (!has_capability('moodle/course:viewhiddensections', $coursecontext)) {
-            //~ continue;
-        //~ }
-        //~ $style = 'font-style:italic';
-    //~ } else if ($COURSE->marker == $section->section) {
-        //~ $style = 'font-weight:bold';
-    //~ } else {
-        //~ $style = '';
-    //~ }
-    //~ $args = array('add' => $mod,
-                  //~ 'type' => $type,
-                  //~ 'course' => $section->course,
-                  //~ 'section' => $section->section,
-                  //~ 'return' => 0,
-                  //~ 'sr' => 0);
-    //~ $url = new moodle_url($targetpage, $args);
-    //~ //echo "<li style='padding-bottom:25px'><a href='$url' style='$style'>$sectionname</a></li>";
-    //~ echo "<tr>";
-    //~ echo "<td style='border:1px solid black'><a href='$url' style='$style'>";
-    //~ echo "<h3>$sectionname</h3>";
-    //~ echo $renderer->course_section_cm_list($course, $section->section, null, array('donotenhance' => true));
-    //~ echo "</a></td>";
-    //~ echo "</tr>";
-//~ }
-//~ 
-//~ echo "</table>";
-//echo '</ul>';
-echo $OUTPUT->footer();
 $sections->close();
+echo $OUTPUT->footer();
+
