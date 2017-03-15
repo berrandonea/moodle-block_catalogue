@@ -82,7 +82,7 @@ class block_catalogue extends block_base {
         $canview = has_capability('block/catalogue:view', $coursecontext);
         if ($listnames && $canview) {
             $bgcolor = get_config('catalogue', 'bgcolor');
-            $this->content->text = block_catalogue_main_table($listnames, $course, $bgcolor);
+            $this->content->text = block_catalogue_main_table($listnames, $course, $bgcolor, true);
         } else {
             $this->content->text = '';
         }

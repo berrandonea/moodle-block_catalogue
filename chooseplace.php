@@ -134,7 +134,7 @@ $args = array('mod' => $mod,
 echo '<table>';
 foreach ($sections as $section) {
 	if (!$section->visible && !has_capability('moodle/course:viewhiddensections', $coursecontext)) {
-            continue;
+		continue;
 	}
 	$args['sectionid'] = $section->id;
 	echo '<tr>';
@@ -149,7 +149,7 @@ foreach ($sections as $section) {
 	$placeurl = new moodle_url($thisfilename, $args);
 	echo '<a style="padding-left:30px;float:left;margin-top:10px;margin-bottom:30px" href="'.$placeurl.'">'.$herebutton.'</a>';
 	if (!empty($modinfo->sections[$section->section])) {
-		foreach ($modinfo->sections[$section->section] as $cmid) {
+		foreach ($modinfo->sections[$section->section] as $cmid) {			
 			$cminfo = $modinfo->cms[$cmid];
 			if ($modulehtml = $renderer->course_section_cm_list_item($course,
 							$completioninfo, $cminfo, null)) {

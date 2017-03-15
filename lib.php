@@ -138,7 +138,7 @@ function block_catalogue_chooseplace_modicon($modulehtml, $cmid) {
 				$customlabel = $DB->get_record('customlabel', array('id' => $cm->instance));				
 				$pixurl = $clabelslist->get_element_data($customlabel->labelclass, 'iconurl');
 			}
-		}		
+		}
 		echo "<img src='$pixurl' width='30px' style='padding-top:15px'>";
 	} else {
 		echo $modulehtml;
@@ -399,9 +399,10 @@ function block_catalogue_link_editor($url, $elementname, $link) {
  * @param array of strings $listnames
  * @param object $course
  * @param string $bgcolor
+ * @param boolean $showtabs
  * @return string HTML code
  */
-function block_catalogue_main_table($listnames, $course, $bgcolor) {
+function block_catalogue_main_table($listnames, $course, $bgcolor, $showtabs) {
     global $OUTPUT;
 
     $listsandfavorites = block_catalogue_all_favorites($listnames);
@@ -412,7 +413,7 @@ function block_catalogue_main_table($listnames, $course, $bgcolor) {
     $coursecontext = context_course::instance($course->id);
     $viewlists = has_capability("block/catalogue:viewlists", $coursecontext);
 
-    if ($viewlists) {
+    if ($viewlists && $showtabs) {
         $nblists = count($listnames);
         $nbshownlists = 0;
         $rowtitles = array();
@@ -457,6 +458,21 @@ function block_catalogue_main_table($listnames, $course, $bgcolor) {
         $nofavs = get_string('nofavs', 'block_catalogue');
         $maintable .= "<p style='$iconstyle'>$nofavs</p>";
     }
+    
+    //~ $maintable .= block_catalogue_proximityarrows();
+	
+	//~ // H5P type selection
+	//~ if ($pagepath == '/course/modedit.php') {
+		//~ $addedmod = optional_param('add', '', PARAM_ALPHA);
+		//~ if ($addedmod == 'hvp') {
+			//~ $hvptype = optional_param('type', '', PARAM_TEXT);
+			//~ if ($hvptype) {
+				//~ ?><script>window.onload = selectH5P("<?php //echo $hvptype; ?>");</script><?php
+				//~ $maintable .= "<iframe width=0 height=0 onload='selectH5P(\"$hvptype\")' src=''></iframe> ";
+			//~ }
+		//~ }
+	//~ }
+	
     return $maintable;
 }
 
@@ -583,13 +599,14 @@ function block_catalogue_show_link($link) {
 function block_catalogue_theme_favorites() {
     $favtitle = get_string('favorites', 'block_catalogue');
     //~ $helper = $OUTPUT->help_icon('favorites', 'block_catalogue');
-    echo  "<span style='font-weight:bold'>$favtitle :</span> &nbsp; ";
+    //~ echo  "<span style='font-weight:bold'>$favtitle :</span> &nbsp; ";
     $html = '';
 	$listnames = block_catalogue_get_listnames();
 	$listsandfavorites = block_catalogue_all_favorites($listnames);
 	$favorites = $listsandfavorites->favorites;
 	$favlists = array();
 	$favstyle = "max-width:50px;text-align:center;margin-right:15px";
+	print_object($favorites);
 	foreach ($favorites as $favorite) {
 		if (!isset($favlists[$favorite->listname])) {
 			$favlists[$favorite->listname] = block_catalogue_instanciate_list($favorite->listname);
@@ -601,7 +618,7 @@ function block_catalogue_theme_favorites() {
 		$html .= "<a href='$url' style='$favstyle'>";
 		$html .= $favlists[$favorite->listname]->display_favorite($favorite->elementname);
 		$html .= "</a>";
-	}
+	}	
 	return $html;
 }
 
@@ -683,3 +700,19 @@ function block_catalogue_update_element($listname, $elementname, $nature, $newva
         $newdata->id = $DB->insert_record($table, $newdata);
     }
 }
+
+?>
+
+<!--
+<script>
+function selectH5P(type) {
+	//var hvpselector = document.getElementsByName("h5peditor-library");
+	var hvpselector = document.getElementsByName("h5p-editor-iframe");
+	alert(hvpselector.length);
+	hvpselector[0].innerHTML = '<option value="-">-</option><option value="'+ type +'">'+ type +'</option>';
+	tagname = hvpselector[0].tagName;
+	alert(tagname);
+	hvpselector[0].style.display = 'none';
+}
+</script>
+-->
