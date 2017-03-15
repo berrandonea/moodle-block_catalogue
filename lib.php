@@ -457,22 +457,7 @@ function block_catalogue_main_table($listnames, $course, $bgcolor, $showtabs) {
     } else if ($viewlists && has_capability("block/catalogue:togglefav", $coursecontext)) {
         $nofavs = get_string('nofavs', 'block_catalogue');
         $maintable .= "<p style='$iconstyle'>$nofavs</p>";
-    }
-    
-    //~ $maintable .= block_catalogue_proximityarrows();
-	
-	//~ // H5P type selection
-	//~ if ($pagepath == '/course/modedit.php') {
-		//~ $addedmod = optional_param('add', '', PARAM_ALPHA);
-		//~ if ($addedmod == 'hvp') {
-			//~ $hvptype = optional_param('type', '', PARAM_TEXT);
-			//~ if ($hvptype) {
-				//~ ?><script>window.onload = selectH5P("<?php //echo $hvptype; ?>");</script><?php
-				//~ $maintable .= "<iframe width=0 height=0 onload='selectH5P(\"$hvptype\")' src=''></iframe> ";
-			//~ }
-		//~ }
-	//~ }
-	
+    }    
     return $maintable;
 }
 

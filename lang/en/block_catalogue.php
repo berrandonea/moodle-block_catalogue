@@ -231,6 +231,7 @@ $string['mods_exercise'] = 'Exercises';
 $string['mods_collaborative'] = 'Collaboration';
 $string['mods_other'] = 'Other';
 $string['mods_use'] = 'Add to course';
+
 $string['sections_listname'] = 'Sections';
 $string['sections_coursesections'] = 'Course sections';
 $string['sections_use'] = 'OK';
@@ -248,4 +249,23 @@ $string['sections_description_delete'] = 'Definetely delete a given section and 
 $string['sections_description_highlight'] = 'Choose which section of the course you want to highlight for now.';
 $string['sections_description_hideshow'] = 'Change the visibility of a section.';
 $string['sections_description_picture'] = 'Change section picture';
+
+
+$string['editing_listname'] = 'Editing';
+$string['editing_coursesections'] = 'Course sections';
+$string['editing_use'] = 'OK';
+$string['editing_add'] = 'Add section';
+$string['editing_edit'] = 'Edit';
+$string['editing_move'] = 'Move';
+$string['editing_delete'] = 'Delete';
+$string['editing_highlight'] = 'Highlight section';
+$string['editing_hideshow'] = 'Hide/show';
+$string['editing_picture'] = 'Change section picture';
+$string['editing_description_add'] = 'Add a new section to the course.';
+$string['editing_description_edit'] = 'Edit a section, an activity or a resource.';
+$string['editing_description_move'] = 'Move a section, an activity or a resource.';
+$string['editing_description_delete'] = 'Definetely delete an activity, a resource or a given section with all its content.';
+$string['editing_description_highlight'] = 'Choose which section of the course you want to highlight for now.';
+$string['editing_description_hideshow'] = 'Change the visibility of a section, an activity or a resource.';
+$string['editing_description_picture'] = 'Change section picture';
 $string['here'] = 'Here';
