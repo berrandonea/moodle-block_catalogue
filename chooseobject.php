@@ -118,7 +118,7 @@ $sections = $DB->get_recordset('course_sections', array('course' => $COURSE->id)
 // Page display.
 echo $OUTPUT->header();
 echo '<h1>'.$title.'</h1>';
-echo '<h2>'.get_string('chooseplace', 'block_catalogue').'</h2>';
+echo '<h2>'./*get_string('chooseplace', 'block_catalogue')*/"Où voulez-vous l'ajouter ?".'</h2>';
 
 $renderer = new core_course_renderer($PAGE, '');
 $completioninfo = new completion_info($course);
