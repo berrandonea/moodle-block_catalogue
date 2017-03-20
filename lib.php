@@ -123,25 +123,45 @@ function block_catalogue_check_sequences($course) {
 	}
 }
 
-function block_catalogue_chooseplace_modicon($modulehtml, $cmid) {
+function block_catalogue_chooseplace_modicon($modulehtml, $cmid, $selectmodurl) {
 	global $DB, $OUTPUT;
+	
 	$modulehtml = str_replace('<li', '<div', $modulehtml);
 	$modulehtml = str_replace('</li>', '</div>', $modulehtml);
-	echo '<span style="padding-left:30px;float:left;margin-bottom:30px"> &nbsp; &nbsp; ';
-	if (strpos($modulehtml, '<div class="contentwithoutlink ">')) {
-		$cm = $DB->get_record('course_modules', array('id' => $cmid));
+	$modulehtml = str_replace('<a', '<div', $modulehtml);
+	$modulehtml = str_replace('</a>', '</div>', $modulehtml);
+	$cm = $DB->get_record('course_modules', array('id' => $cmid));
+	
+	if (strpos($modulehtml, '<div class="contentwithoutlink ">')) {		
 		$module = $DB->get_record('modules', array('id' => $cm->module));
 		$pixurl = $OUTPUT->pix_url('icon', "mod_$module->name");
 		if ($module->name == 'customlabel') {
 			$clabelslist = block_catalogue_instanciate_list('customlabels');
 			if ($clabelslist) {
-				$customlabel = $DB->get_record('customlabel', array('id' => $cm->instance));				
+				$customlabel = $DB->get_record('customlabel', array('id' => $cm->instance));
 				$pixurl = $clabelslist->get_element_data($customlabel->labelclass, 'iconurl');
 			}
 		}
-		echo "<img src='$pixurl' width='30px' style='padding-top:15px'>";
+		$modoutput = "<img src='$pixurl' width='30px' style='padding-top:15px'>";		
 	} else {
-		echo $modulehtml;
+		$modoutput = $modulehtml;;
+	}
+	
+	echo '<span style="padding-left:30px;float:left;margin-bottom:30px"> &nbsp; &nbsp; ';
+	if ($selectmodurl) {
+		echo '<a href="'.$selectmodurl.'">';
+		echo '<button class="btn btn-secondary">';
+	}
+	if (!$cm->visible) {
+		echo '<div style="color:gray">';
+	}
+	echo $modoutput;
+	if (!$cm->visible) {
+		echo '</div>';
+	}
+	if ($selectmodurl) {
+		echo '</button>';
+		echo '</a>';
 	}
 	echo '</span>';	
 }

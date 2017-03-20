@@ -118,7 +118,7 @@ $sections = $DB->get_recordset('course_sections', array('course' => $COURSE->id)
 // Page display.
 echo $OUTPUT->header();
 echo '<h1>'.$title.'</h1>';
-echo '<h2>'.get_string('chooseplace', 'block_catalogue').'</h2>';
+echo '<h2>'.get_string('addwhere', 'block_catalogue').'</h2>';
 
 $renderer = new core_course_renderer($PAGE, '');
 $completioninfo = new completion_info($course);
@@ -137,12 +137,22 @@ foreach ($sections as $section) {
 		continue;
 	}
 	$args['sectionid'] = $section->id;
-	echo '<tr>';
+	if ($COURSE->marker == $section->section) {
+		$highlighting = "style='border:2px solid red'";
+	} else {
+		$highlighting = '';
+	}
+	if ($section->visible) {
+		$hidden = "style='font-weight:bold'";
+	} else {
+		$hidden = "style='color:gray'";
+	}
+	echo "<tr $highlighting>";
 	echo '<td>';
 	if ($section->name) {
-		echo "<strong>$section->name</strong>";
+		echo "<span $hidden>$section->name</span>";
 	} else {
-		echo "<strong>Section $section->section</strong>";
+		echo "<span $hidden>Section $section->section</span>";
 	}
 	echo '</td><td>';	
     $args['aftermod'] = 0;
@@ -153,7 +163,7 @@ foreach ($sections as $section) {
 			$cminfo = $modinfo->cms[$cmid];
 			if ($modulehtml = $renderer->course_section_cm_list_item($course,
 							$completioninfo, $cminfo, null)) {
-				block_catalogue_chooseplace_modicon($modulehtml, $cmid);
+				block_catalogue_chooseplace_modicon($modulehtml, $cmid, '');
 				$args['aftermod'] = $cmid;
 				$placeurl = new moodle_url($thisfilename, $args);
 				echo '<a style="padding-left:30px;float:left;margin-top:10px;margin-bottom:30px" href="'.$placeurl.'">'.$herebutton.'</a>';

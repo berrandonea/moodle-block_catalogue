@@ -27,30 +27,101 @@
  * @copyright 2016 Brice Errandonea <brice.errandonea@u-cergy.fr>, Salma El-mrabah <salma.el-mrabah@u-cergy.fr>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
- * File : list/sections/blockcatalogue.list.php
- * Class definition for the list of section management tools.
+ * File : list/editing/blockcatalogue.list.php
+ * Class definition for the list of editing tools.
  */
 
 require_once($CFG->dirroot."/blocks/catalogue/list/list.class.php");
 
 /**
- * Class definition for the resources list.
+ * Class definition for the editing list.
  *
- * @copyright 2016 Brice Errandonea <brice.errandonea@u-cergy.fr>, Salma El-mrabah <salma.el-mrabah@u-cergy.fr>
+ * @copyright 2017 Brice Errandonea <brice.errandonea@u-cergy.fr>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class blockcatalogue_list_sections extends blockcatalogue_list {
+class blockcatalogue_list_editing extends blockcatalogue_list {
     /**
      * Constructor for the class.
      */
     public function __construct() {
-        $this->name = 'sections';
-        $this->prefix = 'section';
+        $this->name = 'editing';
+        $this->prefix = 'editing';
         $this->categories = array('coursesections');
         $this->potentialmembers = array();
-        $this->defaultfavorites = array('goto', 'add');
+        $this->defaultfavorites = array('edit', 'delete', 'move');
         $this->color = '#000000';
     }
+
+
+	public function actionurl_mod($elementname, $modid) {
+		global $CFG, $DB;
+		$cm = $DB->get_record('course_modules', array('id' => $modid));
+		$page = 'mod';
+		$args = "sesskey=".sesskey()."&sr=0";
+		switch($elementname) {
+			case 'delete':
+				$args .= "&delete=$modid";
+				break;
+			case 'edit':
+				$args .= "&update=$modid";
+				break;
+			case 'hideshow':
+				if ($cm->visible) {
+					$args .= "&hide=$modid";
+				} else {
+					$args .= "&show=$modid";
+				}
+				break;
+			case 'move':
+				break;
+			default:
+		}
+		$actionurl = "$CFG->wwwroot/course/$page.php?$args";
+		return $actionurl;
+	}
+
+
+	public function actionurl_section($elementname, $sectionid) {
+		global $CFG, $DB, $USER;
+		$section = $DB->get_record('course_sections', array('id' => $sectionid));
+		switch($elementname) {
+			case 'delete':
+				$page = 'editsection';
+				$args = "sr=0&id=$sectionid&delete=1";
+				break;
+			case 'edit':
+				$page = 'editsection';			
+				$args = "sr=0&id=$sectionid";
+				break;
+			case 'hideshow':
+				$page = 'view';
+				$args = "id=$section->course&sesskey=".sesskey();
+				if ($section->visible) {
+					$args .= "&hide=$section->section";
+				} else {
+					$args .= "&show=$section->section";
+				}
+				break;
+			case 'highlight':
+				$marker = $section->section;
+				$DB->set_field("course", "marker", $marker, array('id' => $section->course));
+				format_base::reset_course_cache($section->course);
+				$page = 'view';
+				$args = "id=$section->course#section-$section->section";
+				break;
+			case 'move':
+				// This function should never be called for element "move".
+				break;
+			case 'picture':
+				$page = 'format/grid/editimage';
+				$coursecontext = context_course::instance($section->course);
+				$args = "contextid=$coursecontext->id&userid=$USER->id&sectionid=$sectionid";
+				break;
+			default:			
+		}
+		$actionurl = "$CFG->wwwroot/course/$page.php?$args";
+		return $actionurl;
+	}
 
     /**
      * Finds the elements available (to this user in this course) for the
@@ -64,10 +135,12 @@ class blockcatalogue_list_sections extends blockcatalogue_list {
     public function fill_availables() {
         global $COURSE;
         $coursecontext = context_course::instance($COURSE->id);
-        $this->availables['coursesections'] = array('goto');
+        $this->availables['coursesections'] = array();
         if (has_capability('moodle/course:update', $coursecontext)) {
             $this->availables['coursesections'][] = 'add';
+            $this->availables['coursesections'][] = 'remove';
             $this->availables['coursesections'][] = 'edit';
+            $this->availables['coursesections'][] = 'move';
             $this->availables['coursesections'][] = 'delete';
             $this->availables['coursesections'][] = 'highlight';
             if ($COURSE->format == 'grid') {
@@ -82,6 +155,23 @@ class blockcatalogue_list_sections extends blockcatalogue_list {
         }
         return true;
     }
+    
+    /**
+     * Tells whether a given action is allowed to this user in this course.
+     * 
+     * @global object $COURSE
+     * @param string $elementname
+     * @return boolean
+     */
+    public function can_do($elementname) {
+		global $COURSE;
+		$coursecontext = context_course::instance($COURSE->id);
+		if ($elementname == 'hideshow') {
+			return has_capability('moodle/course:sectionvisibility', $coursecontext);
+		} else {
+			return has_capability('moodle/course:update', $coursecontext);
+		}
+	}
 
     /**
      * Get the name of this element in the current language.
@@ -103,8 +193,8 @@ class blockcatalogue_list_sections extends blockcatalogue_list {
      */
     public function get_local_data($elementname, $nature) {
 		$manager = get_string_manager();
-        switch ($nature) {			
-            case 'description' :                
+        switch ($nature) {
+            case 'description' :
                 if ($manager->string_exists('modulename_help', $component)) {
 					$description = get_string('modulename_help', $component);
 					return $description;
@@ -121,6 +211,17 @@ class blockcatalogue_list_sections extends blockcatalogue_list {
         }
     }
 
+	public function select_mod($elementname) {
+		$elements = array('delete', 'edit', 'hideshow', 'move');
+		return in_array($elementname, $elements);
+	}
+
+	public function select_section($elementname) {
+		$elements = array('delete', 'edit', 'hideshow', 'highlight', 'move', 'picture');
+		return in_array($elementname, $elements);
+	}
+
+
     /**
      * Which URL must be visited to use this element ?
      * @global object $CFG
@@ -135,8 +236,13 @@ class blockcatalogue_list_sections extends blockcatalogue_list {
             $args = array('courseid' => $COURSE->id,
                           'increase' => 1,
                           'sesskey' => sesskey());
+		} else if ($elementname == 'remove') {
+			$targetpage = "$CFG->wwwroot/course/changenumsections.php";
+            $args = array('courseid' => $COURSE->id,
+                          'increase' => 0,
+                          'sesskey' => sesskey());
         } else {
-            $targetpage = "$CFG->wwwroot/blocks/catalogue/list/sections/choosesection.php";
+            $targetpage = "$CFG->wwwroot/blocks/catalogue/list/editing/chooseobject.php";
             $args = array('course' => $COURSE->id, 'action' => $elementname);
         }
         $url = new moodle_url($targetpage, $args);

@@ -132,7 +132,7 @@ class blockcatalogue_list_customlabels extends blockcatalogue_list {
      * @return string
      */
     public function get_local_data($elementname, $nature) {
-        global $CFG;
+        global $CFG, $OUTPUT;
         switch ($nature) {
             case 'description' :
                 $localname = $this->get_element_localname($elementname);
@@ -157,7 +157,11 @@ class blockcatalogue_list_customlabels extends blockcatalogue_list {
                     return $iconurl;
                 }
                 $iconurl = $this->get_local_iconurl(null, $elementname);
-                return $iconurl;
+                if ($iconurl) {
+					return $iconurl;
+				} else {
+					return $OUTPUT->pix_url('icon', 'mod_customlabel');
+				}
 
             default :
                 return null;
