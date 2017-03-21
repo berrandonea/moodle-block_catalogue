@@ -705,19 +705,3 @@ function block_catalogue_update_element($listname, $elementname, $nature, $newva
         $newdata->id = $DB->insert_record($table, $newdata);
     }
 }
-
-?>
-
-<!--
-<script>
-function selectH5P(type) {
-	//var hvpselector = document.getElementsByName("h5peditor-library");
-	var hvpselector = document.getElementsByName("h5p-editor-iframe");
-	alert(hvpselector.length);
-	hvpselector[0].innerHTML = '<option value="-">-</option><option value="'+ type +'">'+ type +'</option>';
-	tagname = hvpselector[0].tagName;
-	alert(tagname);
-	hvpselector[0].style.display = 'none';
-}
-</script>
--->
