@@ -418,6 +418,14 @@ abstract class blockcatalogue_list {
         $localname = get_string($this->name.'_listname', 'block_catalogue');
         return $localname;
     }
+    
+    /**
+     * Page to edit a mod from this list (doesn't apply if it's not a mod list).
+     * @return string
+     */
+    public function get_modedit() {
+		return 'course/modedit.php';
+	}
 
     /**
      * Get this list's technical name.

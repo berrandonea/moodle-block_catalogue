@@ -274,3 +274,26 @@ $string['editing_description_highlight'] = 'Choose which section of the course y
 $string['editing_description_hideshow'] = 'Change the visibility of a section, an activity or a resource.';
 $string['editing_description_picture'] = 'Change section picture';
 $string['here'] = 'Here';
+
+$string['hvp_listname'] = 'H5P';
+$string['hvp_hvp'] = 'H5P activities';
+$string['hvp_use'] = 'Add new';
+$string['hvp_Accordion'] = 'Accordion';
+$string['hvp_AppearIn'] = 'Small web meeting';
+$string['hvp_Audio'] = 'Audio';
+$string['hvp_Blanks'] = 'Fill in the blanks';
+$string['hvp_Chart'] = 'Chart';
+$string['hvp_Collage'] = 'Collage';
+$string['hvp_Column'] = 'Column';
+$string['hvp_CoursePresentation'] = 'Course presentation';
+$string['hvp_Dialogcards'] = 'Dialog cards';
+$string['hvp_DocumentationTool'] = 'Documentation tool';
+$string['hvp_DragQuestion'] = 'Drag question';
+$string['hvp_DragText'] = 'Drag text';
+$string['hvp_Flashcards'] = 'Flash cards';
+$string['hvp_GuessTheAnswer'] = 'Guess the answer';
+$string['hvp_IFrameEmbed'] = 'I-frame embedder';
+$string['hvp_ImageHotspotQuestion'] = 'Image hotspot question';
+$string['hvp_ImageHotspots'] = 'Image hotspots';
+
+

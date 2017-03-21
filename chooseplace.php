@@ -68,8 +68,8 @@ if (!$permitted) {
     header("Location: $coursepage");
 }
 $thisfilename = '/blocks/catalogue/chooseplace.php';
-$targetfilename = '/course/modedit.php';
-$targetcommonurl = "$CFG->wwwroot/course/modedit.php?add=$mod&type=$type&course=$courseid&return=0&sr=0";
+$targetfilename = $list->get_modedit();
+$targetcommonurl = "$CFG->wwwroot/$targetfilename?add=$mod&type=$type&course=$courseid&return=0&sr=0";
 
 // Once the user has chosen (clicked) a place.
 if ($sectionid) {
@@ -177,4 +177,3 @@ echo '</table>';
 
 $sections->close();
 echo $OUTPUT->footer();
-
