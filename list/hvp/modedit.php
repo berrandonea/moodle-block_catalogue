@@ -137,7 +137,7 @@ if (file_exists($modmoodleform)) {
     print_error('noformdesc');
 }
 
-$mformclassname = 'mod_hvp_catalogue_form';
+$mformclassname = 'mod_hvp_mod_form';
 $mform = new $mformclassname($data, $cw->section, $cm, $course);
 $mform->set_data($data);
 

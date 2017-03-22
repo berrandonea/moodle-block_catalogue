@@ -24,9 +24,9 @@
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . '/course/moodleform_mod.php');
-require_once($CFG->dirroot . '/mod/hvp/mod_form.php');
+//~ require_once($CFG->dirroot . '/mod/hvp/mod_form.php');
 
-class mod_hvp_catalogue_form extends mod_hvp_mod_form {
+class mod_hvp_mod_form extends moodleform_mod {
 
     public function definition() {
         global $CFG, $DB, $OUTPUT, $COURSE;
@@ -109,7 +109,7 @@ class mod_hvp_catalogue_form extends mod_hvp_mod_form {
     }
 
     public function data_preprocessing(&$defaultvalues) {
-        global $DB;
+        global $DB, $PAGE;
 
         $content = null;
         if (!empty($defaultvalues['id'])) {
@@ -164,26 +164,19 @@ class mod_hvp_catalogue_form extends mod_hvp_mod_form {
         }
 
         // Set editor defaults
-        $defaultvalues['h5plibrary'] = ($content === null ? 0 : H5PCore::libraryToString($content['library']));
+        $elementname = optional_param('type', 0, PARAM_ALPHA);
+        $libraryrecord = $DB->get_record('hvp_libraries', array('machine_name' => "H5P.$elementname"));
+        $libraryarray = array('id' => $libraryrecord->id, 'name' => $libraryrecord->machine_name, 'majorVersion' => $libraryrecord->major_version, 'minorVersion' => $libraryrecord->minor_version, 'embedTypes' => $libraryrecord->embed_types, 'fullscreen' => $libraryrecord->fullscreen);        
+        $defaultvalues['h5plibrary'] = H5PCore::libraryToString($libraryarray);
         $defaultvalues['h5pparams'] = ($content === null ? '{}' : $core->filterParameters($content));
 
         // Add required editor assets.
-        require_once 'locallib.php';
+        global $CFG;
+        require_once "$CFG->dirroot/mod/hvp/locallib.php";
         \hvp_add_editor_assets($content === null ? null : $defaultvalues['id']);
-
+		
         // Log editor opened
-        if ($content === null) {
-            new \mod_hvp\event('content', 'new');
-        }
-        else {
-            new \mod_hvp\event(
-                    'content', 'edit',
-                    $content['id'],
-                    $content['title'],
-                    $content['library']['name'],
-                    $content['library']['majorVersion'] . '.' . $content['library']['minorVersion']
-            );
-        }
+        new \mod_hvp\event('content', 'new');        
     }
 
     public function validation($data, $files) {

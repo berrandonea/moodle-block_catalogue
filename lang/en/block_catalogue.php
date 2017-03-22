@@ -295,5 +295,19 @@ $string['hvp_GuessTheAnswer'] = 'Guess the answer';
 $string['hvp_IFrameEmbed'] = 'I-frame embedder';
 $string['hvp_ImageHotspotQuestion'] = 'Image hotspot question';
 $string['hvp_ImageHotspots'] = 'Image hotspots';
+$string['hvp_InteractiveVideo'] = 'Interactive video';
+$string['hvp_MarkTheWords'] = 'Mark the words';
+$string['hvp_MemoryGame'] = 'Memory game';
+$string['hvp_Multichoice'] = 'Multi-choice';
+$string['hvp_Questionnaire'] = 'Questionnaire';
+$string['hvp_QuestionSet'] = 'Question set';
+$string['hvp_SingleChoiceSet'] = 'Single choice set';
+$string['hvp_Summary'] = 'Summary';
+$string['hvp_Timeline'] = 'Timeline';
+$string['hvp_TrueFalse'] = 'True/False';
+$string['hvp_TwitterUserFeed'] = 'Twitter user feed';
+
+
+
 
 
