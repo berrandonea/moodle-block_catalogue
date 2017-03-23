@@ -49,7 +49,7 @@ $coursecontext = context_course::instance($courseid);
 require_capability('block/catalogue:viewlists', $coursecontext);
 $usereditor = has_capability('block/catalogue:edit', $coursecontext);
 $thislist = block_catalogue_instanciate_list($thislistname);
-$open = $thislist->get_open();
+$open = true; //$thislist->get_open();
 $categories = $thislist->get_categories();
 $availables = $thislist->get_availables();
 
@@ -102,8 +102,31 @@ if (!strpos($header, 'block_catalogue_tabicon')) {
 }
 
 // Main content.
+$nbcategories = count($categories);
+
+$minwidth = floor(100/$nbcategories) - 2;
+/*if ($nbcategories == 2) {
+    $maxperline = 2;
+} else if ($nbcategories > 2) {
+    $maxperline = 2;
+} else {
+    $maxperline = 6;
+}*/
+$maxperline = 1;
+$numcategory = 0;
+
+if (!$editing) {
+    echo '<div class="block_catalogue_hoverlabel">';
+    echo get_string('hover', 'block_catalogue');
+    echo '</div>';
+}
 foreach ($categories as $category) {
     if ($availables[$category]) {
+	//~ $numcategory++;
+	//~ if (($numcategory == $nbcategories)&&($nbcategories != 2)) {
+	    //~ $maxperline = 6;
+	//~ }
+	echo "<div style='float:left;margin-right:20px;min-width:$minwidth%'>";
         $categorylocalname = get_string($thislistname.'_'.$category, 'block_catalogue');
         ?>
         <br>
@@ -119,18 +142,13 @@ foreach ($categories as $category) {
         } else {
             $display = 'none';
         }
-        echo "<div id ='$categorylocalname' style='width:100%;display:$display'><br>";
+        echo "<div id ='$categorylocalname' style='width:100%;display:$display'>";
+	echo "<br>";
         echo "<div class='block_catalogue_categorycontent'>";
-
-        if (!$editing) {
-            echo '<div class="block_catalogue_hoverlabel">';
-            echo get_string('hover', 'block_catalogue');
-            echo '</div>';
-        }
-        block_catalogue_display_category($course, $usereditor, $thislist, $availables[$category]);
-
+        block_catalogue_display_category($course, $usereditor, $thislist, $availables[$category], $maxperline);
         echo '</div>';
         echo '</div>';
+	echo '</div>';
     }
 }
 

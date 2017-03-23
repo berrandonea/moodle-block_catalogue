@@ -151,17 +151,17 @@ class blockcatalogue_list_customlabels extends blockcatalogue_list {
                 return $link;
 
             case 'iconurl' :
-                $localicondir = "mod/customlabel/type/$elementname";
+                $localicondir = "mod/customlabel/type/$elementname/pix";
                 $iconurl = $this->get_first_icon($localicondir);
                 if ($iconurl) {
                     return $iconurl;
                 }
                 $iconurl = $this->get_local_iconurl(null, $elementname);
                 if ($iconurl) {
-					return $iconurl;
-				} else {
-					return $OUTPUT->pix_url('icon', 'mod_customlabel');
-				}
+		   return $iconurl;
+		} else {
+		   return $OUTPUT->pix_url('icon', 'mod_customlabel');
+		}
 
             default :
                 return null;

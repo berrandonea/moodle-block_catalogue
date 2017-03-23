@@ -255,7 +255,9 @@ $string['sections_description_picture'] = 'Change section picture';
 
 
 $string['editing_listname'] = 'Editing';
-$string['editing_coursesections'] = 'Course sections';
+$string['editing_sectionsandmods'] = 'Edit anything';
+$string['editing_sectionsonly'] = 'Edit sections';
+$string['editing_modsonly'] = 'Edit activities or resources';
 $string['editing_use'] = 'OK';
 $string['editing_add'] = 'Add section';
 $string['editing_remove'] = 'Remove last section';
@@ -265,6 +267,14 @@ $string['editing_delete'] = 'Delete';
 $string['editing_highlight'] = 'Highlight section';
 $string['editing_hideshow'] = 'Hide/show';
 $string['editing_picture'] = 'Change section picture';
+$string['editing_indent'] = 'Move right';
+$string['editing_unindent'] = 'Move left';
+$string['editing_duplicate'] = 'Duplicate';
+$string['editing_roles'] = 'Local roles';
+$string['editing_description_indent'] = 'Move a module title right inside its section';
+$string['editing_description_unindent'] = 'Move a module title left inside its section';
+$string['editing_description_duplicate'] = 'Duplicate an activity or a resource';
+$string['editing_description_roles'] = 'Manage local roles inside an activity or resource';
 $string['editing_description_add'] = 'Add a new section at the end of the course.';
 $string['editing_description_remove'] = 'Remove the last section of the course. If there are activities inside, these will become orphaned activities.';
 $string['editing_description_edit'] = 'Edit a section, an activity or a resource.';

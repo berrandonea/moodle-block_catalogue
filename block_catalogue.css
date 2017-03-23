@@ -16,12 +16,13 @@
 }
 .block_catalogue_categorycontent {
     overflow:hidden;
-    position:relative
+    position:relative;
+    text-align:center;
 }
 .block_catalogue_element {
     float:left;
     width:315px;
-    height:240px;
+    height:220px;
     padding-right:12px;
     overflow:hidden;
     margin-bottom:20px;

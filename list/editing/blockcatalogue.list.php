@@ -46,12 +46,13 @@ class blockcatalogue_list_editing extends blockcatalogue_list {
     public function __construct() {
         $this->name = 'editing';
         $this->prefix = 'editing';
-        $this->categories = array('coursesections');
-        $this->potentialmembers = array();
+        $this->categories = array('sectionsandmods', 'sectionsonly', 'modsonly');
+        $this->potentialmembers = array('sectionsandmods' => array('edit', 'hideshow', 'move', 'delete'),
+										'sectionsonly' => array('highlight', 'add', 'remove', 'picture'),
+										'modsonly' => array('indent', 'unindent', 'duplicate', 'roles'));
         $this->defaultfavorites = array('edit', 'delete', 'move');
         $this->color = '#000000';
     }
-
 
 	public function actionurl_mod($elementname, $modid) {
 		global $CFG, $DB;
@@ -137,18 +138,22 @@ class blockcatalogue_list_editing extends blockcatalogue_list {
         $coursecontext = context_course::instance($COURSE->id);
         $this->availables['coursesections'] = array();
         if (has_capability('moodle/course:update', $coursecontext)) {
-            $this->availables['coursesections'][] = 'add';
-            $this->availables['coursesections'][] = 'remove';
-            $this->availables['coursesections'][] = 'edit';
-            $this->availables['coursesections'][] = 'move';
-            $this->availables['coursesections'][] = 'delete';
-            $this->availables['coursesections'][] = 'highlight';
+            $this->availables['sectionsonly'][] = 'add';
+            $this->availables['sectionsonly'][] = 'remove';
+            $this->availables['sectionsandmods'][] = 'edit';
+            $this->availables['sectionsandmods'][] = 'move';
+            $this->availables['sectionsandmods'][] = 'delete';
+            $this->availables['sectionsonly'][] = 'highlight';
+            $this->availables['modsonly'][] = 'indent';
+            $this->availables['modsonly'][] = 'unindent';
+            $this->availables['modsonly'][] = 'duplicate';
+            $this->availables['modsonly'][] = 'roles';
             if ($COURSE->format == 'grid') {
-                $this->availables['coursesections'][] = 'picture';
+                $this->availables['sectionsonly'][] = 'picture';
             }
         }
         if (has_capability('moodle/course:sectionvisibility', $coursecontext)) {
-            $this->availables['coursesections'][] = 'hideshow';
+            $this->availables['sectionsandmods'][] = 'hideshow';
         }
         foreach ($this->categories as $category) {
             $this->sort_by_localname($category);

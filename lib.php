@@ -39,6 +39,9 @@ function block_catalogue_all_favorites($listnames) {
     $favorites = array();
     $lists = array();
     foreach ($listnames as $listname) {
+		if ($listname == '') {
+			$favorites[] = '<br>';
+		}
         $list = block_catalogue_instanciate_list($listname);
         if ($list) {
             $lists[] = $list;
@@ -125,14 +128,14 @@ function block_catalogue_check_sequences($course) {
 
 function block_catalogue_chooseplace_modicon($modulehtml, $cmid, $selectmodurl) {
 	global $DB, $OUTPUT;
-	
+
 	$modulehtml = str_replace('<li', '<div', $modulehtml);
 	$modulehtml = str_replace('</li>', '</div>', $modulehtml);
 	$modulehtml = str_replace('<a', '<div', $modulehtml);
 	$modulehtml = str_replace('</a>', '</div>', $modulehtml);
 	$cm = $DB->get_record('course_modules', array('id' => $cmid));
-	
-	if (strpos($modulehtml, '<div class="contentwithoutlink ">')) {		
+
+	if (strpos($modulehtml, '<div class="contentwithoutlink ">')) {
 		$module = $DB->get_record('modules', array('id' => $cm->module));
 		$pixurl = $OUTPUT->pix_url('icon', "mod_$module->name");
 		if ($module->name == 'customlabel') {
@@ -142,11 +145,11 @@ function block_catalogue_chooseplace_modicon($modulehtml, $cmid, $selectmodurl) 
 				$pixurl = $clabelslist->get_element_data($customlabel->labelclass, 'iconurl');
 			}
 		}
-		$modoutput = "<img src='$pixurl' width='30px' style='padding-top:15px'>";		
+		$modoutput = "<img src='$pixurl' width='30px' style='padding-top:15px'>";
 	} else {
 		$modoutput = $modulehtml;;
 	}
-	
+
 	echo '<span style="padding-left:30px;float:left;margin-bottom:30px"> &nbsp; &nbsp; ';
 	if ($selectmodurl) {
 		echo '<a href="'.$selectmodurl.'">';
@@ -163,7 +166,7 @@ function block_catalogue_chooseplace_modicon($modulehtml, $cmid, $selectmodurl) 
 		echo '</button>';
 		echo '</a>';
 	}
-	echo '</span>';	
+	echo '</span>';
 }
 
 /**
@@ -173,8 +176,9 @@ function block_catalogue_chooseplace_modicon($modulehtml, $cmid, $selectmodurl) 
  * @param boolean $usereditor
  * @param object $list
  * @param array of strings $elementnames
+ * @param int $maxperline
  */
-function block_catalogue_display_category($course, $usereditor, $list, $elementnames) {
+function block_catalogue_display_category($course, $usereditor, $list, $elementnames, $maxperline) {
     global $DB;
     $listname = $list->get_name();
     if ($usereditor) {
@@ -182,6 +186,7 @@ function block_catalogue_display_category($course, $usereditor, $list, $elementn
     } else {
         $elementclass = 'block_catalogue_element';
     }
+    $onthatline = 0; // No element yet on that line.
     foreach ($elementnames as $elementname) {
         $params = array('listname' => $listname, 'elementname' => $elementname);
         $hidden = $DB->get_record('block_catalogue_hide', $params);
@@ -189,6 +194,11 @@ function block_catalogue_display_category($course, $usereditor, $list, $elementn
             echo "<div class='$elementclass'>";
             block_catalogue_display_element($course, $usereditor, $list, $elementname);
             echo '</div>';
+			$onthatline++;
+			if ($onthatline == $maxperline) {
+				echo '<p style="margin-bottom:0"></p>';
+				$onthatline = 0;
+			}
         }
     }
 }
@@ -292,7 +302,7 @@ function block_catalogue_display_tabs($courseid, $thislistname, $editing) {
 				$html .= "catalogue_icon.png";
 			} else {
 				$html .= "shaded_icon.png";
-			}            
+			}
             $html .= "' class='block_catalogue_tabicon' width='40px' height='40px'>";
             $html .= "</td>";
             $html .= '</tr><tr>';
@@ -553,6 +563,10 @@ function block_catalogue_show_favorites($favorites, $bgcolor) {
     $style = "max-width:50px;text-align:center;background-color:$bgcolor";
     $nbcolumns = 3;
     foreach ($favorites as $favorite) {
+		if ($favorite === '<br>') {
+			print_object($favorites);
+			$favstring .= '</tr><tr><td></td></tr><tr>';
+		}
         if (!isset($favlists[$favorite->listname])) {
             $favlists[$favorite->listname] = block_catalogue_instanciate_list($favorite->listname);
         }
