@@ -271,6 +271,7 @@ function block_catalogue_display_element($course, $usereditor, $list, $elementna
  * @global object $DB
  * @param int $courseid
  * @param string $thislistname
+ * @param boolean $editing
  */
 function block_catalogue_display_tabs($courseid, $thislistname, $editing) {
     global $CFG, $DB;
@@ -302,7 +303,7 @@ function block_catalogue_display_tabs($courseid, $thislistname, $editing) {
             $html .= '<table><tr>';
             $html .= "<td class='block_catalogue_listtab' style='text-align:center'>";
             $html .= "<img src='$listdir/$listname/";
-            if ($listname == $thislistname) {
+            if (!$thislistname || $listname == $thislistname) {
 				$html .= "catalogue_icon.png";
 			} else {
 				$html .= "shaded_icon.png";
@@ -596,7 +597,7 @@ function block_catalogue_show_favorites($favorites, $bgcolor) {
 			if ($previouslist) {
 				$separator = block_catalogue_separator($previouslist, $favorite->listname);
 				if ($separator) {
-					$favstring .= '</tr><tr><td height="30px"></td></tr><tr>';
+					$favstring .= '</tr><tr><td height="25px"></td></tr><tr>';
 					$nbshownfavs = 0;
 				}				
 			}

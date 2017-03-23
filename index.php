@@ -104,7 +104,7 @@ if (!strpos($header, 'block_catalogue_tabicon')) {
 // Main content.
 $nbcategories = count($categories);
 
-$minwidth = floor(100/$nbcategories) - 2;
+$minwidth = floor(100/$nbcategories) - 1;
 /*if ($nbcategories == 2) {
     $maxperline = 2;
 } else if ($nbcategories > 2) {
@@ -126,7 +126,7 @@ foreach ($categories as $category) {
 	//~ if (($numcategory == $nbcategories)&&($nbcategories != 2)) {
 	    //~ $maxperline = 6;
 	//~ }
-	echo "<div style='float:left;margin-right:20px;min-width:$minwidth%'>";
+	echo "<div style='float:left;margin-right:1%;min-width:$minwidth%'>";
         $categorylocalname = get_string($thislistname.'_'.$category, 'block_catalogue');
         ?>
         <br>
