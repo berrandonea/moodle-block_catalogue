@@ -38,10 +38,7 @@
 function block_catalogue_all_favorites($listnames) {
     $favorites = array();
     $lists = array();
-    foreach ($listnames as $listname) {
-		if ($listname == '') {
-			$favorites[] = '<br>';
-		}
+    foreach ($listnames as $listname) {		
         $list = block_catalogue_instanciate_list($listname);
         if ($list) {
             $lists[] = $list;
@@ -283,6 +280,7 @@ function block_catalogue_display_tabs($courseid, $thislistname, $editing) {
     $sortorder = explode(',', $dborder);
     $listnames = block_catalogue_get_listnames($sortorder);
     $html = '';
+    $previouslistname = '';
     foreach ($listnames as $listname) {
         $list = block_catalogue_instanciate_list($listname);
         if ($list) {
@@ -292,6 +290,12 @@ function block_catalogue_display_tabs($courseid, $thislistname, $editing) {
                     continue;
                 }
             }
+            if ($previouslistname) {
+				$separator = block_catalogue_separator($previouslistname, $listname);
+				if ($separator) {
+					$html .= '<div style="float:left;margin-right:50px"> &nbsp; </div>';
+				}
+			}
             $html .= "<div style='float:left;margin-right:30px'>";
             $target = $CFG->wwwroot.'/blocks/catalogue/index.php'."?name=$listname&course=$courseid&editing=$editing";
             $html .= "<a href = '$target'>";
@@ -316,8 +320,9 @@ function block_catalogue_display_tabs($courseid, $thislistname, $editing) {
             $html .= "<td class='$listnameclass'>"."<a href='$target' style='color:$listcolor'>".$listlocalname.'</a></td>';
             $html .= '</tr></table>';
             $html .= '</a>';
-            $html .= "</div>";
+            $html .= "</div>";            
         }
+        $previouslistname = $listname;
     }
     //~ $html .= '</tr></table>';
     return $html;
@@ -374,7 +379,7 @@ function block_catalogue_get_listnames() {
     $sortorder = explode(',', $displayedlists);
     $listnames = array();
     $path = "$CFG->dirroot/blocks/catalogue/list";
-    foreach ($sortorder as $listname) {
+    foreach ($sortorder as $listname) {		
         if (file_exists("$path/$listname/blockcatalogue.list.php")) {
             $listnames[] = $listname;
         }
@@ -551,23 +556,51 @@ function block_catalogue_show_description($usereditor, $description, $url, $elem
 }
 
 /**
+ * Uses the "displayed lists" setting to check whether there is a separator
+ * somewhere between two given list names.
+ * @param string $firstlistname
+ * @param string $secondlistname
+ * @return boolean
+ */
+function block_catalogue_separator($firstlistname, $secondlistname) {
+	$displayedlists = get_config('catalogue', 'displayedlists');
+	$listsarray = explode(',', $displayedlists);
+	$firstlistkey = array_search($firstlistname, $listsarray);
+	$i = $firstlistkey + 1;
+	while ($listsarray[$i] != $secondlistname) {
+		if ($listsarray[$i] == '') {
+			return true;
+		}
+		$i++;
+	}
+	return false;
+}
+
+/**
  * Show all the current user's favorites in the small block.
  * @param array of objects $favorites
  * @return string HTML code
  */
 function block_catalogue_show_favorites($favorites, $bgcolor) {
+	$displayedlists = get_config('catalogue', 'displayedlists');
+	$displayedlistsarray = explode(',', $displayedlists);
     $nbfavs = count($favorites);
     $nbshownfavs = 0;
     $favlists = array();
+    $previouslist = '';
     $favstring = '<table width="100%">';
     $style = "max-width:50px;text-align:center;background-color:$bgcolor";
     $nbcolumns = 3;
     foreach ($favorites as $favorite) {
-		if ($favorite === '<br>') {
-			print_object($favorites);
-			$favstring .= '</tr><tr><td></td></tr><tr>';
-		}
         if (!isset($favlists[$favorite->listname])) {
+			if ($previouslist) {
+				$separator = block_catalogue_separator($previouslist, $favorite->listname);
+				if ($separator) {
+					$favstring .= '</tr><tr><td height="30px"></td></tr><tr>';
+					$nbshownfavs = 0;
+				}				
+			}
+			$previouslist = $favorite->listname;
             $favlists[$favorite->listname] = block_catalogue_instanciate_list($favorite->listname);
         }
         if (!$favlists[$favorite->listname]->favorite_here($favorite->elementname)) {

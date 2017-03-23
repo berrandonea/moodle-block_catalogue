@@ -21,7 +21,7 @@
 }
 .block_catalogue_element {
     float:left;
-    width:315px;
+    width:300px; #315px
     height:220px;
     padding-right:12px;
     overflow:hidden;
@@ -29,7 +29,7 @@
 }
 .block_catalogue_editedelement {
     float:left;
-    width:315px;
+    width:300px; #315px;
     height:330px;
     padding-right:12px;
     overflow:hidden;

@@ -190,7 +190,7 @@ abstract class blockcatalogue_list {
         $title .= $this->get_element_localname($elementname);
         $iconurl = $this->get_element_data($elementname, 'iconurl');
         $listcolor = $this->get_color();
-        $favstring = "<img style='border-left: medium solid $listcolor' src='$iconurl' ".'title="'.$title.'" width="35px">';
+        $favstring = "<img style='border-left: 4px solid $listcolor' src='$iconurl' ".'title="'.$title.'" width="35px">';
         return $favstring;
     }
 
