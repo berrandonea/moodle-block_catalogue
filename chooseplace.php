@@ -117,7 +117,6 @@ $sections = $DB->get_recordset('course_sections', array('course' => $COURSE->id)
 
 // Page display.
 echo $OUTPUT->header();
-$list->display_all_buttons();
 echo '<h1>'.$title.'</h1>';
 echo '<div max-width="50%">';
 echo $list->get_element_data($elementname, 'description');
