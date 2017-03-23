@@ -194,32 +194,35 @@ abstract class blockcatalogue_list {
         return $favstring;
     }
 
-	public function display_all_buttons() {
-		echo '<div style="float:right">';
-		$categories = $this->get_categories();
-		$availables = $this->get_availables();
-		echo '<table>';
-		foreach ($categories as $category) {
-			echo '<tr>';
-			foreach ($availables[$category] as $elementname) {
-				$localname = $this->get_element_localname($elementname);
-				$iconurl = $this->get_element_data($elementname, 'iconurl');
-				$usageurl = $this->usage_url($elementname);
-				echo '<td style="margin-right:5px">'."<a href='$usageurl'>".'<button>';
-				echo "<img width='30px' height='30px' src='$iconurl' title='$localname' alt='$localname'>";
-				echo '</button>'."</a>".'</td>';
-			}
-			echo '</tr>';
-		}
-		echo '</table>';
-		echo '</div>';
+    /**
+     * Display all elements of the list as small buttons.
+     */
+    public function display_all_buttons() {
+        echo '<div style="float:right">';
+        $categories = $this->get_categories();
+        $availables = $this->get_availables();
+        echo '<table>';
+        foreach ($categories as $category) {
+  	    echo '<tr>';
+	    foreach ($availables[$category] as $elementname) {
+	        $localname = $this->get_element_localname($elementname);
+	        $iconurl = $this->get_element_data($elementname, 'iconurl');
+	        $usageurl = $this->usage_url($elementname);
+	        echo '<td style="margin-right:5px">'."<a href='$usageurl' title='$localname'>".'<button>';
+	        echo "<img width='30px' height='30px' src='$iconurl' alt='$localname'>";
+	        echo '</button>'."</a>".'</td>';
+	    }
+	    echo '</tr>';
 	}
+	echo '</table>';
+	echo '</div>';
+    }
 
     /**
      * Tells whether this favorite can be used in the current course.
      * Overriden in subclasses when necessary.
      * @param string $elementname
-     * @return boolean     
+     * @return boolean
      */
     public function favorite_here($elementname) {
         return true;
