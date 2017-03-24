@@ -54,33 +54,41 @@ class blockcatalogue_list_editing extends blockcatalogue_list {
         $this->color = '#000000';
     }
 
-	public function actionurl_mod($elementname, $modid) {
-		global $CFG, $DB;
-		$cm = $DB->get_record('course_modules', array('id' => $modid));
-		$page = 'mod';
-		$args = "sesskey=".sesskey()."&sr=0";
-		switch($elementname) {
-			case 'delete':
-				$args .= "&delete=$modid";
-				break;
-			case 'edit':
-				$args .= "&update=$modid";
-				break;
-			case 'hideshow':
-				if ($cm->visible) {
-					$args .= "&hide=$modid";
-				} else {
-					$args .= "&show=$modid";
-				}
-				break;
-			case 'move':
-				break;
-			default:
+    public function actionurl_mod($elementname, $modid) {
+        global $CFG, $DB;
+        $cm = $DB->get_record('course_modules', array('id' => $modid));
+        $page = 'mod';
+        $args = "sesskey=".sesskey()."&sr=0";
+        switch($elementname) {
+  	    case 'delete':
+	        $args .= "&delete=$modid";
+		break;
+	    case 'edit':
+	        $args .= "&update=$modid";
+		break;
+	    case 'hideshow':
+	        if ($cm->visible) {
+		    $args .= "&hide=$modid";
+		} else {
+		    $args .= "&show=$modid";
 		}
-		$actionurl = "$CFG->wwwroot/course/$page.php?$args";
-		return $actionurl;
+		break;
+	    case 'move':
+	        break;
+	    case 'duplicate':
+	        $args .= "&duplicate=$modid";
+	        break;
+	    case 'indent':
+		$args .= "&id=$modid&indent=1";
+		break;
+	    case 'unindent':
+		$args .= "&id=$modid&indent=-1";
+		break;
+	    default:
 	}
-
+	$actionurl = "$CFG->wwwroot/course/$page.php?$args";
+	return $actionurl;
+    }
 
 	public function actionurl_section($elementname, $sectionid) {
 		global $CFG, $DB, $USER;
@@ -91,7 +99,7 @@ class blockcatalogue_list_editing extends blockcatalogue_list {
 				$args = "sr=0&id=$sectionid&delete=1";
 				break;
 			case 'edit':
-				$page = 'editsection';			
+				$page = 'editsection';
 				$args = "sr=0&id=$sectionid";
 				break;
 			case 'hideshow':
@@ -118,7 +126,7 @@ class blockcatalogue_list_editing extends blockcatalogue_list {
 				$coursecontext = context_course::instance($section->course);
 				$args = "contextid=$coursecontext->id&userid=$USER->id&sectionid=$sectionid";
 				break;
-			default:			
+			default:
 		}
 		$actionurl = "$CFG->wwwroot/course/$page.php?$args";
 		return $actionurl;
@@ -160,10 +168,10 @@ class blockcatalogue_list_editing extends blockcatalogue_list {
         }
         return true;
     }
-    
+
     /**
      * Tells whether a given action is allowed to this user in this course.
-     * 
+     *
      * @global object $COURSE
      * @param string $elementname
      * @return boolean
@@ -217,8 +225,15 @@ class blockcatalogue_list_editing extends blockcatalogue_list {
     }
 
 	public function select_mod($elementname) {
-		$elements = array('delete', 'edit', 'hideshow', 'move');
-		return in_array($elementname, $elements);
+		if (in_array($elementname, $this->potentialmembers['sectionsandmods'])) {
+		    return true;
+		}
+		if (in_array($elementname, $this->potentialmembers['modsonly'])) {
+		    return true;
+		}
+		return false;
+		//$elements = array('delete', 'edit', 'hideshow', 'move');
+		//return in_array($elementname, $elements);
 	}
 
 	public function select_section($elementname) {

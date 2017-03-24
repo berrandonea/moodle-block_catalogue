@@ -116,6 +116,7 @@ if ($listname == 'blocks') {
 $sections = $DB->get_recordset('course_sections', array('course' => $COURSE->id));
 
 // Page display.
+$USER->editing = 0;
 echo $OUTPUT->header();
 echo '<h1>'.$title.'</h1>';
 echo '<div max-width="50%">';
@@ -158,7 +159,7 @@ foreach ($sections as $section) {
 	} else {
 		echo "<span $hidden>Section $section->section</span>";
 	}
-	echo '</td><td>';	
+	echo '</td><td> &nbsp; </td><td>';
     $args['aftermod'] = 0;
 	$placeurl = new moodle_url($thisfilename, $args);
 	echo '<a style="padding-left:30px;float:left;margin-top:10px;margin-bottom:30px" href="'.$placeurl.'">'.$herebutton.'</a>';
@@ -167,7 +168,7 @@ foreach ($sections as $section) {
 			$cminfo = $modinfo->cms[$cmid];
 			if ($modulehtml = $renderer->course_section_cm_list_item($course,
 							$completioninfo, $cminfo, null)) {
-				block_catalogue_chooseplace_modicon($modulehtml, $cmid, '');
+				block_catalogue_chooseplace_modicon($modulehtml, $cmid, '', true);
 				$args['aftermod'] = $cmid;
 				$placeurl = new moodle_url($thisfilename, $args);
 				echo '<a style="padding-left:30px;float:left;margin-top:10px;margin-bottom:30px" href="'.$placeurl.'">'.$herebutton.'</a>';

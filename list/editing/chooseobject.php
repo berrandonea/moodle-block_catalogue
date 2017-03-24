@@ -43,23 +43,23 @@ $courseid = required_param('course', PARAM_INT);
 $args = array('action' => $elementname, 'course' => $courseid);
 $sectionid = optional_param('sectionid', 0, PARAM_INT);
 if ($sectionid) {
-	$args['sectionid'] = $sectionid;
+    $args['sectionid'] = $sectionid;
 }
 $modid = optional_param('modid', 0, PARAM_INT);
 if ($modid) {
-	$args['modid'] = $modid;
+    $args['modid'] = $modid;
 }
 $beforemod = optional_param('beforemod', 0, PARAM_INT);
 if ($beforemod) {
-	$args['beforemod'] = $beforemod;
+    $args['beforemod'] = $beforemod;
 }
 $tosection = optional_param('tosection', 0, PARAM_INT);
 if ($tosection) {
-	$args['tosection'] = $tosection;
+    $args['tosection'] = $tosection;
 }
 $aftersection = optional_param('aftersection', 0, PARAM_INT);
 if ($aftersection) {
-	$args['aftersection'] = $aftersection;
+    $args['aftersection'] = $aftersection;
 }
 
 // Access control.
@@ -82,73 +82,71 @@ $betweenmods = false;
 
 // Once the user has chosen a section
 if ($sectionid) {
-	if ($elementname == 'move') {
-		$question = get_string('movewhere', 'block_catalogue');
-		$selectsection = false;
-		$selectmod = false;
-		$betweensections = true;
-		if ($aftersection) {
-			$section = $DB->get_record('course_sections', array('id' => $sectionid));
-			$aftersectionrecord = $DB->get_record('course_sections', array('id' => $aftersection));
-			$destination = $aftersectionrecord->section + 1;
-			// We change the sections' order so we must update the course's marker.
-			if ($COURSE->marker) {
-				$highlightedsectionid = $DB->get_field('course_sections', 'id', array('section' => $COURSE->marker));
-			}
-			move_section_to($COURSE, $section->section, $destination);
-			$highlightedsection = $DB->get_record('course_sections', array('id' => $highlightedsectionid));
-			$DB->set_field("course", "marker", $highlightedsection->section, array('id' => $section->course));
-			format_base::reset_course_cache($section->course);
-			header("Location: $coursepage#section-$destination");
-		}
-	} else {
-		$actionurl = $list->actionurl_section($elementname, $sectionid);
-		header("Location: $actionurl");
+    if ($elementname == 'move') {
+	$question = get_string('movewhere', 'block_catalogue');
+	$selectsection = false;
+	$selectmod = false;
+	$betweensections = true;
+	if ($aftersection) {
+ 	    $section = $DB->get_record('course_sections', array('id' => $sectionid));
+	    $aftersectionrecord = $DB->get_record('course_sections', array('id' => $aftersection));
+	    $destination = $aftersectionrecord->section + 1;
+	    // We change the sections' order so we must update the course's marker.
+	    if ($COURSE->marker) {
+		$highlightedsectionid = $DB->get_field('course_sections', 'id', array('section' => $COURSE->marker));
+	    }
+	    move_section_to($COURSE, $section->section, $destination);
+	    $highlightedsection = $DB->get_record('course_sections', array('id' => $highlightedsectionid));
+	    $DB->set_field("course", "marker", $highlightedsection->section, array('id' => $section->course));
+	    format_base::reset_course_cache($section->course);
+	    header("Location: $coursepage#section-$destination");
 	}
+    } else {
+	$actionurl = $list->actionurl_section($elementname, $sectionid);
+	header("Location: $actionurl");
+    }
 }
 
 //Once the user has chosen a mod
 if ($modid) {
-	if ($elementname == 'move') {
-		$question = get_string('movewhere', 'block_catalogue');
-		$selectsection = false;
-		$selectmod = false;
-		$betweenmods = true;
-		if ($tosection) {
-			$modinfo = get_fast_modinfo($course);
-			$movedcminfo = $modinfo->cms[$modid];
-			$tosectionrecord = $DB->get_record('course_sections', array('id' => $tosection));
-			moveto_module($movedcminfo, $tosectionrecord, $beforemod);
-			header("Location: $coursepage#section-$tosectionrecord->section");
-		}
-	} else {
-		$actionurl = $list->actionurl_mod($elementname, $modid);
-		header("Location: $actionurl");
+	$cm = get_coursemodule_from_id('', $modid, 0, true, MUST_EXIST);		
+	$modcontext = context_module::instance($modid);
+	require_capability('moodle/course:manageactivities', $modcontext);
+	switch ($elementname) {
+		case 'move':
+			$question = get_string('movewhere', 'block_catalogue');
+			$selectsection = false;
+			$selectmod = false;
+			$betweenmods = true;
+			if ($tosection) {
+				$modinfo = get_fast_modinfo($course);
+				$movedcminfo = $modinfo->cms[$modid];
+				$tosectionrecord = $DB->get_record('course_sections', array('id' => $tosection));
+				moveto_module($movedcminfo, $tosectionrecord, $beforemod);
+				header("Location: $coursepage#section-$tosectionrecord->section");
+			}
+			break;
+
+		case 'indent':
+			$cm->indent++;
+			$DB->set_field('course_modules', 'indent', $cm->indent, array('id'=>$modid));
+			rebuild_course_cache($cm->course);
+			break;
+
+		case 'unindent':
+			$cm->indent--;
+			if ($cm->indent < 0) {
+			    $cm->indent = 0;
+		    }
+		    $DB->set_field('course_modules', 'indent', $cm->indent, array('id'=>$modid));
+			rebuild_course_cache($cm->course);
+			break;
+
+		default:
+		    $actionurl = $list->actionurl_mod($elementname, $modid);
+		    header("Location: $actionurl");
 	}
 }
-
-//~ // Once the user has chosen (clicked) a place.
-//~ if ($sectionid) {
-	//~ $section = $DB->get_record('course_sections', array('id' => $sectionid, 'course' => $courseid), '*', MUST_EXIST);
-	//~ $sequence = explode(',', $section->sequence);
-	//~ $sectionlastcmid = end($sequence); //cmid of the current last mod in this section.
-	//~ reset($sequence);
-	//~ if ($aftermod) {
-		//~ $newsequence = '';
-	//~ } else { // If the new mod is placed at the beginning of the section.
-		//~ $newsequence = -$sectionlastcmid.',';
-	//~ }
-	//~ foreach ($sequence as $cmid) {
-		//~ $newsequence .= "$cmid,";
-		//~ if ($cmid == $aftermod) {
-			//~ $newsequence .= -$sectionlastcmid.',';
-		//~ }
-	//~ }
-	//~ $section->sequence = substr($newsequence, 0, -1); //Remove the last comma.
-	//~ $DB->update_record('course_sections', $section);
-	//~ $url = $targetcommonurl."&section=$section->section";
-	//~ header("Location: $url");
-//~ }
 
 // Header code.
 $elementlocalname = $list->get_element_localname($elementname);
@@ -165,6 +163,7 @@ $PAGE->navbar->add($title, '');
 $sections = $DB->get_recordset('course_sections', array('course' => $COURSE->id));
 
 // Page display.
+$USER->editing = 0;
 echo $OUTPUT->header();
 $list->display_all_buttons();
 echo '<h1>'.$title.'</h1>';
@@ -215,9 +214,9 @@ foreach ($sections as $section) {
 	if ($selectsection) {
 		echo '</button></a>';
 	}
-	echo '</td><td>';	
+	echo '</td><td> &nbsp; </td><td>';
 	if (!empty($modinfo->sections[$section->section])) {
-		foreach ($modinfo->sections[$section->section] as $cmid) {			
+		foreach ($modinfo->sections[$section->section] as $cmid) {
 			$cminfo = $modinfo->cms[$cmid];
 			if ($modulehtml = $renderer->course_section_cm_list_item($course,
 							$completioninfo, $cminfo, null)) {
@@ -231,15 +230,19 @@ foreach ($sections as $section) {
 				if ($selectmod) {
 					$modargs = $args;
 					$modargs['modid'] = $cmid;
-					$selectmodurl = new moodle_url($thisfilename, $modargs);					
+					$selectmodurl = new moodle_url($thisfilename, $modargs);
 				} else {
 					$selectmodurl = '';
 				}
 				if ($cmid == $modid) { // If we're moving this mod.
 					echo '<div style="color:red">';
 				}
-				block_catalogue_chooseplace_modicon($modulehtml, $cmid, $selectmodurl);
-				if ($cmid == $modid) {
+				if ($elementname == 'indent' || $elementname == 'unindent') {
+					block_catalogue_chooseplace_modicon($modulehtml, $cmid, $selectmodurl, false);
+				} else {
+					block_catalogue_chooseplace_modicon($modulehtml, $cmid, $selectmodurl, true);
+				}				
+				if ($cmid == $modid) { // If we're moving this mod.
 					echo '</div>';
 				}
 			}

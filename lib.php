@@ -123,15 +123,21 @@ function block_catalogue_check_sequences($course) {
 	}
 }
 
-function block_catalogue_chooseplace_modicon($modulehtml, $cmid, $selectmodurl) {
-	global $DB, $OUTPUT;
+/**
+ * Displays the icon and title of a mod on the chooseplace and chooseobject pages.
+ * @param string $modulehtml
+ * @param int $cmid
+ * @param string $selectmodurl
+ * @param boolean $float
+ */
+function block_catalogue_chooseplace_modicon($modulehtml, $cmid, $selectmodurl, $float) {
+	global $DB, $OUTPUT;	
 
 	$modulehtml = str_replace('<li', '<div', $modulehtml);
 	$modulehtml = str_replace('</li>', '</div>', $modulehtml);
 	$modulehtml = str_replace('<a', '<div', $modulehtml);
 	$modulehtml = str_replace('</a>', '</div>', $modulehtml);
 	$cm = $DB->get_record('course_modules', array('id' => $cmid));
-
 	if (strpos($modulehtml, '<div class="contentwithoutlink ">')) {
 		$module = $DB->get_record('modules', array('id' => $cm->module));
 		$pixurl = $OUTPUT->pix_url('icon', "mod_$module->name");
@@ -147,7 +153,12 @@ function block_catalogue_chooseplace_modicon($modulehtml, $cmid, $selectmodurl) 
 		$modoutput = $modulehtml;;
 	}
 
-	echo '<span style="padding-left:30px;float:left;margin-bottom:30px"> &nbsp; &nbsp; ';
+	if ($float) {
+		echo '<span style="padding-left:30px;float:left;margin-bottom:30px;" id="modbutton'.$cmid.'"> &nbsp; &nbsp; ';
+	} else {
+		echo '<span style="padding-left:30px;margin-bottom:30px"><br>';
+	}
+
 	if ($selectmodurl) {
 		echo '<a href="'.$selectmodurl.'">';
 		echo '<button class="btn btn-secondary">';
