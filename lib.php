@@ -149,13 +149,23 @@ function block_catalogue_chooseplace_modicon($modulehtml, $cmid, $selectmodurl, 
 				$pixurl = $clabelslist->get_element_data($customlabel->labelclass, 'iconurl');
 			}
 		}
-		$modoutput = '<table><tr>';
-		for ($i = 0; $i < $cm->indent; $i++) {
-			$modoutput .= '<td width="30px">&nbsp;</td>';
-		}		
-		$modoutput .= "<td><img src='$pixurl' width='30px' style='padding-top:15px'></td>";
-		$modoutput .= '</tr></table>';		
+		$img = "<img src='$pixurl' width='30px' style='padding-top:15px'>";
+		if ($float) {
+			$modoutput = $img;
+		} else {
+			$modoutput = '<table><tr>';
+			if (!$float) {
+				for ($i = 0; $i < $cm->indent; $i++) {
+					$modoutput .= '<td width="30px">&nbsp;</td>';
+				}
+			}
+			$modoutput .= "<td>$img</td>";
+			$modoutput .= '</tr></table>';
+		}				
 	} else {
+		if ($float) {
+			$modulehtml = str_replace('<div class="mod-indent mod-indent-'.$cm->indent.'">', '', $modulehtml);
+		}
 		$modoutput = $modulehtml;;
 	}
 
