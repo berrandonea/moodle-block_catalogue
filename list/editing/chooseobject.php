@@ -159,6 +159,7 @@ $listlocalname = $list->get_localname();
 $PAGE->navbar->add($listlocalname, 'index.php?name='.$listname.'&course='.$COURSE->id);
 $title = $elementlocalname;
 $PAGE->navbar->add($title, '');
+$PAGE->requires->js("/blocks/catalogue/js/block_catalogue.js");
 
 $sections = $DB->get_recordset('course_sections', array('course' => $COURSE->id));
 
@@ -197,7 +198,7 @@ foreach ($sections as $section) {
 	} else {
 		$hidden = "style='color:gray'";
 	}
-	echo "<tr $highlighting>";
+	echo "<tr $highlighting id='section$section->id'>";
 	echo '<td>';
 	if ($selectsection) {
 		$sectionargs = $args;
@@ -238,7 +239,9 @@ foreach ($sections as $section) {
 					echo '<div style="color:red">';
 				}
 				if ($elementname == 'indent' || $elementname == 'unindent') {
-					block_catalogue_chooseplace_modicon($modulehtml, $cmid, $selectmodurl, false);
+					echo "<div id='jsmod$cmid' onclick='indent(\"$elementname\", \"$cmid\")'>";
+					block_catalogue_chooseplace_modicon($modulehtml, $cmid, '', false);
+					echo "</div>";
 				} else {
 					block_catalogue_chooseplace_modicon($modulehtml, $cmid, $selectmodurl, true);
 				}				
@@ -271,4 +274,4 @@ echo '</table>';
 
 $sections->close();
 echo $OUTPUT->footer();
-
+?>

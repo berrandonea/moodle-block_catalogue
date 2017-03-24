@@ -88,3 +88,20 @@ function toggle(listname, elementname, toggler, courseid, isdefault, phpscript) 
     args = "list=" + listname + "&element=" + elementname + "&toggler=" + toggler + "&courseid=" + courseid + "&default=" + isdefault;
     xhr.send(args);
 }
+
+
+
+function indent(elementname, cmid) {
+	getXhr();
+	xhr.onreadystatechange = function() {
+        if(xhr.readyState == 4 && xhr.status == 200) {
+            response = xhr.responseText;
+            docelementid = 'jsmod' + cmid;
+            document.getElementById(docelementid).innerHTML = response;
+		}
+	}
+	xhr.open("POST", "indent.php", true);
+	xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+    args = "action=" + elementname + "&cmid=" + cmid;
+    xhr.send(args);
+}
