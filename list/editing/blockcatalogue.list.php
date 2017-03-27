@@ -50,44 +50,42 @@ class blockcatalogue_list_editing extends blockcatalogue_list {
         $this->potentialmembers = array('sectionsandmods' => array('edit', 'hideshow', 'move', 'delete'),
 										'sectionsonly' => array('highlight', 'add', 'remove', 'picture'),
 										'modsonly' => array('indent', 'unindent', 'duplicate', 'roles'));
-        $this->defaultfavorites = array('edit', 'delete', 'move');
+        $this->defaultfavorites = array('edit');
         $this->color = '#000000';
     }
 
     public function actionurl_mod($elementname, $modid) {
         global $CFG, $DB;
         $cm = $DB->get_record('course_modules', array('id' => $modid));
-        $page = 'mod';
+        $page = 'course/mod';
         $args = "sesskey=".sesskey()."&sr=0";
         switch($elementname) {
-  	    case 'delete':
-	        $args .= "&delete=$modid";
-		break;
-	    case 'edit':
-	        $args .= "&update=$modid";
-		break;
-	    case 'hideshow':
-	        if ($cm->visible) {
-		    $args .= "&hide=$modid";
-		} else {
-		    $args .= "&show=$modid";
-		}
-		break;
-	    case 'move':
-	        break;
-	    case 'duplicate':
-	        $args .= "&duplicate=$modid";
-	        break;
-	    case 'indent':
-		$args .= "&id=$modid&indent=1";
-		break;
-	    case 'unindent':
-		$args .= "&id=$modid&indent=-1";
-		break;
-	    default:
-	}
-	$actionurl = "$CFG->wwwroot/course/$page.php?$args";
-	return $actionurl;
+  	        case 'delete':
+	            $args .= "&delete=$modid";
+			    break;
+	        case 'edit':
+	            $args .= "&update=$modid";
+		        break;
+	        case 'hideshow':
+	            if ($cm->visible) {
+		            $args .= "&hide=$modid";
+		        } else {
+		            $args .= "&show=$modid";
+		        }
+		        break;
+	        case 'move':
+	            break;
+	        case 'duplicate':
+	            $args .= "&duplicate=$modid";
+	            break;
+	        case 'roles':
+				$modcontext = context_module::instance($modid);				
+				$args = "contextid=$modcontext->id";
+				$page = 'admin/roles/assign';
+	        default:
+	    }
+	    $actionurl = "$CFG->wwwroot/$page.php?$args";
+	    return $actionurl;
     }
 
 	public function actionurl_section($elementname, $sectionid) {

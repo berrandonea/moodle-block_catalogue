@@ -78,7 +78,13 @@ class blockcatalogue_list_hvp extends blockcatalogue_list {
      * @return boolean
      */
     public function fill_availables() {
-        global $DB;
+        global $COURSE, $DB;
+        
+        $coursecontext = context_course::instance($COURSE->id);
+        $permitted = has_capability("mod/hvp:addinstance", $coursecontext);
+        if (!$permitted) {
+			return true;
+		}
         
         //~ 
         //~ $coursecontext = context_course::instance($COURSE->id);

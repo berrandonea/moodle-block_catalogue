@@ -38,7 +38,7 @@
 function block_catalogue_all_favorites($listnames) {
     $favorites = array();
     $lists = array();
-    foreach ($listnames as $listname) {		
+    foreach ($listnames as $listname) {
         $list = block_catalogue_instanciate_list($listname);
         if ($list) {
             $lists[] = $list;
@@ -310,9 +310,17 @@ function block_catalogue_display_tabs($courseid, $thislistname, $editing) {
     $dborder = $DB->get_field('config_plugins', 'value', $params);
     $sortorder = explode(',', $dborder);
     $listnames = block_catalogue_get_listnames($sortorder);
-    $html = '';
+    $html = '';    
     $previouslistname = '';
+    $coursecontext = context_course::instance($courseid);
+    if (!has_capability('block/catalogue:viewlists', $coursecontext)) {
+		return $html;
+	}
+    $hideediting = get_config('catalogue', 'hideediting') && !has_capability('block/catalogue:edit', $coursecontext);
     foreach ($listnames as $listname) {
+		if ($listname == 'editing' && $hideediting) {
+			continue;
+		}
         $list = block_catalogue_instanciate_list($listname);
         if ($list) {
             if (!$editing) {
@@ -347,8 +355,20 @@ function block_catalogue_display_tabs($courseid, $thislistname, $editing) {
                 $listnameclass = 'block_catalogue_otherlistname';
             }
             $listlocalname = $list->get_localname();
+            if (strlen($listlocalname) > 12) {
+				$nameparts = explode(' ', $listlocalname);
+				$listlocalname = '';
+				foreach($nameparts as $key => $namepart) {
+					$listlocalname .= $namepart;
+					if ($key) {
+						$listlocalname .= ' ';
+					} else {
+						$listlocalname .= '<br>';
+					}
+				}				
+			}
             $listcolor = $list->get_color();
-            $html .= "<td class='$listnameclass'>"."<a href='$target' style='color:$listcolor'>".$listlocalname.'</a></td>';
+            $html .= "<td class='$listnameclass'>"."<a href='$target' style='color:$listcolor;max-width:$maxwidth'>".$listlocalname.'</a></td>';
             $html .= '</tr></table>';
             $html .= '</a>';
             $html .= "</div>";            
@@ -483,7 +503,11 @@ function block_catalogue_main_table($listnames, $course, $bgcolor, $showtabs) {
         $nblists = count($listnames);
         $nbshownlists = 0;
         $rowtitles = array();
+        $hideediting = get_config('catalogue', 'hideediting') && !has_capability('block/catalogue:edit', $coursecontext);
         foreach ($lists as $list) {
+			if ($list->get_name() == 'editing' && $hideediting) {
+				continue;
+			}
             $listcategories = $list->get_availables();
             $visibles = $list->visible_elements();
             if (count($visibles) > 1) {

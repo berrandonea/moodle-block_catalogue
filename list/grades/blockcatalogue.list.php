@@ -222,6 +222,9 @@ class blockcatalogue_list_grades extends blockcatalogue_list {
             $reports = core_component::get_plugin_list($prefix);
         }
         foreach ($reports as $name => $path) {
+			//~ if ($name == 'overview') {
+				//~ continue;
+			//~ }
             $elementname = $prefix.'_'.$name;
             if ($this->filter_report($coursecontext, $prefix, $name)) {
                 $common = $this->common_sortout($elementname);

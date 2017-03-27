@@ -42,7 +42,6 @@ $elementname = optional_param('element', '', PARAM_TEXT);
 $edit = optional_param('edit', '', PARAM_ALPHA);
 $newvalue = optional_param('newvalue', '', PARAM_TEXT);
 $editing = optional_param('editing', 0, PARAM_INT);
-
 $course = get_course($courseid);
 require_login($course);
 $coursecontext = context_course::instance($courseid);

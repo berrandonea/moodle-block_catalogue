@@ -196,9 +196,10 @@ abstract class blockcatalogue_list {
 
     /**
      * Display all elements of the list as small buttons.
+     * @param string $elementname
      */
-    public function display_all_buttons() {
-        echo '<div style="float:right">';
+    public function display_all_buttons($currentelementname) {
+        echo '<div style="position:fixed;right:100px;top:300px">';
         $categories = $this->get_categories();
         $availables = $this->get_availables();
         echo '<table>';
@@ -208,7 +209,12 @@ abstract class blockcatalogue_list {
 	        $localname = $this->get_element_localname($elementname);
 	        $iconurl = $this->get_element_data($elementname, 'iconurl');
 	        $usageurl = $this->usage_url($elementname);
-	        echo '<td style="margin-right:5px">'."<a href='$usageurl' title='$localname'>".'<button>';
+		if ($elementname == $currentelementname) {
+		    $border = 'border:2px solid red';
+		} else {
+		    $border = '';
+		}
+	        echo "<td style='margin-right:5px'>"."<a href='$usageurl' title='$localname'>"."<button style='$border'>";
 	        echo "<img width='30px' height='30px' src='$iconurl' alt='$localname'>";
 	        echo '</button>'."</a>".'</td>';
 	    }
