@@ -66,8 +66,8 @@ if ($aftersection) {
 $course = get_course($courseid);
 require_login($course);
 $coursepage = "$CFG->wwwroot/course/view.php?id=$courseid";
-$editpage = "$CFG->wwwroot/blocks/catalogue/list/editing/"
-    ."chooseobject.php?course=$courseid&action=edit";
+$movepage = "$CFG->wwwroot/blocks/catalogue/list/editing/"
+    ."chooseobject.php?course=$courseid&action=move";
 $coursecontext = context_course::instance($courseid);
 $list = block_catalogue_instanciate_list($listname);
 $permitted = $list->can_do($elementname);
@@ -101,14 +101,14 @@ if ($sectionid) {
 	    $highlightedsection = $DB->get_record('course_sections', array('id' => $highlightedsectionid));
 	    $DB->set_field("course", "marker", $highlightedsection->section, array('id' => $section->course));
 	    format_base::reset_course_cache($section->course);
-	    header("Location: $editpage#section".$destination);
+	    header("Location: $movepage#section".$destination);
 	} else { // Select destination.
 	    $question = get_string('movewhere', 'block_catalogue');
 	    $selectsection = false;
 	    $selectmod = false;
 	    $betweensections = true;
 	}
-    } else {
+} else {
 	$actionurl = $list->actionurl_section($elementname, $sectionid);
 	header("Location: $actionurl&method=catalogue");
     }
@@ -126,7 +126,7 @@ if ($modid) {
 				$movedcminfo = $modinfo->cms[$modid];
 				$tosectionrecord = $DB->get_record('course_sections', array('id' => $tosection));
 				moveto_module($movedcminfo, $tosectionrecord, $beforemod);
-				header("Location: $editpage#section".$tosection);
+				header("Location: $movepage#section".$tosection);
 			} else {  // Select destination.
 				$question = get_string('movewhere', 'block_catalogue');
 				$selectsection = false;
