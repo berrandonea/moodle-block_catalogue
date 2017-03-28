@@ -46,16 +46,32 @@ require_login($course);
 $modcontext = context_module::instance($cmid);
 require_capability('moodle/course:manageactivities', $modcontext);
 
-// Indent or unindent.
-if ($action == 'indent') {
-	$cm->indent++;
-} else if ($action == 'unindent') {
-	$cm->indent--;
-	if ($cm->indent < 0) {
-	    $cm->indent = 0;
-    }
+// Process action.
+switch ($action) {
+	case 'indent':
+		$cm->indent++;
+		$DB->set_field('course_modules', 'indent', $cm->indent, array('id'=>$cmid));
+		break;
+
+	case 'unindent':
+		$cm->indent--;
+	    if ($cm->indent < 0) {
+	        $cm->indent = 0;
+        }
+        $DB->set_field('course_modules', 'indent', $cm->indent, array('id'=>$cmid));
+        break;
+
+    case 'hideshow':
+		if ($cm->visible) {
+			set_coursemodule_visible($cm->id, 0);
+		} else {
+			set_coursemodule_visible($cm->id, 1);
+		}
+		\core\event\course_module_updated::create_from_cm($cm, $modcontext)->trigger();
+		break;
+
+	default:
 }
-$DB->set_field('course_modules', 'indent', $cm->indent, array('id'=>$cmid));
 rebuild_course_cache($course->id);
 
 // Output.
@@ -64,4 +80,9 @@ $modinfo = get_fast_modinfo($course);
 $cminfo = $modinfo->cms[$cmid];
 $renderer = new core_course_renderer($PAGE, '');
 $modulehtml = $renderer->course_section_cm_list_item($course, $completioninfo, $cminfo, null);
-block_catalogue_chooseplace_modicon($modulehtml, $cmid, '', false);
+if ($action == 'indent' || $action == 'unindent') {
+    $float = false;
+} else {
+    $float = true;
+}
+block_catalogue_chooseplace_modicon($modulehtml, $cmid, '', $float, true);

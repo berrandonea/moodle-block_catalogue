@@ -91,7 +91,7 @@ function toggle(listname, elementname, toggler, courseid, isdefault, phpscript) 
 
 
 
-function indent(elementname, cmid) {
+function modaction(elementname, cmid) {
 	getXhr();
 	xhr.onreadystatechange = function() {
         if(xhr.readyState == 4 && xhr.status == 200) {
@@ -100,7 +100,7 @@ function indent(elementname, cmid) {
             document.getElementById(docelementid).innerHTML = response;
 		}
 	}
-	xhr.open("POST", "indent.php", true);
+	xhr.open("POST", "modaction.php", true);
 	xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
     args = "action=" + elementname + "&cmid=" + cmid;
     xhr.send(args);

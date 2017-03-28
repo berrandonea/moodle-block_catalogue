@@ -79,6 +79,8 @@ $thisfilename = '/blocks/catalogue/list/editing/chooseobject.php';
 $question = get_string("question_$elementname", 'block_catalogue');
 $selectsection = $list->select_section($elementname);
 $selectmod = $list->select_mod($elementname);
+$ajaxmod = $list->has_ajax_mod($elementname);
+$ajaxsection = $list->has_ajax_section($elementname);
 $betweensections = false;
 $betweenmods = false;
 
@@ -135,21 +137,6 @@ if ($modid) {
 			}
 			break;
 
-		case 'indent':
-			$cm->indent++;
-			$DB->set_field('course_modules', 'indent', $cm->indent, array('id'=>$modid));
-			rebuild_course_cache($cm->course);
-			break;
-
-		case 'unindent':
-			$cm->indent--;
-			if ($cm->indent < 0) {
-			    $cm->indent = 0;
-		    }
-		    $DB->set_field('course_modules', 'indent', $cm->indent, array('id'=>$modid));
-			rebuild_course_cache($cm->course);
-			break;
-
 		default:
 		    $actionurl = $list->actionurl_mod($elementname, $modid);
 		    header("Location: $actionurl");
@@ -192,90 +179,107 @@ echo '<table>';
 
 foreach ($sections as $section) {
     if (!$section->visible && !has_capability('moodle/course:viewhiddensections', $coursecontext)) {
-	continue;
+	    continue;
     }
     if ($COURSE->marker == $section->section) {
-	$highlighting = "style='border:2px solid red'";
+	    $highlighting = "style='border:2px solid red'";
     } else {
-	$highlighting = '';
+	    $highlighting = '';
     }
     if ($section->id == $sectionid) { // If we're moving this section.
-	$hidden = "style='color:red'";
+	    $hidden = "style='color:red'";
     } else if ($section->visible) {
-	$hidden = "style='font-weight:bold'";
+	    $hidden = "style='font-weight:bold'";
     } else {
-	$hidden = "style='color:gray'";
+	    $hidden = "style='color:gray'";
     }
     echo "<tr $highlighting id='section$section->id'>";
     echo '<td>';
+    if ($ajaxsection) {
+		echo "<span id='jssectiontitle$section->id' onclick='sectionaction(\"$elementname\", \"$section->id\")'>";
+	}
     if ($selectsection) {
-	$sectionargs = $args;
-	$sectionargs['sectionid'] = $section->id;
-	$selectsectionurl = new moodle_url($thisfilename, $sectionargs);
-	echo '<a style="padding-left:30px;float:left;margin-top:10px;margin-bottom:30px" href="'.$selectsectionurl.'">';
-	echo '<button class="btn btn-secondary">';
+		$sectionargs = $args;
+		$sectionargs['sectionid'] = $section->id;
+		$selectsectionurl = new moodle_url($thisfilename, $sectionargs);	    
+		echo '<a style="padding-left:30px;float:left;margin-top:10px;margin-bottom:30px" href="'.$selectsectionurl.'">';	    
     }
+    if ($ajaxsection || $selectsection) {
+		echo '<button class="btn btn-secondary">';
+	}    
     if ($section->name) {
-	echo "<span $hidden>$section->name</span>";
+	    echo "<span $hidden onclick='alert(\"TEST\")'>$section->name</span>";
     } else {
-	echo "<span $hidden>Section $section->section</span>";
+	    echo "<span $hidden>Section $section->section</span>";
     }
+    if ($ajaxsection || $selectsection) {
+		echo '</button>';
+	}
     if ($selectsection) {
-	echo '</button></a>';
+	    echo '</a>';
     }
+    if ($ajaxsection) {
+		echo '</span>';
+	}
     echo '</td><td> &nbsp; </td><td>';
     if (!empty($modinfo->sections[$section->section])) {
-	foreach ($modinfo->sections[$section->section] as $cmid) {
-	    $cminfo = $modinfo->cms[$cmid];
-	    if ($modulehtml = $renderer->course_section_cm_list_item($course, $completioninfo, $cminfo, null)) {
-		if ($betweenmods && ($cmid != $modid)) { // If we're moving a mod, but not this one.
-		    $placemodargs = $args;
-		    $placemodargs['beforemod'] = $cmid;
-		    $placemodargs['tosection'] = $section->id;
-		    $placeurl = new moodle_url($thisfilename, $placemodargs);
-		    echo '<a style="padding-left:30px;float:left;margin-top:10px;margin-bottom:30px"
-				href="'.$placeurl.'">'.$herebutton.'</a>';
-		}
-		if ($selectmod) {
-		    $modargs = $args;
-		    $modargs['modid'] = $cmid;
-		    $selectmodurl = new moodle_url($thisfilename, $modargs);
-		} else {
-		    $selectmodurl = '';
-		}
-		if ($cmid == $modid) { // If we're moving this mod.
-		    echo '<div style="color:red">';
-		}
-		if ($elementname == 'indent' || $elementname == 'unindent') {
-		    echo "<div id='jsmod$cmid' onclick='indent(\"$elementname\", \"$cmid\")'>";
-		    block_catalogue_chooseplace_modicon($modulehtml, $cmid, '', false);
-		    echo "</div>";
-		} else {
-		    block_catalogue_chooseplace_modicon($modulehtml, $cmid, $selectmodurl, true);
-		}
-		if ($cmid == $modid) { // If we're moving this mod.
-		    echo '</div>';
-		}
+        foreach ($modinfo->sections[$section->section] as $cmid) {
+	        $cminfo = $modinfo->cms[$cmid];
+	        if ($modulehtml = $renderer->course_section_cm_list_item($course, $completioninfo, $cminfo, null)) {
+                if ($betweenmods && ($cmid != $modid)) { // If we're moving a mod, but not this one.
+		            $placemodargs = $args;
+		            $placemodargs['beforemod'] = $cmid;
+		            $placemodargs['tosection'] = $section->id;
+		            $placeurl = new moodle_url($thisfilename, $placemodargs);
+		            echo '<a style="padding-left:30px;float:left;margin-top:10px;margin-bottom:30px"
+				             href="'.$placeurl.'">'.$herebutton.'</a>';
+		        }
+		        if ($selectmod) {
+		            $modargs = $args;
+		            $modargs['modid'] = $cmid;
+		            $selectmodurl = new moodle_url($thisfilename, $modargs);
+		        } else {
+		            $selectmodurl = '';
+		        }
+		        if ($cmid == $modid) { // If we're moving this mod.
+		            echo '<div style="color:red">';
+		        }
+		        if ($ajaxmod) {
+					echo "<span id='jsmod$cmid' onclick='modaction(\"$elementname\", \"$cmid\")'>";
+					$selectmodurl = ''; // Ajax action overwrites link.
+				}
+		        if ($elementname == 'indent' || $elementname == 'unindent') {
+		            $float = false;
+		        } else {
+		            $float = true;
+		        }
+		        block_catalogue_chooseplace_modicon($modulehtml, $cmid, $selectmodurl, $float, $ajaxmod);
+		        if ($ajaxmod) {
+					echo "</span>";
+				}
+		        if ($cmid == $modid) { // If we're moving this mod.
+		            echo '</div>';
+		        }
+	        }
 	    }
-	}
     }
     if ($betweenmods) {
-	$placemodargs = $args;
-	$placemodargs['beforemod'] = 0;
-	$placemodargs['tosection'] = $section->id;
-	$placeurl = new moodle_url($thisfilename, $placemodargs);
-	echo '<a style="padding-left:30px;float:left;margin-top:10px;margin-bottom:30px" href="'.$placeurl.'">'.$herebutton.'</a>';
+	    $placemodargs = $args;
+	    $placemodargs['beforemod'] = 0;
+	    $placemodargs['tosection'] = $section->id;
+	    $placeurl = new moodle_url($thisfilename, $placemodargs);
+	    echo '<a style="padding-left:30px;float:left;margin-top:10px;margin-bottom:30px" href="'.$placeurl.'">'.$herebutton.'</a>';
     }
     echo '</td></tr>';
     echo '<tr><td height="50px;color:gray"><hr></td></tr>';
     if ($betweensections && ($section->id != $sectionid)) { // If we're moving a section, but not this one.
-	$placesectionargs = $args;
-	$placesectionargs['aftersection'] = $section->id;
-	$placeurl = new moodle_url($thisfilename, $placesectionargs);
-	echo '<tr><td>';
-	echo '<a style="padding-left:30px;float:left;margin-top:10px;margin-bottom:30px" href="'.$placeurl.'">'.$herebutton.'</a>';
-	echo '</td></tr>';
-	echo '<tr><td height="50px;color:gray"><hr></td></tr>';
+	    $placesectionargs = $args;
+	    $placesectionargs['aftersection'] = $section->id;
+	    $placeurl = new moodle_url($thisfilename, $placesectionargs);
+	    echo '<tr><td>';
+	    echo '<a style="padding-left:30px;float:left;margin-top:10px;margin-bottom:30px" href="'.$placeurl.'">'.$herebutton.'</a>';
+	    echo '</td></tr>';
+	    echo '<tr><td height="50px;color:gray"><hr></td></tr>';
     }
 }
 echo '</table>';

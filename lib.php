@@ -129,8 +129,9 @@ function block_catalogue_check_sequences($course) {
  * @param int $cmid
  * @param string $selectmodurl
  * @param boolean $float
+ * @param boolean $ajax
  */
-function block_catalogue_chooseplace_modicon($modulehtml, $cmid, $selectmodurl, $float) {
+function block_catalogue_chooseplace_modicon($modulehtml, $cmid, $selectmodurl, $float, $ajax) {
 	global $DB, $OUTPUT;	
 
 	$modulehtml = str_replace('<li', '<div', $modulehtml);
@@ -139,7 +140,7 @@ function block_catalogue_chooseplace_modicon($modulehtml, $cmid, $selectmodurl, 
 	$modulehtml = str_replace('</a>', '</div>', $modulehtml);
 	$cm = $DB->get_record('course_modules', array('id' => $cmid));
 
-	if (strpos($modulehtml, '<div class="contentwithoutlink ">')) {
+	if (strpos($modulehtml, '<div class="contentwithoutlink ')) {
 		$module = $DB->get_record('modules', array('id' => $cm->module));
 		$pixurl = $OUTPUT->pix_url('icon', "mod_$module->name");
 		if ($module->name == 'customlabel') {
@@ -149,7 +150,12 @@ function block_catalogue_chooseplace_modicon($modulehtml, $cmid, $selectmodurl, 
 				$pixurl = $clabelslist->get_element_data($customlabel->labelclass, 'iconurl');
 			}
 		}
-		$img = "<img src='$pixurl' width='30px' style='padding-top:15px'>";
+		if ($cm->visible) {
+			$imgwidth = '30px';
+		} else {
+			$imgwidth = '15px';
+		}
+		$img = "<img src='$pixurl' width='$imgwidth' style='padding-top:15px'>";
 		if ($float) {
 			$modoutput = $img;
 		} else {
@@ -159,7 +165,7 @@ function block_catalogue_chooseplace_modicon($modulehtml, $cmid, $selectmodurl, 
 					$modoutput .= '<td width="30px">&nbsp;</td>';
 				}
 			}
-			$modoutput .= "<td>$img</td>";
+			$modoutput .= "<td>$img</td>";			
 			$modoutput .= '</tr></table>';
 		}				
 	} else {
@@ -170,14 +176,14 @@ function block_catalogue_chooseplace_modicon($modulehtml, $cmid, $selectmodurl, 
 	}
 
 	if ($float) {
-		echo '<span style="padding-left:30px;float:left;margin-bottom:30px;" id="modbutton'.$cmid.'"> &nbsp; &nbsp; ';
+		echo '<span id="modbutton'.$cmid.'" style="padding-left:30px;margin-bottom:30px;float:left"> &nbsp; &nbsp; ';
 	} else {
-		echo '<span style="padding-left:30px;margin-bottom:30px" id="modbutton'.$cmid.'"><br>';
+		echo '<span id="modbutton'.$cmid.'" style="padding-left:30px;margin-bottom:30px">';
 	}
 	if ($selectmodurl) {
 		echo "<a href='$selectmodurl#section$cm->section'>";		
 	}
-	if ($selectmodurl || !$float) {
+	if ($selectmodurl || $ajax) {
 		echo '<button class="btn btn-secondary">';
 	}
 	if (!$cm->visible) {
@@ -187,13 +193,17 @@ function block_catalogue_chooseplace_modicon($modulehtml, $cmid, $selectmodurl, 
 	if (!$cm->visible) {
 		echo '</div>';
 	}
-	if ($selectmodurl || !$float) {
+	if ($selectmodurl || $ajax) {
 		echo '</button>';
 	}
 	if ($selectmodurl) {
 		echo '</a>';
 	}
-	echo '</span>';
+	if ($float) {
+		echo '</span>';
+	} else {
+		echo '</span><br>';
+	}
 }
 
 /**
@@ -368,7 +378,7 @@ function block_catalogue_display_tabs($courseid, $thislistname, $editing) {
 				}				
 			}
             $listcolor = $list->get_color();
-            $html .= "<td class='$listnameclass'>"."<a href='$target' style='color:$listcolor;max-width:$maxwidth'>".$listlocalname.'</a></td>';
+            $html .= "<td class='$listnameclass'>"."<a href='$target' style='color:$listcolor'>".$listlocalname.'</a></td>';
             $html .= '</tr></table>';
             $html .= '</a>';
             $html .= "</div>";            

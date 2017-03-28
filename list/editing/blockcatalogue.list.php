@@ -129,6 +129,16 @@ class blockcatalogue_list_editing extends blockcatalogue_list {
 		$actionurl = "$CFG->wwwroot/course/$page.php?$args";
 		return $actionurl;
 	}
+	
+	public function has_ajax_mod($elementname) {
+		$array = array('indent', 'unindent', 'hideshow');
+		return in_array($elementname, $array);
+	}
+
+	public function has_ajax_section($elementname) {
+		$array = array('hideshow');
+		return in_array($elementname, $array);
+	}
 
     /**
      * Finds the elements available (to this user in this course) for the
@@ -223,6 +233,9 @@ class blockcatalogue_list_editing extends blockcatalogue_list {
     }
 
 	public function select_mod($elementname) {
+		if ($this->has_ajax_mod($elementname)) {
+			return false;
+		}
 		if (in_array($elementname, $this->potentialmembers['sectionsandmods'])) {
 		    return true;
 		}
@@ -235,8 +248,8 @@ class blockcatalogue_list_editing extends blockcatalogue_list {
 	}
 
 	public function select_section($elementname) {
-		$elements = array('delete', 'edit', 'hideshow', 'highlight', 'move', 'picture');
-		return in_array($elementname, $elements);
+		$array = array('delete', 'edit', 'highlight', 'move', 'picture');
+		return in_array($elementname, $array);
 	}
 
 
