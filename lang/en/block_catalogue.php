@@ -314,14 +314,43 @@ $string['hvp_ImageHotspots'] = 'Image hotspots';
 $string['hvp_InteractiveVideo'] = 'Interactive video';
 $string['hvp_MarkTheWords'] = 'Mark the words';
 $string['hvp_MemoryGame'] = 'Memory game';
-$string['hvp_Multichoice'] = 'Multi-choice';
 $string['hvp_Questionnaire'] = 'Questionnaire';
 $string['hvp_QuestionSet'] = 'Question set';
+$string['hvp_MultiChoice'] = 'Multiple choice';
 $string['hvp_SingleChoiceSet'] = 'Single choice set';
 $string['hvp_Summary'] = 'Summary';
 $string['hvp_Timeline'] = 'Timeline';
 $string['hvp_TrueFalse'] = 'True/False';
 $string['hvp_TwitterUserFeed'] = 'Twitter user feed';
+
+$string['hvp_description_Accordion'] = 'Create vertically stacked expandable items';
+$string['hvp_description_AppearIn'] = 'Add a video chat to your web page';
+$string['hvp_description_Audio'] = 'Audio';
+$string['hvp_description_Blanks'] = 'Create a task with missing words in a text';
+$string['hvp_description_Chart'] = 'Quickly generate bar and pie charts';
+$string['hvp_description_Collage'] = 'Create a collage of multiple images';
+$string['hvp_description_Column'] = 'Column layout for H5P Content';
+$string['hvp_description_CoursePresentation'] = 'Create a presentation with interactive slides';
+$string['hvp_description_Dialogcards'] = 'Create text-based turning cards';
+$string['hvp_description_DocumentationTool'] = 'Create a form wizard with text export';
+$string['hvp_description_DragQuestion'] = 'Create drag and drop tasks with images';
+$string['hvp_description_DragText'] = 'Create text-based drag and drop tasks';
+$string['hvp_description_Flashcards'] = 'Flash cards';
+$string['hvp_description_GuessTheAnswer'] = 'Create an image with a question and answer ';
+$string['hvp_description_IFrameEmbed'] = 'Embed from a url or a set of files';
+$string['hvp_description_ImageHotspotQuestion'] = 'Create image hotspots for users to find';
+$string['hvp_description_ImageHotspots'] = 'Create an image with multiple info hotspots';
+$string['hvp_description_InteractiveVideo'] = 'Create videos enriched with interactions';
+$string['hvp_description_MarkTheWords'] = 'Create a task where users highlight words';
+$string['hvp_description_MemoryGame'] = 'Create the classic image pairing game';
+$string['hvp_description_MultiChoice'] = 'Create flexible multiple choice questions';
+$string['hvp_description_Questionnaire'] = 'Create a questionnaire to receive feedback';
+$string['hvp_description_QuestionSet'] = 'Create a sequence of various question types';
+$string['hvp_description_SingleChoiceSet'] = 'Create questions with one correct answer';
+$string['hvp_description_Summary'] = 'Create tasks with a list of statements';
+$string['hvp_description_Timeline'] = 'Create a timeline of events with multimedia';
+$string['hvp_description_TrueFalse'] = 'Create True/False questions';
+$string['hvp_description_TwitterUserFeed'] = 'Show your Twitter feed with H5P';
 
 
 

@@ -111,7 +111,11 @@ class blockcatalogue_list_customlabels extends blockcatalogue_list {
      */
     public function get_first_icon($localicondir) {
         global $CFG;
-        $dirhandler = opendir("$CFG->dirroot/$localicondir");
+        $dirpath = "$CFG->dirroot/$localicondir";
+        if (!file_exists($dirpath)) {
+			return null;
+		}
+        $dirhandler = opendir($dirpath);
         while ($filename = readdir($dirhandler)) {
             $begin = substr($filename, 0, 4);
             $end = substr($filename, -4);
