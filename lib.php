@@ -321,12 +321,11 @@ function block_catalogue_display_element($course, $usereditor, $list, $elementna
  * @global object $CFG
  * @global object $DB
  * @param int $courseid
- * @param string $thislistname
+ * @param string $selectedlistname
  * @param boolean $editing
  */
-function block_catalogue_display_tabs($courseid, $thislistname, $editing) {
-    global $CFG, $DB;
-    $listdir = "$CFG->wwwroot/blocks/catalogue/list";
+function block_catalogue_display_tabs($courseid, $selectedlistname, $editing) {
+    global $CFG, $DB;    
     $params = array('plugin' => 'catalogue', 'name' => 'displayedlists');
     $dborder = $DB->get_field('config_plugins', 'value', $params);
     $sortorder = explode(',', $dborder);
@@ -356,47 +355,10 @@ function block_catalogue_display_tabs($courseid, $thislistname, $editing) {
 					$html .= '<div style="float:left;margin-right:50px"> &nbsp; </div>';
 				}
 			}
-            $html .= "<div style='float:left;margin-right:30px'>";
-            $target = $CFG->wwwroot.'/blocks/catalogue/index.php'."?name=$listname&course=$courseid&editing=$editing";
-            $html .= "<a href = '$target'>";
-            $html .= '<table><tr>';
-            $html .= "<td class='block_catalogue_listtab' style='text-align:center'>";
-            $html .= "<img src='$listdir/$listname/";
-            if (!$thislistname || $listname == $thislistname) {
-				$html .= "catalogue_icon.png";
-			} else {
-				$html .= "shaded_icon.png";
-			}
-            $html .= "' class='block_catalogue_tabicon' width='40px' height='40px'>";
-            $html .= "</td>";
-            $html .= '</tr><tr>';
-            if ($listname == $thislistname) {
-                $listnameclass = 'block_catalogue_thislistname';
-            } else {
-                $listnameclass = 'block_catalogue_otherlistname';
-            }
-            $listlocalname = $list->get_localname();
-            if (strlen($listlocalname) > 12) {
-				$nameparts = explode(' ', $listlocalname);
-				$listlocalname = '';
-				foreach($nameparts as $key => $namepart) {
-					$listlocalname .= $namepart;
-					if ($key) {
-						$listlocalname .= ' ';
-					} else {
-						$listlocalname .= '<br>';
-					}
-				}				
-			}
-            $listcolor = $list->get_color();
-            $html .= "<td class='$listnameclass'>"."<a href='$target' style='color:$listcolor'>".$listlocalname.'</a></td>';
-            $html .= '</tr></table>';
-            $html .= '</a>';
-            $html .= "</div>";            
+            $html .= $list->tab($selectedlistname, $editing);
         }
         $previouslistname = $listname;
     }
-    //~ $html .= '</tr></table>';
     return $html;
 }
 

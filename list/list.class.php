@@ -576,4 +576,52 @@ abstract class blockcatalogue_list {
         ksort($localnames);
         $this->availables[$category] = $localnames;
     }
+
+    /**
+     * Display tab for this list on top of a page.
+     * @param
+     */
+    public function tab($selectedlistname, $editing) {
+	    global $CFG, $COURSE;
+	    $listdir = "$CFG->wwwroot/blocks/catalogue/list";
+	    $html = "<div style='float:left;margin-right:30px'>";
+        $target = $CFG->wwwroot.'/blocks/catalogue/index.php'.
+            "?name=$this->name&course=$COURSE->id&editing=$editing";
+        $html .= "<a href = '$target'>";
+        $html .= '<table><tr>';
+        $html .= "<td class='block_catalogue_listtab' style='text-align:center'>";
+	    if (!$selectedlistname || $this->name == $selectedlistname) {
+		    $opacity = 1;
+	    } else {
+		    $opacity = 0.5;
+	    }
+	    $html .= "<img src='$listdir/$this->name/catalogue_icon.png' style='opacity:$opacity'";            
+        $html .= "' class='block_catalogue_tabicon' width='40px' height='40px'>";
+        $html .= "</td>";
+        $html .= '</tr><tr>';
+        if ($this->name == $selectedlistname) {
+            $listnameclass = 'block_catalogue_thislistname';
+        } else {
+            $listnameclass = 'block_catalogue_otherlistname';
+        }
+        $listlocalname = $this->get_localname();
+        if (strlen($listlocalname) > 12) {
+	        $nameparts = explode(' ', $listlocalname);
+		    $listlocalname = '';
+		    foreach($nameparts as $key => $namepart) {
+		        $listlocalname .= $namepart;
+			    if ($key) {
+				    $listlocalname .= ' ';
+			    } else {
+				    $listlocalname .= '<br>';
+			    }
+		    }				
+	    }
+        $listcolor = $this->get_color();
+        $html .= "<td class='$listnameclass'>"."<a href='$target' style='color:$listcolor'>".$listlocalname.'</a></td>';
+        $html .= '</tr></table>';
+        $html .= '</a>';
+        $html .= "</div>";
+        return $html;
+    }
 }
