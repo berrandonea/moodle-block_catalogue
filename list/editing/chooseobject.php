@@ -62,6 +62,7 @@ if ($aftersection) {
     $args['aftersection'] = $aftersection;
 }
 
+
 // Access control.
 $course = get_course($courseid);
 require_login($course);
@@ -76,6 +77,7 @@ if (!$permitted) {
 }
 $thisfilename = '/blocks/catalogue/list/editing/chooseobject.php';
 
+$coursenbsections = $DB->get_field('course_format_options', 'value', array('courseid' => $COURSE->id, 'name' => 'numsections'));
 $question = get_string("question_$elementname", 'block_catalogue');
 $selectsection = $list->select_section($elementname);
 $selectmod = $list->select_mod($elementname);
@@ -93,45 +95,20 @@ if ($sectionid) {
 	    $selectsection = false;
 	    $selectmod = false;
 	    $betweensections = true;
-	}
-	/*switch ($elementname) {
-		case 'move':
-		    if ($aftersection) { // Move the section. 	            
-	            $aftersectionrecord = $DB->get_record('course_sections', array('id' => $aftersection));
-	            $destination = $aftersectionrecord->section;
-	            if ($section->section > $destination) {
-		            $destination++;
-	            }
-	            // We change the sections' order so we must update the course's marker.
-	            if ($COURSE->marker) {	                $highlightedsectionid = $DB->get_field('course_sections', 'id',
-					    array('course' => $COURSE->id, 'section' => $COURSE->marker));
-	            }
-	            move_section_to($COURSE, $section->section, $destination);
-	            $highlightedsection = $DB->get_record('course_sections', array('id' => $highlightedsectionid));
-	            $DB->set_field("course", "marker", $highlightedsection->section, array('id' => $section->course));
-	            format_base::reset_course_cache($section->course);
-	            header("Location: $movepage#section".$destination);
-	        } else { // Select destination.
-	            $question = get_string('movewhere', 'block_catalogue');
-	            $selectsection = false;
-	            $selectmod = false;
-	            $betweensections = true;
-	        }
-	        break;
-	    
-	    //~ case 'hideshow':
-			//~ if ($section->visible) {
-				//~ $newvisibility = 0;
-			//~ } else {
-				//~ $newvisibility = 1;
-			//~ }
-			//~ set_section_visible($course->id, $section->id, $newvisibility);
-	        //~ break;
-	        
-	    default:
-	        $actionurl = $list->actionurl_section($elementname, $sectionid);
-	        header("Location: $actionurl&method=catalogue");
-	}*/
+	}	
+} else if  ($elementname == 'add' || $elementname == 'remove') {	
+		if ($elementname == 'add') {
+			$coursenbsections++;
+		} else if ($coursenbsections) { // Don't change anything if $coursenbsections = 0.
+			$coursenbsections--;
+		}
+		update_course((object)array('id' => $course->id,
+                                    'numsections' => $coursenbsections));
+        if ($elementname == 'add') {
+			course_create_sections_if_missing($course, array($coursenbsections));
+		}
+        $lastsectionid = $DB->get_field('course_sections', 'id', array('course' => $course->id, 'section' => $coursenbsections));
+        header("Location: $movepage#section$lastsectionid");
 }
 
 //Once the user has chosen a mod
@@ -193,7 +170,6 @@ $modinfo = get_fast_modinfo($course);
 $herebutton = '<button class="btn btn-secondary">'.get_string('here', 'block_catalogue').'</button>';
 $moduleshtml = array();
 
-$coursenbsections = $DB->get_field('course_format_options', 'value', array('courseid' => $COURSE->id, 'name' => 'numsections'));
 echo '<table>';
 
 foreach ($sections as $section) {

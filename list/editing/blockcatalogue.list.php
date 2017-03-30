@@ -103,8 +103,8 @@ class blockcatalogue_list_editing extends blockcatalogue_list {
 	                $DB->set_field("course", "marker", $highlightedsection->section, array('id' => $section->course));
 	                $COURSE->marker = $highlightedsection->section;
 	            }
-	        break;
-	    
+	        break;	    
+
 			case 'delete':
 				$page = 'editsection';
 				$args = "sr=0&id=$sectionid&delete=1";
@@ -115,8 +115,6 @@ class blockcatalogue_list_editing extends blockcatalogue_list {
 				$page = 'editsection';
 				$args = "sr=0&id=$sectionid";
 				$this->goto_page($page, $args);
-				//~ $actionurl = "$CFG->wwwroot/course/$page.php?$args";
-				//~ header("Location: $actionurl&method=catalogue");
 				break;
 
 			case 'hideshow':
@@ -128,14 +126,6 @@ class blockcatalogue_list_editing extends blockcatalogue_list {
 			    }
 			    set_section_visible($COURSE->id, $section->section, $newvisibility);
 	            break;
-				//~ $page = 'view';
-				//~ $args = "id=$section->course&sesskey=".sesskey();
-				//~ if ($section->visible) {
-					//~ $args .= "&hide=$section->section";
-				//~ } else {
-					//~ $args .= "&show=$section->section";
-				//~ }
-				//~ break;
 
 			case 'highlight':
 				$marker = $section->section;
@@ -307,20 +297,8 @@ class blockcatalogue_list_editing extends blockcatalogue_list {
      */
     public function usage_url($elementname) {
         global $CFG, $COURSE;
-        if ($elementname == 'add') {
-            $targetpage = "$CFG->wwwroot/course/changenumsections.php";
-            $args = array('courseid' => $COURSE->id,
-                          'increase' => 1,
-                          'sesskey' => sesskey());
-		} else if ($elementname == 'remove') {
-			$targetpage = "$CFG->wwwroot/course/changenumsections.php";
-            $args = array('courseid' => $COURSE->id,
-                          'increase' => 0,
-                          'sesskey' => sesskey());
-        } else {
-            $targetpage = "$CFG->wwwroot/blocks/catalogue/list/editing/chooseobject.php";
-            $args = array('course' => $COURSE->id, 'action' => $elementname);
-        }
+        $targetpage = "$CFG->wwwroot/blocks/catalogue/list/editing/chooseobject.php";
+        $args = array('course' => $COURSE->id, 'action' => $elementname);
         $url = new moodle_url($targetpage, $args);
         return $url;
     }
