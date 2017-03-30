@@ -89,8 +89,6 @@ function toggle(listname, elementname, toggler, courseid, isdefault, phpscript) 
     xhr.send(args);
 }
 
-
-
 function modaction(elementname, cmid) {
 	getXhr();
 	xhr.onreadystatechange = function() {
@@ -103,5 +101,21 @@ function modaction(elementname, cmid) {
 	xhr.open("POST", "modaction.php", true);
 	xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
     args = "action=" + elementname + "&cmid=" + cmid;
+    xhr.send(args);
+}
+
+function sectionaction(elementname, sectionid, finalpage) {
+	getXhr();
+	xhr.onreadystatechange = function() {
+        if(xhr.readyState == 4 && xhr.status == 200) {
+			window.location.href = finalpage;
+            //~ response = xhr.responseText;
+            //~ docelementid = 'jsmod' + cmid;
+            //~ document.getElementById(docelementid).innerHTML = response;
+		}
+	}
+	xhr.open("POST", "sectionaction.php", true);
+	xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+    args = "action=" + elementname + "&sectionid=" + sectionid;
     xhr.send(args);
 }

@@ -86,34 +86,52 @@ $betweenmods = false;
 
 // Once the user has chosen a section
 if ($sectionid) {
-    if ($elementname == 'move') { // Moving a section.
-        if ($aftersection) { // Move the section.
- 	    $section = $DB->get_record('course_sections', array('id' => $sectionid));
-	    $aftersectionrecord = $DB->get_record('course_sections', array('id' => $aftersection));
-	    $destination = $aftersectionrecord->section;
-	    if ($section->section > $destination) {
-		$destination++;
-	    }
-	    // We change the sections' order so we must update the course's marker.
-	    if ($COURSE->marker) {
-	        $highlightedsectionid = $DB->get_field('course_sections', 'id',
-						array('course' => $COURSE->id, 'section' => $COURSE->marker));
-	    }
-	    move_section_to($COURSE, $section->section, $destination);
-	    $highlightedsection = $DB->get_record('course_sections', array('id' => $highlightedsectionid));
-	    $DB->set_field("course", "marker", $highlightedsection->section, array('id' => $section->course));
-	    format_base::reset_course_cache($section->course);
-	    header("Location: $movepage#section".$destination);
-	} else { // Select destination.
-	    $question = get_string('movewhere', 'block_catalogue');
+	$section = $DB->get_record('course_sections', array('id' => $sectionid));
+	$list->action_section($elementname, $section, $aftersection);
+	if ($elementname == 'move' && !$aftersection) {
+        $question = get_string('movewhere', 'block_catalogue');
 	    $selectsection = false;
 	    $selectmod = false;
 	    $betweensections = true;
 	}
-} else {
-	$actionurl = $list->actionurl_section($elementname, $sectionid);
-	header("Location: $actionurl&method=catalogue");
-    }
+	/*switch ($elementname) {
+		case 'move':
+		    if ($aftersection) { // Move the section. 	            
+	            $aftersectionrecord = $DB->get_record('course_sections', array('id' => $aftersection));
+	            $destination = $aftersectionrecord->section;
+	            if ($section->section > $destination) {
+		            $destination++;
+	            }
+	            // We change the sections' order so we must update the course's marker.
+	            if ($COURSE->marker) {	                $highlightedsectionid = $DB->get_field('course_sections', 'id',
+					    array('course' => $COURSE->id, 'section' => $COURSE->marker));
+	            }
+	            move_section_to($COURSE, $section->section, $destination);
+	            $highlightedsection = $DB->get_record('course_sections', array('id' => $highlightedsectionid));
+	            $DB->set_field("course", "marker", $highlightedsection->section, array('id' => $section->course));
+	            format_base::reset_course_cache($section->course);
+	            header("Location: $movepage#section".$destination);
+	        } else { // Select destination.
+	            $question = get_string('movewhere', 'block_catalogue');
+	            $selectsection = false;
+	            $selectmod = false;
+	            $betweensections = true;
+	        }
+	        break;
+	    
+	    //~ case 'hideshow':
+			//~ if ($section->visible) {
+				//~ $newvisibility = 0;
+			//~ } else {
+				//~ $newvisibility = 1;
+			//~ }
+			//~ set_section_visible($course->id, $section->id, $newvisibility);
+	        //~ break;
+	        
+	    default:
+	        $actionurl = $list->actionurl_section($elementname, $sectionid);
+	        header("Location: $actionurl&method=catalogue");
+	}*/
 }
 
 //Once the user has chosen a mod
@@ -175,9 +193,15 @@ $modinfo = get_fast_modinfo($course);
 $herebutton = '<button class="btn btn-secondary">'.get_string('here', 'block_catalogue').'</button>';
 $moduleshtml = array();
 
+$coursenbsections = $DB->get_field('course_format_options', 'value', array('courseid' => $COURSE->id, 'name' => 'numsections'));
 echo '<table>';
 
 foreach ($sections as $section) {
+	if ($section->section > $coursenbsections) {
+		$section->visible = 0;
+		//~ $section->name = get_string('orphanactivities').' ('.get_string('section').' '.$section->section.')';
+		$section->name = get_string('orphanedactivitiesinsectionno', '', $section->section);
+	}
     if (!$section->visible && !has_capability('moodle/course:viewhiddensections', $coursecontext)) {
 	    continue;
     }
@@ -186,7 +210,7 @@ foreach ($sections as $section) {
     } else {
 	    $highlighting = '';
     }
-    if ($section->id == $sectionid) { // If we're moving this section.
+    if ($section->id == $sectionid && $elementname == 'move' && !$aftersection) { // If we're moving this section.
 	    $hidden = "style='color:red'";
     } else if ($section->visible) {
 	    $hidden = "style='font-weight:bold'";
@@ -200,9 +224,10 @@ foreach ($sections as $section) {
 	}
     if ($selectsection) {
 		$sectionargs = $args;
+		$sectionargs['aftersection'] = 0;
 		$sectionargs['sectionid'] = $section->id;
-		$selectsectionurl = new moodle_url($thisfilename, $sectionargs);	    
-		echo '<a style="padding-left:30px;float:left;margin-top:10px;margin-bottom:30px" href="'.$selectsectionurl.'">';	    
+		$selectsectionurl = new moodle_url($thisfilename, $sectionargs);
+		echo '<a style="padding-left:30px;float:left;margin-top:10px;margin-bottom:30px" href="'.$selectsectionurl.'">';
     }
     if ($ajaxsection || $selectsection) {
 		echo '<button class="btn btn-secondary">';

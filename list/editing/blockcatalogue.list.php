@@ -65,16 +65,7 @@ class blockcatalogue_list_editing extends blockcatalogue_list {
 			    break;
 	        case 'edit':
 	            $args .= "&update=$modid";
-		        break;
-	        case 'hideshow':
-	            if ($cm->visible) {
-		            $args .= "&hide=$modid";
-		        } else {
-		            $args .= "&show=$modid";
-		        }
-		        break;
-	        case 'move':
-	            break;
+		        break;	     
 	        case 'duplicate':
 	            $args .= "&duplicate=$modid";
 	            break;
@@ -88,55 +79,110 @@ class blockcatalogue_list_editing extends blockcatalogue_list {
 	    return $actionurl;
     }
 
-	public function actionurl_section($elementname, $sectionid) {
-		global $CFG, $DB, $USER;
-		$section = $DB->get_record('course_sections', array('id' => $sectionid));
-		switch($elementname) {
+    public function action_section($elementname, $section, $aftersection) {
+		global $COURSE, $DB;
+		$context = context_course::instance($COURSE->id);
+		switch ($elementname) {
+		    case 'move':
+		        if ($aftersection) { // Move the section. 	            
+	                $aftersectionrecord = $DB->get_record('course_sections', array('id' => $aftersection));
+	                print_object($aftersectionrecord);
+	                $destination = $aftersectionrecord->section;
+	                if ($section->section > $destination) {
+		                $destination++;
+	                }
+	                // We change the sections' order so we must update the course's marker.
+	                if ($COURSE->marker) {
+	                    $highlightedsectionid = $DB->get_field('course_sections', 'id',
+					                                           array('course' => $COURSE->id, 'section' => $COURSE->marker));
+	                }
+	                print_object($destination);
+	                move_section_to($COURSE, $section->section, $destination);
+	                format_base::reset_course_cache($section->course);
+	                $highlightedsection = $DB->get_record('course_sections', array('id' => $highlightedsectionid));
+	                $DB->set_field("course", "marker", $highlightedsection->section, array('id' => $section->course));
+	                $COURSE->marker = $highlightedsection->section;
+	            }
+	        break;
+	    
 			case 'delete':
 				$page = 'editsection';
 				$args = "sr=0&id=$sectionid&delete=1";
+				$this->goto_page($page, $args);
 				break;
+
 			case 'edit':
 				$page = 'editsection';
 				$args = "sr=0&id=$sectionid";
+				$this->goto_page($page, $args);
+				//~ $actionurl = "$CFG->wwwroot/course/$page.php?$args";
+				//~ header("Location: $actionurl&method=catalogue");
 				break;
+
 			case 'hideshow':
-				$page = 'view';
-				$args = "id=$section->course&sesskey=".sesskey();
-				if ($section->visible) {
-					$args .= "&hide=$section->section";
-				} else {
-					$args .= "&show=$section->section";
-				}
-				break;
+				require_capability('moodle/course:sectionvisibility', $context);
+			    if ($section->visible) {
+				    $newvisibility = 0;
+			    } else {
+				    $newvisibility = 1;
+			    }
+			    set_section_visible($COURSE->id, $section->section, $newvisibility);
+	            break;
+				//~ $page = 'view';
+				//~ $args = "id=$section->course&sesskey=".sesskey();
+				//~ if ($section->visible) {
+					//~ $args .= "&hide=$section->section";
+				//~ } else {
+					//~ $args .= "&show=$section->section";
+				//~ }
+				//~ break;
+
 			case 'highlight':
 				$marker = $section->section;
 				$DB->set_field("course", "marker", $marker, array('id' => $section->course));
 				format_base::reset_course_cache($section->course);
 				$page = 'view';
 				$args = "id=$section->course#section-$section->section";
+				$this->goto_page($page, $args);
 				break;
-			case 'move':
-				// This function should never be called for element "move".
-				break;
+
 			case 'picture':
 				$page = 'format/grid/editimage';
 				$coursecontext = context_course::instance($section->course);
 				$args = "contextid=$coursecontext->id&userid=$USER->id&sectionid=$sectionid";
+				$this->goto_page($page, $args);
 				break;
+
 			default:
 		}
-		$actionurl = "$CFG->wwwroot/course/$page.php?$args";
-		return $actionurl;
+		//~ $actionurl = "$CFG->wwwroot/course/$page.php?$args";
+	    //~ case 'hideshow':
+			//~ if ($section->visible) {
+				//~ $newvisibility = 0;
+			//~ } else {
+				//~ $newvisibility = 1;
+			//~ }
+			//~ set_section_visible($course->id, $section->id, $newvisibility);
+	        //~ break;
+	        
+	    //~ default:
+	        //~ $actionurl = $list->actionurl_section($elementname, $sectionid);
+	        //~ header("Location: $actionurl&method=catalogue");
+	//~ }
 	}
-	
+
+	public function goto_page($page, $args) {
+		$actionurl = "$CFG->wwwroot/course/$page.php?$args";
+	    header("Location: $actionurl&method=catalogue");
+	}
+
 	public function has_ajax_mod($elementname) {
 		$array = array('indent', 'unindent', 'hideshow');
 		return in_array($elementname, $array);
 	}
 
 	public function has_ajax_section($elementname) {
-		$array = array('hideshow');
+		$array = array();
 		return in_array($elementname, $array);
 	}
 
@@ -248,10 +294,9 @@ class blockcatalogue_list_editing extends blockcatalogue_list {
 	}
 
 	public function select_section($elementname) {
-		$array = array('delete', 'edit', 'highlight', 'move', 'picture');
+		$array = array('delete', 'edit', 'hideshow', 'highlight', 'move', 'picture');
 		return in_array($elementname, $array);
 	}
-
 
     /**
      * Which URL must be visited to use this element ?

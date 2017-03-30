@@ -132,13 +132,19 @@ function block_catalogue_check_sequences($course) {
  * @param boolean $ajax
  */
 function block_catalogue_chooseplace_modicon($modulehtml, $cmid, $selectmodurl, $float, $ajax) {
-	global $DB, $OUTPUT;	
+	global $DB, $OUTPUT;
+
+	$cm = $DB->get_record('course_modules', array('id' => $cmid));
 
 	$modulehtml = str_replace('<li', '<div', $modulehtml);
 	$modulehtml = str_replace('</li>', '</div>', $modulehtml);
 	$modulehtml = str_replace('<a', '<div', $modulehtml);
 	$modulehtml = str_replace('</a>', '</div>', $modulehtml);
-	$cm = $DB->get_record('course_modules', array('id' => $cmid));
+	if (!$cm->visible) {
+		$modulehtml = str_replace('<img',
+								  '<img style="opacity:.5"',
+								  $modulehtml);
+	}
 
 	if (strpos($modulehtml, '<div class="contentwithoutlink ')) {
 		$module = $DB->get_record('modules', array('id' => $cm->module));
@@ -151,11 +157,12 @@ function block_catalogue_chooseplace_modicon($modulehtml, $cmid, $selectmodurl, 
 			}
 		}
 		if ($cm->visible) {
-			$imgwidth = '30px';
+			$opacity = 1;
 		} else {
-			$imgwidth = '15px';
+			$opacity = 0.5;
 		}
-		$img = "<img src='$pixurl' width='$imgwidth' style='padding-top:15px'>";
+		$img .= "<img src='$pixurl' width='30px' style='padding-top:5px;opacity:$opacity'>";
+		
 		if ($float) {
 			$modoutput = $img;
 		} else {
@@ -165,7 +172,7 @@ function block_catalogue_chooseplace_modicon($modulehtml, $cmid, $selectmodurl, 
 					$modoutput .= '<td width="30px">&nbsp;</td>';
 				}
 			}
-			$modoutput .= "<td>$img</td>";			
+			$modoutput .= "<td>$img</td>";
 			$modoutput .= '</tr></table>';
 		}				
 	} else {
@@ -176,7 +183,7 @@ function block_catalogue_chooseplace_modicon($modulehtml, $cmid, $selectmodurl, 
 	}
 
 	if ($float) {
-		echo '<span id="modbutton'.$cmid.'" style="padding-left:30px;margin-bottom:30px;float:left"> &nbsp; &nbsp; ';
+		echo '<span id="modbutton'.$cmid.'" style="padding-left:30px;margin-bottom:30px;float:left"> &nbsp; ';
 	} else {
 		echo '<span id="modbutton'.$cmid.'" style="padding-left:30px;margin-bottom:30px">';
 	}
@@ -186,23 +193,27 @@ function block_catalogue_chooseplace_modicon($modulehtml, $cmid, $selectmodurl, 
 	if ($selectmodurl || $ajax) {
 		echo '<button class="btn btn-secondary">';
 	}
-	if (!$cm->visible) {
-		echo '<div style="color:gray">';
+	if ($cm->visible) {
+		$grayed = '';
+	} else {
+		$grayed = 'color:gray;';
 	}
+	
+		echo '<div style="'.$grayed.'height:45px">';
+	
 	echo $modoutput;
-	if (!$cm->visible) {
+	
 		echo '</div>';
-	}
+	
 	if ($selectmodurl || $ajax) {
 		echo '</button>';
 	}
 	if ($selectmodurl) {
 		echo '</a>';
 	}
-	if ($float) {
-		echo '</span>';
-	} else {
-		echo '</span><br>';
+	echo '</span>';
+	if (!$float) {	
+		echo '<br>';
 	}
 }
 
@@ -557,7 +568,8 @@ function block_catalogue_main_table($listnames, $course, $bgcolor, $showtabs) {
     } else if ($viewlists && has_capability("block/catalogue:togglefav", $coursecontext)) {
         $nofavs = get_string('nofavs', 'block_catalogue');
         $maintable .= "<p style='$iconstyle'>$nofavs</p>";
-    }    
+    }
+    $maintable .= block_catalogue_proximityarrows();
     return $maintable;
 }
 
@@ -818,4 +830,110 @@ function block_catalogue_update_element($listname, $elementname, $nature, $newva
     }
 }
 
+/**
+ * If we're inside a mod, displays arrow links to the next mod and the previous mod.
+ * @global object $COURSE
+ * @global object $DB
+ * @global object $PAGE
+ * @return string HTML code
+ */
+function block_catalogue_proximityarrows() {
+	global $COURSE, $DB, $PAGE;
+	$pagecontext = $PAGE->context;
+	if ($pagecontext->contextlevel == 70) {
+		$modinfo = get_fast_modinfo($COURSE);
+		$cmid = $pagecontext->instanceid;
+		$cm = $DB->get_record('course_modules', array('id' => $cmid));
+		$section = $DB->get_record('course_sections', array('id' => $cm->section));
+		$sequence = explode(',', $section->sequence);
+		$current = array_search($cmid, $sequence);
+		$previousarrow = $this->proximityarrow($modinfo, $sequence, $current, -1, $section);
+		$nextarrow = block_catalogue_proximityarrow($modinfo, $sequence, $current, 1, $section);
+		$maindivstyle = 'margin-top:10px;margin-left:50px;float:left';
+		$arrows = "<div style='$maindivstyle'>";
+		$arrows .= '<table><tr><td>'.$previousarrow.'</td><td>'.$nextarrow.'</td></tr></table>';
+		$arrows .= '</div>';
+		return $arrows;
+	} else {
+		return '';
+	}
+}
+
+/**
+ * Draws the "previous" or the "next" arrow, with appropriate link and label.
+ * @global object $CFG
+ * @global object $COURSE
+ * @global object $DB
+ * @param cm_info $modinfo
+ * @param array of numeric strings $sequence
+ * @param int $current
+ * @param int $direction
+ * @param stdClass $section
+ * @return string HTML code
+ */
+function block_catalogue_proximityarrow($modinfo, $sequence, $current, $direction, $section) {
+	global $CFG, $COURSE, $DB;
+	$cataloguepixdir = "$CFG->wwwroot/theme/catalogue/pix";
+	$courselink = "$CFG->wwwroot/course/view.php?id=$COURSE->id";
+	$sectionlink = "$courselink#section-$section->section";
+	if ($direction > 0) {
+		$picture = 'next.png';
+	} else {
+		$picture = 'previous.png';
+	}
+	$proxy = block_catalogue_proximod($modinfo, $sequence, $current, $direction);
+	if ($proxy !== null) {
+		$proxicm = $DB->get_record('course_modules', array('id' => $sequence[$proxy]));
+		$proximodule = $DB->get_record('modules', array('id' => $proxicm->module));
+		if (($proximodule->name == 'label')||($proximodule->name == 'customlabel')) {
+			$proxilink = $sectionlink;
+			$proxilabel = get_string('modulename', "mod_$proximodule->name");
+		} else {
+			$proxilink = "$CFG->wwwroot/mod/$proximodule->name/view.php?id=$proxicm->id";
+			$proxiinstance = $DB->get_record($proximodule->name, array('id' => $proxicm->instance));
+			$proxilabel = $proxiinstance->name;
+		}
+	} else {
+		$proxilink = $sectionlink;
+		if ($section->name) {
+			$sectionname = $section->name;
+		} else {
+			$sectionname = ucwords(get_string('section'))." $section->section";
+		}
+		$proxilabel = $sectionname;
+	}
+	$arrow = "<a href='$proxilink'><img src='$cataloguepixdir/$picture' width='50px' alt='$proxilabel' title='$proxilabel'></a>";
+	return $arrow;
+}
+
+/**
+ * Looks for the first available mod before or after the current one.
+ * @param cm_info $modinfo
+ * @param array of numeric strings $sequence
+ * @param int $current
+ * @param int $direction
+ * @return int
+ */
+function block_catalogue_proximod($modinfo, $sequence, $current, $direction) {
+	$proxy = $current + $direction;
+	if (!isset($sequence[$proxy])) {
+		return null;
+	}
+	$proxicmid = $sequence[$proxy];
+	if (!is_numeric($proxicmid)) {
+		return null;
+	}
+	$proxicm = $modinfo->get_cm($proxicmid);
+	if (!$proxicm) {
+		return null;
+	}
+	$uservisible = $proxicm->uservisible;
+	if (!$uservisible) {
+		return block_catalogue_proximod($modinfo, $sequence, $proxy, $direction);
+	}
+	return $proxy;
+}
+	
+
 ?>
+
