@@ -86,7 +86,6 @@ class blockcatalogue_list_editing extends blockcatalogue_list {
 		    case 'move':
 		        if ($aftersection) { // Move the section. 	            
 	                $aftersectionrecord = $DB->get_record('course_sections', array('id' => $aftersection));
-	                print_object($aftersectionrecord);
 	                $destination = $aftersectionrecord->section;
 	                if ($section->section > $destination) {
 		                $destination++;
@@ -96,14 +95,13 @@ class blockcatalogue_list_editing extends blockcatalogue_list {
 	                    $highlightedsectionid = $DB->get_field('course_sections', 'id',
 					                                           array('course' => $COURSE->id, 'section' => $COURSE->marker));
 	                }
-	                print_object($destination);
 	                move_section_to($COURSE, $section->section, $destination);
 	                format_base::reset_course_cache($section->course);
 	                $highlightedsection = $DB->get_record('course_sections', array('id' => $highlightedsectionid));
 	                $DB->set_field("course", "marker", $highlightedsection->section, array('id' => $section->course));
 	                $COURSE->marker = $highlightedsection->section;
 	            }
-	        break;	    
+	        break;
 
 			case 'delete':
 				$page = 'editsection';
@@ -130,10 +128,11 @@ class blockcatalogue_list_editing extends blockcatalogue_list {
 			case 'highlight':
 				$marker = $section->section;
 				$DB->set_field("course", "marker", $marker, array('id' => $section->course));
-				format_base::reset_course_cache($section->course);
-				$page = 'view';
-				$args = "id=$section->course#section-$section->section";
-				$this->goto_page($page, $args);
+				format_base::reset_course_cache($section->course);				
+				$page = 'chooseobject.php';
+				$args = "action=highlight&course=$section->course";
+				$anchor = "section$section->id";
+				header("Location: $page?$args#$anchor");
 				break;
 
 			case 'picture':
