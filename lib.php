@@ -530,7 +530,7 @@ function block_catalogue_main_table($listnames, $course, $bgcolor, $showtabs) {
         $nofavs = get_string('nofavs', 'block_catalogue');
         $maintable .= "<p style='$iconstyle'>$nofavs</p>";
     }
-    $maintable .= '<div width="100%" style="text-align:center;font-weight:bold;margin-top:3px">'.get_string('navigation').'</div>';
+    $maintable .= '<div width="100%" style="text-align:center;font-weight:bold;margin-top:10px">'.get_string('navigation').'</div>';
     $maintable .= block_catalogue_proximityarrows();
     return $maintable;
 }
@@ -632,13 +632,13 @@ function block_catalogue_show_favorites($favorites, $bgcolor) {
     $nbcolumns = 3;
     foreach ($favorites as $favorite) {
         if (!isset($favlists[$favorite->listname])) {
-			if ($previouslist) {
-				$separator = block_catalogue_separator($previouslist, $favorite->listname);
-				if ($separator) {
-					$favstring .= '</tr><tr><td height="25px"></td></tr><tr>';
-					$nbshownfavs = 0;
-				}				
-			}
+			//~ if ($previouslist) {
+				//~ $separator = block_catalogue_separator($previouslist, $favorite->listname);
+				//~ if ($separator) {
+					//~ $favstring .= '</tr><tr><td height="25px"></td></tr><tr>';
+					//~ $nbshownfavs = 0;
+				//~ }				
+			//~ }
 			$previouslist = $favorite->listname;
             $favlists[$favorite->listname] = block_catalogue_instanciate_list($favorite->listname);
         }
@@ -813,22 +813,22 @@ function block_catalogue_proximityarrows() {
 		$previousarrow = block_catalogue_proximityarrow($modinfo, $sequence, $current, -1, $section, $cataloguepixdir);
 		$nextarrow = block_catalogue_proximityarrow($modinfo, $sequence, $current, 1, $section, $cataloguepixdir);
 	} else {
-		$previousarrow = '<div min-width="50px">&nbsp;</div>';
-		$nextarrow = '<div min-width="50px">&nbsp;</div>';
+		$previousarrow = '';
+		$nextarrow = '';
 	}
-	$maindivstyle = 'margin-top:10px;float:left';
+	//~ $maindivstyle = 'margin-top:10px;float:left';
 	//~ $maindivstyle = 'margin-top:10px;width:100%;text-align:center';
-	$arrows = "<div style='$maindivstyle'>";
-	$arrows .= '<table><tr>';
-	$arrows .= '<td>'.$previousarrow.'</td>';
+	//~ $arrows = "<div style='$maindivstyle'>";
+	$arrows .= '<table width="100%"><tr>';
+	$arrows .= '<td width="33%" style="text-align:center">'.$previousarrow.'</td>';
 	$maplabel = get_string('coursemap', 'block_catalogue');
 	$mapurl = "$CFG->wwwroot/blocks/catalogue/chooseplace.php?course=$COURSE->id&map=1";
-	$arrows .= '<td>'."<a href='$mapurl'>";
+	$arrows .= '<td style="text-align:center">'."<a href='$mapurl'>";
 	$arrows .= "<img src='$cataloguepixdir/coursemap.png' width='50px' alt='$maplabel' title='$maplabel'>";
 	$arrows .= "</a>".'</td>';
-	$arrows .= '<td>'.$nextarrow.'</td>';
+	$arrows .= '<td width="33%" style="text-align:center">'.$nextarrow.'</td>';
 	$arrows .= '</tr></table>';
-	$arrows .= '</div>';
+	//~ $arrows .= '</div>';
 	return $arrows;
 }
 
