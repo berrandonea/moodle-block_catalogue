@@ -135,11 +135,10 @@ function block_catalogue_chooseplace_modicon($modulehtml, $cmid, $selectmodurl, 
 	global $DB, $OUTPUT;
 
 	$cm = $DB->get_record('course_modules', array('id' => $cmid));
-
 	$modulehtml = str_replace('<li', '<div', $modulehtml);
 	$modulehtml = str_replace('</li>', '</div>', $modulehtml);
 	$modulehtml = str_replace('<a', '<div', $modulehtml);
-	$modulehtml = str_replace('</a>', '</div>', $modulehtml);
+	$modulehtml = str_replace('</a>', '</div>', $modulehtml);	
 	if (!$cm->visible) {
 		$modulehtml = str_replace('<img',
 								  '<img style="opacity:.5"',
@@ -161,7 +160,7 @@ function block_catalogue_chooseplace_modicon($modulehtml, $cmid, $selectmodurl, 
 		} else {
 			$opacity = 0.5;
 		}
-		$img .= "<img src='$pixurl' width='30px' style='padding-top:5px;opacity:$opacity'>";
+		$img = "<img src='$pixurl' width='30px' style='padding-top:5px;opacity:$opacity'>";
 		
 		if ($float) {
 			$modoutput = $img;
@@ -531,6 +530,7 @@ function block_catalogue_main_table($listnames, $course, $bgcolor, $showtabs) {
         $nofavs = get_string('nofavs', 'block_catalogue');
         $maintable .= "<p style='$iconstyle'>$nofavs</p>";
     }
+    $maintable .= '<div width="100%" style="text-align:center;font-weight:bold;margin-top:3px">'.get_string('navigation').'</div>';
     $maintable .= block_catalogue_proximityarrows();
     return $maintable;
 }
@@ -800,7 +800,8 @@ function block_catalogue_update_element($listname, $elementname, $nature, $newva
  * @return string HTML code
  */
 function block_catalogue_proximityarrows() {
-	global $COURSE, $DB, $PAGE;
+	global $CFG, $COURSE, $DB, $PAGE;
+	$cataloguepixdir = "$CFG->wwwroot/blocks/catalogue/pix";
 	$pagecontext = $PAGE->context;
 	if ($pagecontext->contextlevel == 70) {
 		$modinfo = get_fast_modinfo($COURSE);
@@ -809,16 +810,26 @@ function block_catalogue_proximityarrows() {
 		$section = $DB->get_record('course_sections', array('id' => $cm->section));
 		$sequence = explode(',', $section->sequence);
 		$current = array_search($cmid, $sequence);
-		$previousarrow = $this->proximityarrow($modinfo, $sequence, $current, -1, $section);
-		$nextarrow = block_catalogue_proximityarrow($modinfo, $sequence, $current, 1, $section);
-		$maindivstyle = 'margin-top:10px;margin-left:50px;float:left';
-		$arrows = "<div style='$maindivstyle'>";
-		$arrows .= '<table><tr><td>'.$previousarrow.'</td><td>'.$nextarrow.'</td></tr></table>';
-		$arrows .= '</div>';
-		return $arrows;
+		$previousarrow = block_catalogue_proximityarrow($modinfo, $sequence, $current, -1, $section, $cataloguepixdir);
+		$nextarrow = block_catalogue_proximityarrow($modinfo, $sequence, $current, 1, $section, $cataloguepixdir);
 	} else {
-		return '';
+		$previousarrow = '<div min-width="50px">&nbsp;</div>';
+		$nextarrow = '<div min-width="50px">&nbsp;</div>';
 	}
+	$maindivstyle = 'margin-top:10px;float:left';
+	//~ $maindivstyle = 'margin-top:10px;width:100%;text-align:center';
+	$arrows = "<div style='$maindivstyle'>";
+	$arrows .= '<table><tr>';
+	$arrows .= '<td>'.$previousarrow.'</td>';
+	$maplabel = get_string('coursemap', 'block_catalogue');
+	$mapurl = "$CFG->wwwroot/blocks/catalogue/chooseplace.php?course=$COURSE->id&map=1";
+	$arrows .= '<td>'."<a href='$mapurl'>";
+	$arrows .= "<img src='$cataloguepixdir/coursemap.png' width='50px' alt='$maplabel' title='$maplabel'>";
+	$arrows .= "</a>".'</td>';
+	$arrows .= '<td>'.$nextarrow.'</td>';
+	$arrows .= '</tr></table>';
+	$arrows .= '</div>';
+	return $arrows;
 }
 
 /**
@@ -833,9 +844,8 @@ function block_catalogue_proximityarrows() {
  * @param stdClass $section
  * @return string HTML code
  */
-function block_catalogue_proximityarrow($modinfo, $sequence, $current, $direction, $section) {
+function block_catalogue_proximityarrow($modinfo, $sequence, $current, $direction, $section, $cataloguepixdir) {
 	global $CFG, $COURSE, $DB;
-	$cataloguepixdir = "$CFG->wwwroot/theme/catalogue/pix";
 	$courselink = "$CFG->wwwroot/course/view.php?id=$COURSE->id";
 	$sectionlink = "$courselink#section-$section->section";
 	if ($direction > 0) {

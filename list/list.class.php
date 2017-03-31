@@ -199,7 +199,7 @@ abstract class blockcatalogue_list {
      * @param string $elementname
      */
     public function display_all_buttons($currentelementname) {
-        echo '<div style="position:fixed;right:100px;top:300px">';
+        echo '<div style="position:fixed;right:100px;top:300px;z-index:5">';
         $categories = $this->get_categories();
         $availables = $this->get_availables();
         echo '<table>';

@@ -108,7 +108,8 @@ if ($sectionid) {
 			course_create_sections_if_missing($course, array($coursenbsections));
 		}
         $lastsectionid = $DB->get_field('course_sections', 'id', array('course' => $course->id, 'section' => $coursenbsections));
-        header("Location: $movepage#section$lastsectionid");
+        $mappage = "$CFG->wwwroot/blocks/catalogue/chooseplace.php?course=$courseid&map=1";
+        header("Location: $mappage#section$lastsectionid");
 }
 
 //Once the user has chosen a mod
@@ -170,12 +171,18 @@ $modinfo = get_fast_modinfo($course);
 $herebutton = '<button class="btn btn-secondary">'.get_string('here', 'block_catalogue').'</button>';
 $moduleshtml = array();
 
+if ($elementname == 'edit') {
+	echo '<div style="text-align:center;size:20">';
+	$editcoursepage = "$CFG->wwwroot/course/edit.php?id=$COURSE->id";
+	echo "<a href='$editcoursepage'><button class='btn btn-secondary'>$COURSE->fullname</button></a>";
+	echo '</div>';
+}
+
 echo '<table>';
 
 foreach ($sections as $section) {
 	if ($section->section > $coursenbsections) {
 		$section->visible = 0;
-		//~ $section->name = get_string('orphanactivities').' ('.get_string('section').' '.$section->section.')';
 		$section->name = get_string('orphanedactivitiesinsectionno', '', $section->section);
 	}
     if (!$section->visible && !has_capability('moodle/course:viewhiddensections', $coursecontext)) {
