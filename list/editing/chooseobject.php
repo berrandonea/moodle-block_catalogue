@@ -28,8 +28,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
  *
- * File : chooseplace.php
- * Choose at the bottom of which section the new mod will be added
+ * File : list/editing/chooseobject.php
+ * Choose to which object an editing action will be applied
  */
 
 require_once('../../../../config.php');
@@ -188,7 +188,7 @@ foreach ($sections as $section) {
     if (!$section->visible && !has_capability('moodle/course:viewhiddensections', $coursecontext)) {
 	    continue;
     }
-    if ($COURSE->marker == $section->section) {
+    if ($COURSE->marker == $section->section && $section->section) {
 	    $highlighting = "style='border:2px solid red'";
     } else {
 	    $highlighting = '';
