@@ -819,7 +819,7 @@ function block_catalogue_proximityarrows() {
 	//~ $maindivstyle = 'margin-top:10px;float:left';
 	//~ $maindivstyle = 'margin-top:10px;width:100%;text-align:center';
 	//~ $arrows = "<div style='$maindivstyle'>";
-	$arrows .= '<table width="100%"><tr>';
+	$arrows = '<table width="100%"><tr>';
 	$arrows .= '<td width="33%" style="text-align:center">'.$previousarrow.'</td>';
 	$maplabel = get_string('coursemap', 'block_catalogue');
 	$mapurl = "$CFG->wwwroot/blocks/catalogue/chooseplace.php?course=$COURSE->id&map=1";
