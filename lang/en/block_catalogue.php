@@ -198,6 +198,7 @@ $string['enrols_description_enrol_self_edit'] = "Set a passwords for the student
 $string['enrols_description_mass_enroll'] = "Massive enrolment from a CSV file.";
 $string['enrols_description_group_copygroup'] = "Import groups from another course.";
 $string['enrols_description_block_demands'] = "If students asked for enrolment in this course, answer them here.";
+
 $string['grades_listname'] = 'Grades';
 $string['grades_gradereport'] = 'Grade reports';
 $string['grades_gradesetting'] = 'Grade settings';
@@ -219,6 +220,11 @@ $string['grades_description_badges_index'] = "Create and manage badges for this 
 $string['grades_description_gradesetting_outcome'] = "Shows outcomes defined on the site and available for your course.";
 $string['grades_description_gradesetting_outcomecourse'] = "Manage which outcomes are used in your course.";
 $string['grades_description_gradereport_outcomes'] = "Shows how well each course outcome has been achieved by students.";
+$string['grades_description_admintool_coursecompetencies'] = "Links competencies to this course.";
+$string['grades_description_report_competency'] = "Did your students master the course competencies ?";
+$string['grades_link_admintool_coursecompetencies'] = "en/Competencies";
+$string['grades_link_report_competency'] = "en/Competencies";
+
 $string['reports_listname'] = 'Reports';
 $string['reports_report'] = 'Reports';
 $string['reports_use'] = 'Check';
