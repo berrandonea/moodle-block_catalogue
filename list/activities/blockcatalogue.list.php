@@ -45,8 +45,7 @@ class blockcatalogue_list_activities extends blockcatalogue_list {
             'collaborative' => array('chat', 'data', 'forum', 'bigbluebuttonbn',
                 'glossary', 'depotetudiant', 'etherpadlite', 'wiki')
         );
-        //BRICE~ $this->defaultfavorites = array('assign', 'quiz');
-        $this->defaultfavorites = array('assign', 'quiz', 'hvp'); //BRICE
+        $this->defaultfavorites = array('assign', 'quiz');
         $this->open = false;
     }
 
