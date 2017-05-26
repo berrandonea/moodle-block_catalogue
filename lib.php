@@ -530,8 +530,8 @@ function block_catalogue_main_table($listnames, $course, $bgcolor, $showtabs) {
         $nofavs = get_string('nofavs', 'block_catalogue');
         $maintable .= "<p style='$iconstyle'>$nofavs</p>";
     }
-    $maintable .= '<div width="100%" style="text-align:center;font-weight:bold;margin-top:10px">'.get_string('navigation').'</div>';
-    $maintable .= block_catalogue_proximityarrows();
+//BRICE    $maintable .= '<div width="100%" style="text-align:center;font-weight:bold;margin-top:10px">'.get_string('navigation').'</div>';
+//BRICE    $maintable .= block_catalogue_proximityarrows();
     return $maintable;
 }
 

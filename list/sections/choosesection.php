@@ -107,7 +107,7 @@ $PAGE->set_heading($course->fullname);
 echo $OUTPUT->header();
 echo '<h1>'.get_string("sections_$elementname", 'block_catalogue').'</h1>';
 echo '<p>'.get_string("sections_description_$elementname", 'block_catalogue').'</p>';
-echo '<h2>'.get_string('chooseplace', 'block_catalogue').'</h2>';
+echo '<h2>'./*BRICE get_string('chooseplace', 'block_catalogue')*/'Choisissez une section'.'</h2>';
 echo '<ul>';
 $targetpage = "$CFG->wwwroot/course/$page.php";
 
@@ -153,9 +153,9 @@ foreach ($sections as $section) {
     }
     $url = new moodle_url($targetpage, $args);
     echo "<li style='padding-bottom:25px'><a href='$url' style='$style'>$sectionname</a></li>";
-    if ($elementname == 'goto') {
+    /* BRICE if ($elementname == 'goto') {
         block_catalogue_section_toc($section->id);
-    }
+    } */
 }
 
 echo '</ul>';

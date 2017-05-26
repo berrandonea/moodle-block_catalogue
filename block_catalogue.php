@@ -58,6 +58,13 @@ class block_catalogue extends block_base {
 
     public function get_content() {
         global $DB, $PAGE;
+//BRICE : pas de catalogue si page d'etherpad
+if ($PAGE->url->get_path() == '/mod/etherpadlite/view.php') {
+	$this->content->text = '';
+	return $this->content;
+}
+
+
         $courseviewonly = get_config('catalogue', 'courseviewonly');
         if ($courseviewonly) {
             $pagetype = explode('-', $PAGE->pagetype);
