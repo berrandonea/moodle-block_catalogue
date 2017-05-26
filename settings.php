@@ -62,7 +62,7 @@ $settings->add(new admin_setting_configcolourpicker(
         'catalogue/bgcolor',
         get_string('bgcolor', 'block_catalogue'),
         get_string('descbgcolor', 'block_catalogue'),
-        '#f0f0f0',
+        '#fff',
         array(
             'selector' => 'html,body',
             'style' => 'backgroundColor'
