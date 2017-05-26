@@ -52,13 +52,6 @@ $settings->add(new admin_setting_configtext(
         ));
 
 $settings->add(new admin_setting_configcheckbox(
-            'catalogue/hideediting',
-            get_string('hideediting', 'block_catalogue'),
-            get_string('deschideediting', 'block_catalogue'),
-            '0'
-        ));
-
-$settings->add(new admin_setting_configcheckbox(
             'catalogue/getremotedata',
             get_string('getremotedata', 'block_catalogue'),
             get_string('descgetremotedata', 'block_catalogue'),
