@@ -170,9 +170,11 @@ if ($map) {
 
 echo '<table>';
 foreach ($sections as $section) {
-	if ($section->section > $coursenbsections) {
-		$section->visible = 0;
-		$section->name = get_string('orphanedactivitiesinsectionno', '', $section->section);
+	if ($CFG->branch < 33) {
+		if ($section->section > $coursenbsections) {
+			$section->visible = 0;
+			$section->name = get_string('orphanedactivitiesinsectionno', '', $section->section);
+		}
 	}
 	if (!$section->visible && !has_capability('moodle/course:viewhiddensections', $coursecontext)) {
 		continue;
