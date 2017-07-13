@@ -161,14 +161,14 @@ if ($map) {
 	$herebutton = '';
 } else {
 	$herebutton = '<button class="btn btn-secondary">'.get_string('here', 'block_catalogue').'</button>';
-    $args = array('mod' => $mod,
+	$args = array('mod' => $mod,
                   'type' => $type,
                   'course' => $courseid,
                   'list' => $listname);
     $selectmodurl = '';
 }
 
-echo '<table>';
+echo '<table width="100%">';
 foreach ($sections as $section) {
 	if ($CFG->branch < 33) {
 		if ($section->section > $coursenbsections) {
@@ -180,11 +180,11 @@ foreach ($sections as $section) {
 		continue;
 	}
 	$args['sectionid'] = $section->id;
-	//BRICE if ($COURSE->marker == $section->section) {
-	//BRICE	$highlighting = "style='border:2px solid red'";
-	//BRICE } else {
-		$highlighting = '';
-	//BRICE }
+	if ($COURSE->marker == $section->section && $section->section) {
+	    $highlighting = "style='border:2px solid red'";
+	} else {
+		$highlighting = "style='border:2px solid gray'";
+	}
 	if ($section->visible) {
 		$hidden = "style='font-weight:bold'";
 	} else {
@@ -192,56 +192,79 @@ foreach ($sections as $section) {
 	}
 	echo "<tr $highlighting id='section$section->id'>";
 	echo '<td>';
-	if ($map) {
-		echo "<a href='$coursepage&section=$section->section'>";
-		echo '<button class="btn btn-secondary">';
-	}
+	//~ if ($map) {
+		//~ echo "<a href='$coursepage&section=$section->section'>";
+		//~ echo '<button class="btn btn-secondary">';
+	//~ }
 	//~ if ($section->name) {
 		//~ echo "<span $hidden>$section->name</span>";
 	//~ } else {
 		//~ echo "<span $hidden>Section $section->section</span>";
 	//~ }
+	//~ if ($map) {
+		//~ echo '</button>';
+		//~ echo "</a>";
+	//~ }
+	echo '</td>';
+	//~ echo '<td> &nbsp; </td>';
+	echo '<td>';
+	
+	echo '<table width="100%">';
+	echo '<tr><td style="text-align:center;width=100%">';
 	if ($map) {
-		echo '</button>';
-		echo "</a>";
+		echo "<a href='$coursepage&section=$section->section'>";
+		echo '<button class="btn btn-secondary">';
 	}
-	echo '</td><td> &nbsp; </td><td>';
-    $args['aftermod'] = 0;
-	$placeurl = new moodle_url($thisfilename, $args);
-	//BRICE echo '<a style="padding-left:30px;float:left;margin-top:10px;margin-bottom:30px" href="'.$placeurl.'">'.$herebutton.'</a>';
-	//BRICE
-	echo '<a style="padding-left:30px;float:left;margin-top:10px;margin-bottom:30px" href="'.$placeurl.'">';
 	if ($section->name) {
 		echo "<span $hidden>$section->name</span>";
 	} else {
 		echo "<span $hidden>Section $section->section</span>";
 	}
-	echo '</a>';
-	//FIN
-	//~ if (!empty($modinfo->sections[$section->section])) {
-		//~ foreach ($modinfo->sections[$section->section] as $cmid) {			
-			//~ $cminfo = $modinfo->cms[$cmid];			
-			//~ if ($modulehtml = $renderer->course_section_cm_list_item($course,
-							//~ $completioninfo, $cminfo, null)) {
-			    //~ if ($map) {
-					//~ $cm = $DB->get_record('course_modules', array('id' => $cmid));
-			        //~ $module = $DB->get_record('modules', array('id' => $cm->module));
-			        //~ $selectmodurl = "$CFG->wwwroot/mod/$module->name/view.php?id=$cmid";
-	
-				//~ }
-				//~ block_catalogue_chooseplace_modicon($modulehtml, $cmid, $selectmodurl, true, false);
-				//~ if ($map) {
-	
-				//~ } else {
-					//~ $args['aftermod'] = $cmid;
-				    //~ $placeurl = new moodle_url($thisfilename, $args);
-				    //~ echo '<a style="padding-left:30px;float:left;margin-top:10px;margin-bottom:30px" href="'.$placeurl.'">'.$herebutton.'</a>';
-				//~ }				
-			//~ }
-		//~ }
-	//~ }
+	if ($map) {
+		echo '</button>';
+		echo "</a>";
+	}
 	echo '</td></tr>';
-	echo '<tr><td height="50px;color:gray"><hr></td></tr>';
+	echo '<tr><td>'; 
+	
+    $args['aftermod'] = 0;
+	$placeurl = new moodle_url($thisfilename, $args);
+	echo '<a style="padding-left:30px;float:left;margin-top:10px;margin-bottom:30px" href="'.$placeurl.'">'.$herebutton.'</a>';
+	//~ //BRICE
+	//~ echo '<a style="padding-left:30px;float:left;margin-top:10px;margin-bottom:30px" href="'.$placeurl.'">';
+	//~ if ($section->name) {
+		//~ echo "<span $hidden>$section->name</span>";
+	//~ } else {
+		//~ echo "<span $hidden>Section $section->section</span>";
+	//~ }
+	//~ echo '</a>';
+	//~ //FIN
+	if (!empty($modinfo->sections[$section->section])) {
+		foreach ($modinfo->sections[$section->section] as $cmid) {			
+			$cminfo = $modinfo->cms[$cmid];			
+			if ($modulehtml = $renderer->course_section_cm_list_item($course,
+							$completioninfo, $cminfo, null)) {
+			    if ($map) {
+					$cm = $DB->get_record('course_modules', array('id' => $cmid));
+			        $module = $DB->get_record('modules', array('id' => $cm->module));
+			        $selectmodurl = "$CFG->wwwroot/mod/$module->name/view.php?id=$cmid";
+	
+				}
+				block_catalogue_chooseplace_modicon($modulehtml, $cmid, $selectmodurl, true, false);
+				if ($map) {
+	
+				} else {
+					$args['aftermod'] = $cmid;
+				    $placeurl = new moodle_url($thisfilename, $args);
+				    echo '<a style="padding-left:30px;float:left;margin-top:10px;margin-bottom:30px" href="'.$placeurl.'">'.$herebutton.'</a>';
+				}				
+			}
+		}
+	}
+	echo '</td></tr>';
+	echo '</table>';
+	echo '</td></tr>';
+	echo '<tr><td style="height:50px;color:gray"><hr></td></tr>';	
 }
 echo '</table>';
 
