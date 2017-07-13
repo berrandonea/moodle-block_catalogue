@@ -42,26 +42,26 @@ $courseid = required_param('course', PARAM_INT);
 $args = array('course' => $courseid);
 $map = optional_param('map', 0, PARAM_INT);
 if (!$map) {
-	$listname = required_param('list', PARAM_ALPHA);
-	$args['list'] = $listname;
-	if ($listname == 'blocks') {
-		$elementname = required_param('block', PARAM_TEXT);
-		$args['blocks'] = $elementname;
-	} else {
-		$mod = required_param('mod', PARAM_TEXT);
-		$args['mod'] = $mod;
-		$type = optional_param('type', '', PARAM_TEXT);
-		$args['type'] = $type;
-		if ($type) {
-			$elementname = $type;
-		} else {
-			$elementname = $mod;
-		}
-		$sectionid = optional_param('sectionid', 0, PARAM_INT);
-		$aftermod = optional_param('aftermod', 0, PARAM_INT);
-	}
+    $listname = required_param('list', PARAM_ALPHA);
+    $args['list'] = $listname;
+    if ($listname == 'blocks') {
+        $elementname = required_param('block', PARAM_TEXT);
+        $args['blocks'] = $elementname;
+    } else {
+        $mod = required_param('mod', PARAM_TEXT);
+        $args['mod'] = $mod;
+        $type = optional_param('type', '', PARAM_TEXT);
+        $args['type'] = $type;
+        if ($type) {
+            $elementname = $type;
+        } else {
+            $elementname = $mod;
+        }
+        $sectionid = optional_param('sectionid', 0, PARAM_INT);
+        $aftermod = optional_param('aftermod', 0, PARAM_INT);
+    }
 } else {
-	$args['map'] = 1;
+    $args['map'] = 1;
 }
 
 // Access control.
@@ -75,11 +75,11 @@ $coursenbsections = $DB->get_field('course_format_options', 'value',
 if ($map) {
     $editinglist = block_catalogue_instanciate_list('editing');
 } else {
-	$list = block_catalogue_instanciate_list($listname);
-	$listlocalname = $list->get_localname();
-	$elementlocalname = $list->get_element_localname($elementname);
-	$permitted = $list->can_add($elementname);
-	if (!$permitted) {
+    $list = block_catalogue_instanciate_list($listname);
+    $listlocalname = $list->get_localname();
+    $elementlocalname = $list->get_element_localname($elementname);
+    $permitted = $list->can_add($elementname);
+    if (!$permitted) {
         header("Location: $coursepage");
     }
     $targetfilename = $list->get_modedit();
@@ -88,26 +88,26 @@ if ($map) {
 
 // Once the user has chosen where to add a module.
 if (isset($sectionid)) {
-	if ($sectionid) {
-	    $section = $DB->get_record('course_sections', array('id' => $sectionid, 'course' => $courseid), '*', MUST_EXIST);
-	    $sequence = explode(',', $section->sequence);
-	    $sectionlastcmid = end($sequence); //cmid of the current last mod in this section.
-	    reset($sequence);
-	    if ($aftermod) {
-		    $newsequence = '';
-	    } else { // If the new mod is placed at the beginning of the section.
-		    $newsequence = -$sectionlastcmid.',';
-	    }
-	    foreach ($sequence as $cmid) {
-		    $newsequence .= "$cmid,";
-		    if ($cmid == $aftermod) {
-			    $newsequence .= -$sectionlastcmid.',';
-		    }
-	    }
-	    $section->sequence = substr($newsequence, 0, -1); //Remove the last comma.
-	    $DB->update_record('course_sections', $section);
-	    $url = $targetcommonurl."&section=$section->section";
-	    header("Location: $url");
+    if ($sectionid) {
+        $section = $DB->get_record('course_sections', array('id' => $sectionid, 'course' => $courseid), '*', MUST_EXIST);
+        $sequence = explode(',', $section->sequence);
+        $sectionlastcmid = end($sequence); // It's the cmid of the current last mod in this section.
+        reset($sequence);
+        if ($aftermod) {
+            $newsequence = '';
+        } else { // If the new mod is placed at the beginning of the section.
+            $newsequence = -$sectionlastcmid.',';
+        }
+        foreach ($sequence as $cmid) {
+            $newsequence .= "$cmid,";
+            if ($cmid == $aftermod) {
+                $newsequence .= -$sectionlastcmid.',';
+            }
+        }
+        $section->sequence = substr($newsequence, 0, -1); // Remove the last comma.
+        $DB->update_record('course_sections', $section);
+        $url = $targetcommonurl."&section=$section->section";
+        header("Location: $url");
     }
 }
 
@@ -118,10 +118,10 @@ $PAGE->set_pagelayout('standard');
 $PAGE->set_heading($course->fullname);
 $PAGE->navbar->add(get_string('pluginname', 'block_catalogue'));
 if ($map) {
-	$title = get_string('coursemap', 'block_catalogue');
+    $title = get_string('coursemap', 'block_catalogue');
 } else {
-	$PAGE->navbar->add($listlocalname, 'index.php?name='.$listname.'&course='.$COURSE->id);
-    $title = get_string('addnew', 'block_catalogue').' '.$elementlocalname;    
+    $PAGE->navbar->add($listlocalname, 'index.php?name='.$listname.'&course='.$COURSE->id);
+    $title = get_string('addnew', 'block_catalogue').' '.$elementlocalname;
 }
 $PAGE->navbar->add($title, '');
 
@@ -146,7 +146,7 @@ if (isset($list)) {
     echo '<br><br>';
     echo '<h2>'.get_string('addwhere', 'block_catalogue').'</h2>';
 } else {
-	echo '<h2>'.get_string('gowhere', 'block_catalogue').'</h2>';
+    echo '<h2>'.get_string('gowhere', 'block_catalogue').'</h2>';
 }
 
 $renderer = new core_course_renderer($PAGE, '');
@@ -154,14 +154,14 @@ $completioninfo = new completion_info($course);
 $modinfo = get_fast_modinfo($course);
 
 if ($map) {
-	$editinglist->display_all_buttons('');
-	echo '<div style="text-align:center;size:20">';
-	echo "<a href='$coursepage'><button class='btn btn-secondary'>$COURSE->fullname</button></a>";
-	echo '</div>';
-	$herebutton = '';
+    $editinglist->display_all_buttons('');
+    echo '<div style="text-align:center;size:20">';
+    echo "<a href='$coursepage'><button class='btn btn-secondary'>$COURSE->fullname</button></a>";
+    echo '</div>';
+    $herebutton = '';
 } else {
-	$herebutton = '<button class="btn btn-secondary">'.get_string('here', 'block_catalogue').'</button>';
-	$args = array('mod' => $mod,
+    $herebutton = '<button class="btn btn-secondary">'.get_string('here', 'block_catalogue').'</button>';
+    $args = array('mod' => $mod,
                   'type' => $type,
                   'course' => $courseid,
                   'list' => $listname);
@@ -170,101 +170,73 @@ if ($map) {
 
 echo '<table width="100%">';
 foreach ($sections as $section) {
-	if ($CFG->branch < 33) {
-		if ($section->section > $coursenbsections) {
-			$section->visible = 0;
-			$section->name = get_string('orphanedactivitiesinsectionno', '', $section->section);
-		}
-	}
-	if (!$section->visible && !has_capability('moodle/course:viewhiddensections', $coursecontext)) {
-		continue;
-	}
-	$args['sectionid'] = $section->id;
-	if ($COURSE->marker == $section->section && $section->section) {
-	    $highlighting = "style='border:2px solid red'";
-	} else {
-		$highlighting = "style='border:2px solid gray'";
-	}
-	if ($section->visible) {
-		$hidden = "style='font-weight:bold'";
-	} else {
-		$hidden = "style='color:gray'";
-	}
-	echo "<tr $highlighting id='section$section->id'>";
-	echo '<td>';
-	//~ if ($map) {
-		//~ echo "<a href='$coursepage&section=$section->section'>";
-		//~ echo '<button class="btn btn-secondary">';
-	//~ }
-	//~ if ($section->name) {
-		//~ echo "<span $hidden>$section->name</span>";
-	//~ } else {
-		//~ echo "<span $hidden>Section $section->section</span>";
-	//~ }
-	//~ if ($map) {
-		//~ echo '</button>';
-		//~ echo "</a>";
-	//~ }
-	echo '</td>';
-	//~ echo '<td> &nbsp; </td>';
-	echo '<td>';
-	
-	echo '<table width="100%">';
-	echo '<tr><td style="text-align:center;width=100%">';
-	if ($map) {
-		echo "<a href='$coursepage&section=$section->section'>";
-		echo '<button class="btn btn-secondary">';
-	}
-	if ($section->name) {
-		echo "<span $hidden>$section->name</span>";
-	} else {
-		echo "<span $hidden>Section $section->section</span>";
-	}
-	if ($map) {
-		echo '</button>';
-		echo "</a>";
-	}
-	echo '</td></tr>';
-	echo '<tr><td>'; 
-	
+    if ($CFG->branch < 33) {
+        if ($section->section > $coursenbsections) {
+            $section->visible = 0;
+            $section->name = get_string('orphanedactivitiesinsectionno', '', $section->section);
+        }
+    }
+    if (!$section->visible && !has_capability('moodle/course:viewhiddensections', $coursecontext)) {
+        continue;
+    }
+    $args['sectionid'] = $section->id;
+    if ($COURSE->marker == $section->section && $section->section) {
+        $highlighting = "style='border:2px solid red'";
+    } else {
+        $highlighting = "style='border:2px solid gray'";
+    }
+    if ($section->visible) {
+        $hidden = "style='font-weight:bold'";
+    } else {
+        $hidden = "style='color:gray'";
+    }
+    echo "<tr $highlighting id='section$section->id'>";
+    echo '<td>';
+    echo '<table width="100%">';
+    echo '<tr><td style="text-align:center;width=100%">';
+    if ($map) {
+        echo "<a href='$coursepage&section=$section->section'>";
+        echo '<button class="btn btn-secondary">';
+    }
+    if ($section->name) {
+        echo "<span $hidden>$section->name</span>";
+    } else {
+        echo "<span $hidden>Section $section->section</span>";
+    }
+    if ($map) {
+        echo '</button>';
+        echo "</a>";
+    }
+    echo '</td></tr>';
+    echo '<tr><td>';
     $args['aftermod'] = 0;
-	$placeurl = new moodle_url($thisfilename, $args);
-	echo '<a style="padding-left:30px;float:left;margin-top:10px;margin-bottom:30px" href="'.$placeurl.'">'.$herebutton.'</a>';
-	//~ //BRICE
-	//~ echo '<a style="padding-left:30px;float:left;margin-top:10px;margin-bottom:30px" href="'.$placeurl.'">';
-	//~ if ($section->name) {
-		//~ echo "<span $hidden>$section->name</span>";
-	//~ } else {
-		//~ echo "<span $hidden>Section $section->section</span>";
-	//~ }
-	//~ echo '</a>';
-	//~ //FIN
-	if (!empty($modinfo->sections[$section->section])) {
-		foreach ($modinfo->sections[$section->section] as $cmid) {			
-			$cminfo = $modinfo->cms[$cmid];			
-			if ($modulehtml = $renderer->course_section_cm_list_item($course,
-							$completioninfo, $cminfo, null)) {
-			    if ($map) {
-					$cm = $DB->get_record('course_modules', array('id' => $cmid));
-			        $module = $DB->get_record('modules', array('id' => $cm->module));
-			        $selectmodurl = "$CFG->wwwroot/mod/$module->name/view.php?id=$cmid";
-	
-				}
-				block_catalogue_chooseplace_modicon($modulehtml, $cmid, $selectmodurl, true, false);
-				if ($map) {
-	
-				} else {
-					$args['aftermod'] = $cmid;
-				    $placeurl = new moodle_url($thisfilename, $args);
-				    echo '<a style="padding-left:30px;float:left;margin-top:10px;margin-bottom:30px" href="'.$placeurl.'">'.$herebutton.'</a>';
-				}				
-			}
-		}
-	}
-	echo '</td></tr>';
-	echo '</table>';
-	echo '</td></tr>';
-	echo '<tr><td style="height:50px;color:gray"><hr></td></tr>';	
+    $placeurl = new moodle_url($thisfilename, $args);
+    echo '<a style="padding-left:30px;float:left;margin-top:10px;margin-bottom:30px" href="'.$placeurl.'">'.$herebutton.'</a>';
+    if (!empty($modinfo->sections[$section->section])) {
+        foreach ($modinfo->sections[$section->section] as $cmid) {
+            $cminfo = $modinfo->cms[$cmid];
+            if ($modulehtml = $renderer->course_section_cm_list_item($course,
+                                         $completioninfo, $cminfo, null)) {
+                if ($map) {
+                    $cm = $DB->get_record('course_modules', array('id' => $cmid));
+                    $module = $DB->get_record('modules', array('id' => $cm->module));
+                    $selectmodurl = "$CFG->wwwroot/mod/$module->name/view.php?id=$cmid";
+                }
+                block_catalogue_chooseplace_modicon($modulehtml, $cmid, $selectmodurl, true, false);
+                if (!$map) {
+                    $args['aftermod'] = $cmid;
+                    $placeurl = new moodle_url($thisfilename, $args);
+                    echo '<a style="padding-left:30px;float:left;margin-top:10px;margin-bottom:30px" href="'.$placeurl.'">';
+                    echo $herebutton;
+                    echo '</a>';
+                }
+            }
+        }
+    }
+    echo '</td></tr>';
+    echo '</table>';
+    echo '</td></tr>';
+    echo '<tr><td style="height:50px;color:gray"><hr></td></tr>';
 }
 echo '</table>';
 
