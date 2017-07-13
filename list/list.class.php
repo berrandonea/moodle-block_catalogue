@@ -143,7 +143,7 @@ abstract class blockcatalogue_list {
         $url = $this->index_url($course);
         $picturefile = "$CFG->wwwroot/blocks/catalogue/list/$this->name/catalogue_icon.png";
         $text = "<a href = '$url'>";
-        $text .= "<img src='$picturefile' height='31px' width='35px'>";
+        $text .= "<img src='$picturefile' height='50px' width='50px'>";
         $text .= '</a>';
         return $text;
     }
