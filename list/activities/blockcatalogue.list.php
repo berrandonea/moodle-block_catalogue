@@ -37,7 +37,7 @@ class blockcatalogue_list_activities extends blockcatalogue_list {
     public function __construct() {
         $this->name = 'activities';
         $this->prefix = 'mod';
-	$this->color = '#4472c4';
+        $this->color = '#4472c4';
         $this->categories = array('exercise', 'collaborative', 'other');
         $this->potentialmembers = array(
             'exercise' => array('adaptivequiz', 'assign', 'assignment', 'lesson', 'quiz',
@@ -101,14 +101,14 @@ class blockcatalogue_list_activities extends blockcatalogue_list {
         $manager = get_string_manager();
         switch ($nature) {
             case 'description' :
-				if ($manager->string_exists('modulename_help', $component)) {
-					$description = get_string('modulename_help', $component);
-					return $description;
-				} else {
-					return null;
-				}
+                if ($manager->string_exists('modulename_help', $component)) {
+                    $description = get_string('modulename_help', $component);
+                    return $description;
+                } else {
+                    return null;
+                }
 
-            case 'link' :                
+            case 'link' :
                 if ($manager->string_exists('modulename_link', $component)) {
                     $link = "$this->standarddocdir/$CFG->branch/$CFG->lang/".get_string('modulename_link', $component);
                     return $link;

@@ -113,14 +113,14 @@ class blockcatalogue_list_customlabels extends blockcatalogue_list {
         global $CFG;
         $dirpath1 = "$CFG->dirroot/$localicondir";
         if (!file_exists($dirpath1)) {
-			return null;
-		}
+            return null;
+        }
         $dirpath2 = "$dirpath1/pix";
         if (file_exists($dirpath2)) {
-			$dirhandler = opendir($dirpath2);
-		} else {
-			$dirhandler = opendir($dirpath1);
-		}
+            $dirhandler = opendir($dirpath2);
+        } else {
+            $dirhandler = opendir($dirpath1);
+        }
         while ($filename = readdir($dirhandler)) {
             $begin = substr($filename, 0, 4);
             $end = substr($filename, -4);
@@ -167,10 +167,10 @@ class blockcatalogue_list_customlabels extends blockcatalogue_list {
                 }
                 $iconurl = $this->get_local_iconurl(null, $elementname);
                 if ($iconurl) {
-		   return $iconurl;
-		} else {
-		   return $OUTPUT->pix_url('icon', 'mod_customlabel');
-		}
+                    return $iconurl;
+                } else {
+                    return $OUTPUT->pix_url('icon', 'mod_customlabel');
+                }
 
             default :
                 return null;

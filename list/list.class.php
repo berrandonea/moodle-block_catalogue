@@ -203,24 +203,24 @@ abstract class blockcatalogue_list {
         $availables = $this->get_availables();
         echo '<table>';
         foreach ($categories as $category) {
-  	    echo '<tr>';
-	    foreach ($availables[$category] as $elementname) {
-	        $localname = $this->get_element_localname($elementname);
-	        $iconurl = $this->get_element_data($elementname, 'iconurl');
-	        $usageurl = $this->usage_url($elementname);
-		if ($elementname == $currentelementname) {
-		    $border = 'border:2px solid red';
-		} else {
-		    $border = '';
-		}
-	        echo "<td style='margin-right:5px'>"."<a href='$usageurl' title='$localname'>"."<button style='$border'>";
-	        echo "<img width='30px' height='30px' src='$iconurl' alt='$localname'>";
-	        echo '</button>'."</a>".'</td>';
-	    }
-	    echo '</tr>';
-	}
-	echo '</table>';
-	echo '</div>';
+            echo '<tr>';
+            foreach ($availables[$category] as $elementname) {
+                $localname = $this->get_element_localname($elementname);
+                $iconurl = $this->get_element_data($elementname, 'iconurl');
+                $usageurl = $this->usage_url($elementname);
+                if ($elementname == $currentelementname) {
+                    $border = 'border:2px solid red';
+                } else {
+                    $border = '';
+                }
+                echo "<td style='margin-right:5px'>"."<a href='$usageurl' title='$localname'>"."<button style='$border'>";
+                echo "<img width='30px' height='30px' src='$iconurl' alt='$localname'>";
+                echo '</button>'."</a>".'</td>';
+            }
+            echo '</tr>';
+        }
+        echo '</table>';
+        echo '</div>';
     }
 
     /**
@@ -260,12 +260,12 @@ abstract class blockcatalogue_list {
      */
     public function get_lang_data($elementname, $nature) {
         global $CFG;
-	$cataloguestringname = $this->name.'_'.$nature.'_'.$elementname;
+        $cataloguestringname = $this->name.'_'.$nature.'_'.$elementname;
         if (get_string_manager()->string_exists($cataloguestringname, 'block_catalogue')) {
-	    $cataloguestring = get_string($cataloguestringname, 'block_catalogue');
-	} else {
-	    return null;
-	}
+            $cataloguestring = get_string($cataloguestringname, 'block_catalogue');
+        } else {
+            return null;
+        }
         if (($nature == 'link') && (substr($cataloguestring, 0, 4) != 'http')) {
             $fulllink = "$this->standarddocdir/$CFG->branch/$cataloguestring";
             return $fulllink;
@@ -447,14 +447,14 @@ abstract class blockcatalogue_list {
         $localname = get_string($this->name.'_listname', 'block_catalogue');
         return $localname;
     }
-    
+
     /**
      * Page to edit a mod from this list (doesn't apply if it's not a mod list).
      * @return string
      */
     public function get_modedit() {
-		return 'course/modedit.php';
-	}
+        return 'course/modedit.php';
+    }
 
     /**
      * Get this list's technical name.
@@ -463,14 +463,14 @@ abstract class blockcatalogue_list {
     public function get_name() {
         return $this->name;
     }
-    
+
     /**
      * Get the main color for this list.
      * @return string
      */
     public function get_color() {
-		return $this->color;
-	}
+        return $this->color;
+    }
 
     /**
      * Get the prefix for this list. Can be overriden in subclasses, where it can depend on elementname.
@@ -499,13 +499,13 @@ abstract class blockcatalogue_list {
             }
             $fileheaders = get_headers($filename);
             if (strpos($fileheaders[0], '200')) {
-				$filecontent = file_get_contents($filename);
-				if (!$filecontent || strpos($filecontent, "<title>Plugin not found</title>")) {
-					$filecontent = '';
-				}
-			} else {
-				$filecontent = '';
-			}
+                $filecontent = file_get_contents($filename);
+                if (!$filecontent || strpos($filecontent, "<title>Plugin not found</title>")) {
+                    $filecontent = '';
+                }
+            } else {
+                $filecontent = '';
+            }
             $this->pluginfile = $filecontent;
         }
         if ($filecontent) {
@@ -581,24 +581,24 @@ abstract class blockcatalogue_list {
      * @param
      */
     public function tab($selectedlistname, $editing) {
-	global $CFG, $COURSE;
-	$listdir = "$CFG->wwwroot/blocks/catalogue/list";
-	$html = "<div style='float:left;margin-right:30px'>";
+        global $CFG, $COURSE;
+        $listdir = "$CFG->wwwroot/blocks/catalogue/list";
+        $html = "<div style='float:left;margin-right:30px'>";
         $target = $CFG->wwwroot.'/blocks/catalogue/index.php'.
             "?name=$this->name&course=$COURSE->id&editing=$editing";
         $html .= "<a href = '$target'>";
         $html .= '<table><tr>';
         if (!$selectedlistname || $this->name == $selectedlistname) {
-	    $opacity = 1;
+            $opacity = 1;
             $height = '60px';
             $textcolor = $this->get_color();
-	} else {
-	    $opacity = 0.5;
+        } else {
+            $opacity = 0.5;
             $height = '40px';
             $textcolor = '#222';
-	}
+        }
         $html .= "<td class='block_catalogue_listtab' style='text-align:center'>";
-	$html .= "<img src='$listdir/$this->name/catalogue_icon.png' style='opacity:$opacity'";
+        $html .= "<img src='$listdir/$this->name/catalogue_icon.png' style='opacity:$opacity'";
         $html .= "' class='block_catalogue_tabicon' width='40px' height='40px'>";
         $html .= "</td>";
         $html .= '</tr><tr>';
@@ -609,17 +609,17 @@ abstract class blockcatalogue_list {
         }
         $listlocalname = $this->get_localname();
         if (strlen($listlocalname) > 12) {
-	    $nameparts = explode(' ', $listlocalname);
-	    $listlocalname = '';
-	    foreach($nameparts as $key => $namepart) {
-	        $listlocalname .= $namepart;
-	        if ($key) {
-		    $listlocalname .= ' ';
-		} else {
-		    $listlocalname .= '<br>';
-		}
-	    }
-	}
+            $nameparts = explode(' ', $listlocalname);
+            $listlocalname = '';
+            foreach ($nameparts as $key => $namepart) {
+                $listlocalname .= $namepart;
+                if ($key) {
+                    $listlocalname .= ' ';
+                } else {
+                    $listlocalname .= '<br>';
+                }
+            }
+        }
         $html .= "<td class='$listnameclass'>"."<a href='$target' style='color:$textcolor'>".$listlocalname.'</a></td>';
         $html .= '</tr></table>';
         $html .= '</a>';

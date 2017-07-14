@@ -72,55 +72,56 @@ function block_catalogue_all_favorites($listnames) {
  * @param object course
  */
 function block_catalogue_check_sequences($course) {
-	global $DB, $PAGE;
-	$pagepath = $PAGE->url->get_path();
-	if (($pagepath != '/course/modedit.php') && ($pagepath != '/blocks/catalogue/chooseplace.php')) {
-		$sections = $DB->get_records('course_sections', array('course' => $course->id));
-		$rebuild = false;
-		foreach ($sections as $section) {
-			$restorelastcm = false;
-			if (false !== strpos($section->sequence, '-')) {
-				// A new mod has just been added at the end of this section or its creation has just been canceled (see chooseplace.php).
-				// The negative value's place in the sequence is where the user wanted to add this new mod.
-				$sequence = explode(',', $section->sequence);
-				$sectionlastcmid = array_pop($sequence);
-				if ($sectionlastcmid < 0) {
-					// The new mod was to be added at the end of the section but its creation was cancelled.
-					// All we have to do is to remove this negative value from the sequence (and array_pop() already did it).
-				}
-				$newsequence = '';
-				foreach ($sequence as $cmid) {
-					if ($cmid < 0) {
-						// The new mod was to be added here.
-						if ($cmid + $sectionlastcmid == 0) {
-							// The last mod in this section is still the same it was before, which means the new mod creation has been cancelled.
-							// This negative value must be removed and the last mod (removed by array_pop()) must be restored at the end of the section.
-							$restorelastcm = true;
-						} else {
-							// The new mod has really been created. It's now at the end of the section but we should move it here.
-							$rebuild = true;
-							$newsequence .= "$sectionlastcmid,";
-						}
-					} else {
-						//There's nothing to change here.
-						$newsequence .= "$cmid,";
-					}
-				}
-				if ($restorelastcm) {
-					$section->sequence = $newsequence.$sectionlastcmid;
-				} else {
-					// Remove the last comma.
-					$section->sequence = substr($newsequence, 0, -1);
-				}
-				$DB->update_record('course_sections', $section);
-			}
-		}
+    global $DB, $PAGE;
+    $pagepath = $PAGE->url->get_path();
+    if (($pagepath != '/course/modedit.php') && ($pagepath != '/blocks/catalogue/chooseplace.php')) {
+        $sections = $DB->get_records('course_sections', array('course' => $course->id));
+        $rebuild = false;
+        foreach ($sections as $section) {
+            $restorelastcm = false;
+            if (false !== strpos($section->sequence, '-')) {
+                /* A new mod has just been added at the end of this section or its creation
+                has just been canceled (see chooseplace.php).
+                The negative value's place in the sequence is where the user wanted to add this new mod. */
+                $sequence = explode(',', $section->sequence);
+                $sectionlastcmid = array_pop($sequence);
+                /* $sectionlastcmid < 0 means that the new mod was to be added at the end of the section
+                but that its creation was cancelled. All we have to do is to remove this negative value
+                from the sequence (and array_pop() already did it). */
+                $newsequence = '';
+                foreach ($sequence as $cmid) {
+                    if ($cmid < 0) {
+                        // The new mod was to be added here.
+                        if ($cmid + $sectionlastcmid == 0) {
+                            /* The last mod in this section is still the same it was before, which means
+                            the new mod creation has been cancelled. This negative value must be removed and the last mod
+                            (removed by array_pop()) must be restored at the end of the section. */
+                            $restorelastcm = true;
+                        } else {
+                            // The new mod has really been created. It's now at the end of the section but we should move it here.
+                            $rebuild = true;
+                            $newsequence .= "$sectionlastcmid,";
+                        }
+                    } else {
+                        // There's nothing to change here.
+                        $newsequence .= "$cmid,";
+                    }
+                }
+                if ($restorelastcm) {
+                    $section->sequence = $newsequence.$sectionlastcmid;
+                } else {
+                    // Remove the last comma.
+                    $section->sequence = substr($newsequence, 0, -1);
+                }
+                $DB->update_record('course_sections', $section);
+            }
+        }
 
-		if ($rebuild) {
-			// We moved a mod, so we need to rebuild the course cache.
-			rebuild_course_cache();
-		}
-	}
+        if ($rebuild) {
+            // We moved a mod, so we need to rebuild the course cache.
+            rebuild_course_cache();
+        }
+    }
 }
 
 /**
@@ -132,84 +133,84 @@ function block_catalogue_check_sequences($course) {
  * @param boolean $ajax
  */
 function block_catalogue_chooseplace_modicon($modulehtml, $cmid, $selectmodurl, $float, $ajax) {
-	global $DB, $OUTPUT;
+    global $DB, $OUTPUT;
 
-	$cm = $DB->get_record('course_modules', array('id' => $cmid));
-	$modulehtml = str_replace('<li', '<div', $modulehtml);
-	$modulehtml = str_replace('</li>', '</div>', $modulehtml);
-	$modulehtml = str_replace('<a', '<div', $modulehtml);
-	$modulehtml = str_replace('</a>', '</div>', $modulehtml);
-	if (!$cm->visible) {
-		$modulehtml = str_replace('<img',
-					  '<img style="opacity:.5"',
-					  $modulehtml);
-	}
+    $cm = $DB->get_record('course_modules', array('id' => $cmid));
+    $modulehtml = str_replace('<li', '<div', $modulehtml);
+    $modulehtml = str_replace('</li>', '</div>', $modulehtml);
+    $modulehtml = str_replace('<a', '<div', $modulehtml);
+    $modulehtml = str_replace('</a>', '</div>', $modulehtml);
+    if (!$cm->visible) {
+        $modulehtml = str_replace('<img',
+                                  '<img style="opacity:.5"',
+                                  $modulehtml);
+    }
 
-	if (strpos($modulehtml, '<div class="contentwithoutlink ')) {
-		$module = $DB->get_record('modules', array('id' => $cm->module));
-		$pixurl = $OUTPUT->pix_url('icon', "mod_$module->name");
-		if ($module->name == 'customlabel') {
-			$clabelslist = block_catalogue_instanciate_list('customlabels');
-			if ($clabelslist) {
-				$customlabel = $DB->get_record('customlabel', array('id' => $cm->instance));
-				$pixurl = $clabelslist->get_element_data($customlabel->labelclass, 'iconurl');
-			}
-		}
-		if ($cm->visible) {
-			$opacity = 1;
-		} else {
-			$opacity = 0.5;
-		}
-		$img = "<img src='$pixurl' width='30px' style='padding-top:5px;opacity:$opacity'>";
+    if (strpos($modulehtml, '<div class="contentwithoutlink ')) {
+        $module = $DB->get_record('modules', array('id' => $cm->module));
+        $pixurl = $OUTPUT->pix_url('icon', "mod_$module->name");
+        if ($module->name == 'customlabel') {
+            $clabelslist = block_catalogue_instanciate_list('customlabels');
+            if ($clabelslist) {
+                $customlabel = $DB->get_record('customlabel', array('id' => $cm->instance));
+                $pixurl = $clabelslist->get_element_data($customlabel->labelclass, 'iconurl');
+            }
+        }
+        if ($cm->visible) {
+            $opacity = 1;
+        } else {
+            $opacity = 0.5;
+        }
+        $img = "<img src='$pixurl' width='30px' style='padding-top:5px;opacity:$opacity'>";
 
-		if ($float) {
-			$modoutput = $img;
-		} else {
-			$modoutput = '<table><tr>';
-			if (!$float) {
-				for ($i = 0; $i < $cm->indent; $i++) {
-					$modoutput .= '<td width="30px">&nbsp;</td>';
-				}
-			}
-			$modoutput .= "<td>$img</td>";
-			$modoutput .= '</tr></table>';
-		}
-	} else {
-		if ($float) {
-			$modulehtml = str_replace('<div class="mod-indent mod-indent-'.$cm->indent.'">', '', $modulehtml);
-		}
-		$modoutput = $modulehtml;;
-	}
+        if ($float) {
+            $modoutput = $img;
+        } else {
+            $modoutput = '<table><tr>';
+            if (!$float) {
+                for ($i = 0; $i < $cm->indent; $i++) {
+                    $modoutput .= '<td width="30px">&nbsp;</td>';
+                }
+            }
+            $modoutput .= "<td>$img</td>";
+            $modoutput .= '</tr></table>';
+        }
+    } else {
+        if ($float) {
+            $modulehtml = str_replace('<div class="mod-indent mod-indent-'.$cm->indent.'">', '', $modulehtml);
+        }
+        $modoutput = $modulehtml;;
+    }
 
-	if ($float) {
-	    echo '<span id="modbutton'.$cmid.'" style="padding-left:30px;margin-bottom:30px;float:left"> &nbsp; ';
-	} else {
-	    echo '<span id="modbutton'.$cmid.'" style="padding-left:30px;margin-bottom:30px">';
-	}
-	if ($selectmodurl) {
-	    echo "<a href='$selectmodurl#section$cm->section'>";
-	}
-	if ($selectmodurl || $ajax) {
-	    echo '<button class="btn btn-secondary">';
-	}
-	if ($cm->visible) {
-	    $grayed = '';
-	} else {
-	    $grayed = 'color:gray;';
-	}
-	echo '<div style="'.$grayed.'height:45px">';
-	echo $modoutput;
-	echo '</div>';
-	if ($selectmodurl || $ajax) {
-	    echo '</button>';
-	}
-	if ($selectmodurl) {
-	    echo '</a>';
-	}
-	echo '</span>';
-	if (!$float) {
-	    echo '<br>';
-	}
+    if ($float) {
+        echo '<span id="modbutton'.$cmid.'" style="padding-left:30px;margin-bottom:30px;float:left"> &nbsp; ';
+    } else {
+        echo '<span id="modbutton'.$cmid.'" style="padding-left:30px;margin-bottom:30px">';
+    }
+    if ($selectmodurl) {
+        echo "<a href='$selectmodurl#section$cm->section'>";
+    }
+    if ($selectmodurl || $ajax) {
+        echo '<button class="btn btn-secondary">';
+    }
+    if ($cm->visible) {
+        $grayed = '';
+    } else {
+        $grayed = 'color:gray;';
+    }
+    echo '<div style="'.$grayed.'height:45px">';
+    echo $modoutput;
+    echo '</div>';
+    if ($selectmodurl || $ajax) {
+        echo '</button>';
+    }
+    if ($selectmodurl) {
+        echo '</a>';
+    }
+    echo '</span>';
+    if (!$float) {
+        echo '<br>';
+    }
 }
 
 /**
@@ -237,11 +238,11 @@ function block_catalogue_display_category($course, $usereditor, $list, $elementn
             echo "<div class='$elementclass'>";
             block_catalogue_display_element($course, $usereditor, $list, $elementname);
             echo '</div>';
-			$onthatline++;
-			if ($onthatline == $maxperline) {
-				echo '<p style="margin-bottom:0"></p>';
-				$onthatline = 0;
-			}
+            $onthatline++;
+            if ($onthatline == $maxperline) {
+                echo '<p style="margin-bottom:0"></p>';
+                $onthatline = 0;
+            }
         }
     }
 }
@@ -329,13 +330,13 @@ function block_catalogue_display_tabs($courseid, $selectedlistname, $editing) {
     $previouslistname = '';
     $coursecontext = context_course::instance($courseid);
     if (!has_capability('block/catalogue:viewlists', $coursecontext)) {
-		return $html;
-	}
+        return $html;
+    }
     $hideediting = get_config('catalogue', 'hideediting') && !has_capability('block/catalogue:edit', $coursecontext);
     foreach ($listnames as $listname) {
-		if ($listname == 'editing' && $hideediting) {
-			continue;
-		}
+        if ($listname == 'editing' && $hideediting) {
+            continue;
+        }
         $list = block_catalogue_instanciate_list($listname);
         if ($list) {
             if (!$editing) {
@@ -345,11 +346,11 @@ function block_catalogue_display_tabs($courseid, $selectedlistname, $editing) {
                 }
             }
             if ($previouslistname) {
-				$separator = block_catalogue_separator($previouslistname, $listname);
-				if ($separator) {
-					$html .= '<div style="float:left;margin-right:50px"> &nbsp; </div>';
-				}
-			}
+                $separator = block_catalogue_separator($previouslistname, $listname);
+                if ($separator) {
+                    $html .= '<div style="float:left;margin-right:50px"> &nbsp; </div>';
+                }
+            }
             $html .= $list->tab($selectedlistname, $editing);
         }
         $previouslistname = $listname;
@@ -483,9 +484,9 @@ function block_catalogue_main_table($listnames, $course, $bgcolor, $showtabs) {
         $rowtitles = array();
         $hideediting = get_config('catalogue', 'hideediting') && !has_capability('block/catalogue:edit', $coursecontext);
         foreach ($lists as $list) {
-			if ($list->get_name() == 'editing' && $hideediting) {
-				continue;
-			}
+            if ($list->get_name() == 'editing' && $hideediting) {
+                continue;
+            }
             $listcategories = $list->get_availables();
             $visibles = $list->visible_elements();
             if (count($visibles) > 1) {
@@ -598,17 +599,17 @@ function block_catalogue_show_description($usereditor, $description, $url, $elem
  * @return boolean
  */
 function block_catalogue_separator($firstlistname, $secondlistname) {
-	$displayedlists = get_config('catalogue', 'displayedlists');
-	$listsarray = explode(',', $displayedlists);
-	$firstlistkey = array_search($firstlistname, $listsarray);
-	$i = $firstlistkey + 1;
-	while ($listsarray[$i] != $secondlistname) {
-		if ($listsarray[$i] == '') {
-			return true;
-		}
-		$i++;
-	}
-	return false;
+    $displayedlists = get_config('catalogue', 'displayedlists');
+    $listsarray = explode(',', $displayedlists);
+    $firstlistkey = array_search($firstlistname, $listsarray);
+    $i = $firstlistkey + 1;
+    while ($listsarray[$i] != $secondlistname) {
+        if ($listsarray[$i] == '') {
+            return true;
+        }
+        $i++;
+    }
+    return false;
 }
 
 /**
@@ -617,8 +618,8 @@ function block_catalogue_separator($firstlistname, $secondlistname) {
  * @return string HTML code
  */
 function block_catalogue_show_favorites($favorites, $bgcolor) {
-	$displayedlists = get_config('catalogue', 'displayedlists');
-	$displayedlistsarray = explode(',', $displayedlists);
+    $displayedlists = get_config('catalogue', 'displayedlists');
+    $displayedlistsarray = explode(',', $displayedlists);
     $nbfavs = count($favorites);
     $nbshownfavs = 0;
     $favlists = array();
@@ -628,7 +629,7 @@ function block_catalogue_show_favorites($favorites, $bgcolor) {
     $nbcolumns = 3;
     foreach ($favorites as $favorite) {
         if (!isset($favlists[$favorite->listname])) {
-	    $previouslist = $favorite->listname;
+            $previouslist = $favorite->listname;
             $favlists[$favorite->listname] = block_catalogue_instanciate_list($favorite->listname);
         }
         if (!$favlists[$favorite->listname]->favorite_here($favorite->elementname)) {
@@ -685,16 +686,16 @@ function block_catalogue_theme_favorites() {
     $favlists = array();
     $favstyle = "max-width:50px;text-align:center;margin-right:15px";
     foreach ($favorites as $favorite) {
-	if (!isset($favlists[$favorite->listname])) {
-	    $favlists[$favorite->listname] = block_catalogue_instanciate_list($favorite->listname);
-	}
-	if (!$favlists[$favorite->listname]->favorite_here($favorite->elementname)) {
-	    continue;
-	}
-	$url = $favlists[$favorite->listname]->usage_url($favorite->elementname);
-	$html .= "<a href='$url' style='$favstyle'>";
-	$html .= $favlists[$favorite->listname]->display_favorite($favorite->elementname);
-	$html .= "</a>";
+        if (!isset($favlists[$favorite->listname])) {
+            $favlists[$favorite->listname] = block_catalogue_instanciate_list($favorite->listname);
+        }
+        if (!$favlists[$favorite->listname]->favorite_here($favorite->elementname)) {
+            continue;
+        }
+        $url = $favlists[$favorite->listname]->usage_url($favorite->elementname);
+        $html .= "<a href='$url' style='$favstyle'>";
+        $html .= $favlists[$favorite->listname]->display_favorite($favorite->elementname);
+        $html .= "</a>";
     }
     return $html;
 }
@@ -790,17 +791,17 @@ function block_catalogue_proximityarrows() {
     $cataloguepixdir = "$CFG->wwwroot/blocks/catalogue/pix";
     $pagecontext = $PAGE->context;
     if ($pagecontext->contextlevel == 70) {
-	$modinfo = get_fast_modinfo($COURSE);
-	$cmid = $pagecontext->instanceid;
-	$cm = $DB->get_record('course_modules', array('id' => $cmid));
-	$section = $DB->get_record('course_sections', array('id' => $cm->section));
-	$sequence = explode(',', $section->sequence);
-	$current = array_search($cmid, $sequence);
-	$previousarrow = block_catalogue_proximityarrow($modinfo, $sequence, $current, -1, $section, $cataloguepixdir);
-	$nextarrow = block_catalogue_proximityarrow($modinfo, $sequence, $current, 1, $section, $cataloguepixdir);
+        $modinfo = get_fast_modinfo($COURSE);
+        $cmid = $pagecontext->instanceid;
+        $cm = $DB->get_record('course_modules', array('id' => $cmid));
+        $section = $DB->get_record('course_sections', array('id' => $cm->section));
+        $sequence = explode(',', $section->sequence);
+        $current = array_search($cmid, $sequence);
+        $previousarrow = block_catalogue_proximityarrow($modinfo, $sequence, $current, -1, $section, $cataloguepixdir);
+        $nextarrow = block_catalogue_proximityarrow($modinfo, $sequence, $current, 1, $section, $cataloguepixdir);
     } else {
-	$previousarrow = '';
-	$nextarrow = '';
+        $previousarrow = '';
+        $nextarrow = '';
     }
     $arrows = '<table width="100%"><tr>';
     $arrows .= '<td width="33%" style="text-align:center">'.$previousarrow.'</td>';
@@ -831,33 +832,33 @@ function block_catalogue_proximityarrow($modinfo, $sequence, $current, $directio
     $courselink = "$CFG->wwwroot/course/view.php?id=$COURSE->id";
     $sectionlink = "$courselink#section-$section->section";
     if ($direction > 0) {
-	$picture = 'next.png';
+        $picture = 'next.png';
     } else {
-	$picture = 'previous.png';
+        $picture = 'previous.png';
     }
     $proxy = block_catalogue_proximod($modinfo, $sequence, $current, $direction);
     if ($proxy !== null) {
-	$proxicm = $DB->get_record('course_modules', array('id' => $sequence[$proxy]));
-	$proximodule = $DB->get_record('modules', array('id' => $proxicm->module));
-	if (($proximodule->name == 'label')||($proximodule->name == 'customlabel')) {
- 	    $proxilink = $sectionlink;
-	    $proxilabel = get_string('modulename', "mod_$proximodule->name");
-	} else {
-	    $proxilink = "$CFG->wwwroot/mod/$proximodule->name/view.php?id=$proxicm->id";
-	    $proxiinstance = $DB->get_record($proximodule->name, array('id' => $proxicm->instance));
-	    $proxilabel = $proxiinstance->name;
-	}
-   } else {
-	$proxilink = $sectionlink;
-	if ($section->name) {
- 	    $sectionname = $section->name;
-	} else {
-	    $sectionname = ucwords(get_string('section'))." $section->section";
-	}
-	$proxilabel = $sectionname;
-   }
-   $arrow = "<a href='$proxilink'><img src='$cataloguepixdir/$picture' width='50px' alt='$proxilabel' title='$proxilabel'></a>";
-   return $arrow;
+        $proxicm = $DB->get_record('course_modules', array('id' => $sequence[$proxy]));
+        $proximodule = $DB->get_record('modules', array('id' => $proxicm->module));
+        if (($proximodule->name == 'label')||($proximodule->name == 'customlabel')) {
+            $proxilink = $sectionlink;
+            $proxilabel = get_string('modulename', "mod_$proximodule->name");
+        } else {
+            $proxilink = "$CFG->wwwroot/mod/$proximodule->name/view.php?id=$proxicm->id";
+            $proxiinstance = $DB->get_record($proximodule->name, array('id' => $proxicm->instance));
+            $proxilabel = $proxiinstance->name;
+        }
+    } else {
+        $proxilink = $sectionlink;
+        if ($section->name) {
+            $sectionname = $section->name;
+        } else {
+            $sectionname = ucwords(get_string('section'))." $section->section";
+        }
+        $proxilabel = $sectionname;
+    }
+    $arrow = "<a href='$proxilink'><img src='$cataloguepixdir/$picture' width='50px' alt='$proxilabel' title='$proxilabel'></a>";
+    return $arrow;
 }
 
 /**
@@ -871,21 +872,19 @@ function block_catalogue_proximityarrow($modinfo, $sequence, $current, $directio
 function block_catalogue_proximod($modinfo, $sequence, $current, $direction) {
     $proxy = $current + $direction;
     if (!isset($sequence[$proxy])) {
-	return null;
+        return null;
     }
     $proxicmid = $sequence[$proxy];
     if (!is_numeric($proxicmid)) {
-	return null;
+        return null;
     }
     $proxicm = $modinfo->get_cm($proxicmid);
     if (!$proxicm) {
-	return null;
+        return null;
     }
     $uservisible = $proxicm->uservisible;
     if (!$uservisible) {
-	return block_catalogue_proximod($modinfo, $sequence, $proxy, $direction);
+        return block_catalogue_proximod($modinfo, $sequence, $proxy, $direction);
     }
     return $proxy;
 }
-
-?>

@@ -37,8 +37,8 @@ class blockcatalogue_list_mods extends blockcatalogue_list {
     public function __construct() {
         $this->name = 'mods';
         $this->prefix = 'mod';
-	$this->color = '#4472c4';
-	$this->categories = array('resource', 'exercise', 'collaborative', 'other');
+        $this->color = '#4472c4';
+        $this->categories = array('resource', 'exercise', 'collaborative', 'other');
         $this->potentialmembers = array(
             'exercise' => array('adaptivequiz', 'assign', 'assignment', 'lesson', 'quiz',
                                 'workshop', 'elang', 'realtimequiz', 'taskchain'),
@@ -102,11 +102,11 @@ class blockcatalogue_list_mods extends blockcatalogue_list {
         switch ($nature) {
             case 'description' :
                 if ($manager->string_exists('modulename_help', $component)) {
-					$description = get_string('modulename_help', $component);
-					return $description;
-				} else {
-					return null;
-				}
+                    $description = get_string('modulename_help', $component);
+                    return $description;
+                } else {
+                    return null;
+                }
 
             case 'link' :
                 $sm = get_string_manager();

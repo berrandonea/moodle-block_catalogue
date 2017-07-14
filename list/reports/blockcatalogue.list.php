@@ -37,7 +37,7 @@ class blockcatalogue_list_reports extends blockcatalogue_list {
     public function __construct() {
         $this->name = 'reports';
         $this->prefix = '';
-	$this->color = '#ed7d31';
+        $this->color = '#ed7d31';
         $this->categories = array('report');
         $this->potentialmembers = array();
         foreach ($this->categories as $category) {

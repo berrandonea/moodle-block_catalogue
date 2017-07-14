@@ -43,7 +43,7 @@ class blockcatalogue_list_grades extends blockcatalogue_list {
     public function __construct() {
         $this->name = 'grades';
         $this->prefix = '';
-	$this->color = '#70ad47';
+        $this->color = '#70ad47';
         $this->categories = array('gradesetting', 'gradereport', 'outcome');
         $this->potentialmembers = array();
         foreach ($this->categories as $category) {
@@ -222,9 +222,6 @@ class blockcatalogue_list_grades extends blockcatalogue_list {
             $reports = core_component::get_plugin_list($prefix);
         }
         foreach ($reports as $name => $path) {
-			//~ if ($name == 'overview') {
-				//~ continue;
-			//~ }
             $elementname = $prefix.'_'.$name;
             if ($this->filter_report($coursecontext, $prefix, $name)) {
                 $common = $this->common_sortout($elementname);
