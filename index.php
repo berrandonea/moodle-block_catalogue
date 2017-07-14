@@ -48,7 +48,7 @@ $coursecontext = context_course::instance($courseid);
 require_capability('block/catalogue:viewlists', $coursecontext);
 $usereditor = has_capability('block/catalogue:edit', $coursecontext);
 $thislist = block_catalogue_instanciate_list($thislistname);
-$open = true; //$thislist->get_open();
+$open = true;
 $categories = $thislist->get_categories();
 $availables = $thislist->get_availables();
 
@@ -74,7 +74,7 @@ $PAGE->set_title($thislistlocalname);
 $PAGE->set_pagelayout('standard');
 $PAGE->set_heading($thislistlocalname);
 $PAGE->navbar->add(get_string('pluginname', 'block_catalogue'));
-$PAGE->navbar->add($thislistlocalname, /*'index.php?name='.$listname.'&course='.$COURSE->id*/ $PAGE->url->__toString());
+$PAGE->navbar->add($thislistlocalname, $PAGE->url->__toString());
 $PAGE->requires->js("/blocks/catalogue/js/block_catalogue.js");
 $PAGE->requires->css("/blocks/catalogue/block_catalogue.css");
 
@@ -95,22 +95,15 @@ if ($usereditor) {
 $header = $OUTPUT->header();
 echo $header;
 if (!strpos($header, 'block_catalogue_tabicon')) {
-	echo '<table><tr><td>';
-	echo block_catalogue_display_tabs($courseid, $thislistname, $editing);
-	echo '</td></tr></table>';
+    echo '<table><tr><td>';
+    echo block_catalogue_display_tabs($courseid, $thislistname, $editing);
+    echo '</td></tr></table>';
 }
 
 // Main content.
 $nbcategories = count($categories);
 
-$minwidth = floor(100/$nbcategories) - 1;
-/*if ($nbcategories == 2) {
-    $maxperline = 2;
-} else if ($nbcategories > 2) {
-    $maxperline = 2;
-} else {
-    $maxperline = 6;
-}*/
+$minwidth = floor(100 / $nbcategories) - 1;
 $maxperline = 1;
 $numcategory = 0;
 
@@ -121,11 +114,7 @@ if (!$editing) {
 }
 foreach ($categories as $category) {
     if ($availables[$category]) {
-	//~ $numcategory++;
-	//~ if (($numcategory == $nbcategories)&&($nbcategories != 2)) {
-	    //~ $maxperline = 6;
-	//~ }
-	echo "<div style='float:left;margin-right:1%;min-width:$minwidth%'>";
+        echo "<div style='float:left;margin-right:1%;min-width:$minwidth%'>";
         $categorylocalname = get_string($thislistname.'_'.$category, 'block_catalogue');
         ?>
         <br>
@@ -142,12 +131,12 @@ foreach ($categories as $category) {
             $display = 'none';
         }
         echo "<div id ='$categorylocalname' style='width:100%;display:$display'>";
-	echo "<br>";
+        echo "<br>";
         echo "<div class='block_catalogue_categorycontent'>";
         block_catalogue_display_category($course, $usereditor, $thislist, $availables[$category], $maxperline);
         echo '</div>';
         echo '</div>';
-	echo '</div>';
+        echo '</div>';
     }
 }
 

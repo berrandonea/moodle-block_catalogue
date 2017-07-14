@@ -103,8 +103,8 @@ class blockcatalogue_list_sections extends blockcatalogue_list {
      */
     public function get_local_data($elementname, $nature) {
 		$manager = get_string_manager();
-        switch ($nature) {			
-            case 'description' :                
+        switch ($nature) {
+            case 'description' :
                 if ($manager->string_exists('modulename_help', $component)) {
 					$description = get_string('modulename_help', $component);
 					return $description;
@@ -141,5 +141,8 @@ class blockcatalogue_list_sections extends blockcatalogue_list {
         }
         $url = new moodle_url($targetpage, $args);
         return $url;
+    }
+
+    public function display_all_buttons() {
     }
 }

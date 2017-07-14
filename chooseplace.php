@@ -73,7 +73,7 @@ $thisfilename = '/blocks/catalogue/chooseplace.php';
 $coursenbsections = $DB->get_field('course_format_options', 'value',
                                    array('courseid' => $COURSE->id, 'name' => 'numsections'));
 if ($map) {
-    $editinglist = block_catalogue_instanciate_list('editing');
+    $editinglist = block_catalogue_instanciate_list('sections');
 } else {
     $list = block_catalogue_instanciate_list($listname);
     $listlocalname = $list->get_localname();

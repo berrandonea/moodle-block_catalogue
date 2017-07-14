@@ -64,23 +64,18 @@ function toggle(listname, elementname, toggler, courseid, isdefault, phpscript) 
     getXhr();
     xhr.onreadystatechange = function() {
         if(xhr.readyState == 4 && xhr.status == 200) {
-            response = xhr.responseText;            
+            response = xhr.responseText;
             newdata = response.split("£µ£");
             docelementid = toggler + 'tog-' + elementname;
             favzone = document.getElementById('block-catalogue-favorites');
             themefavzone = document.getElementById('theme-catalogue-favorites');
             document.getElementById(docelementid).innerHTML = newdata[0];
             if (newdata[1] && favzone) {
-                //~ favzoneid = 'block-catalogue-favorites';
-                //~ document.getElementById(favzoneid).innerHTML = newdata[1];
                 favzone.innerHTML = newdata[1];
-                
             }
             if (newdata[2] && themefavzone) {
-				//~ themefavzoneid = 'theme-catalogue-favorites';
-                //~ document.getElementById(themefavzoneid).innerHTML = newdata[2];
                 themefavzone.innerHTML = newdata[2];
-			}
+            }
         }
     }
     xhr.open("POST", phpscript, true);
@@ -90,32 +85,29 @@ function toggle(listname, elementname, toggler, courseid, isdefault, phpscript) 
 }
 
 function modaction(elementname, cmid) {
-	getXhr();
-	xhr.onreadystatechange = function() {
+    getXhr();
+    xhr.onreadystatechange = function() {
         if(xhr.readyState == 4 && xhr.status == 200) {
             response = xhr.responseText;
             docelementid = 'jsmod' + cmid;
             document.getElementById(docelementid).innerHTML = response;
-		}
-	}
-	xhr.open("POST", "modaction.php", true);
-	xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+        }
+    }
+    xhr.open("POST", "modaction.php", true);
+    xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
     args = "action=" + elementname + "&cmid=" + cmid;
     xhr.send(args);
 }
 
 function sectionaction(elementname, sectionid, finalpage) {
-	getXhr();
-	xhr.onreadystatechange = function() {
+    getXhr();
+    xhr.onreadystatechange = function() {
         if(xhr.readyState == 4 && xhr.status == 200) {
-			window.location.href = finalpage;
-            //~ response = xhr.responseText;
-            //~ docelementid = 'jsmod' + cmid;
-            //~ document.getElementById(docelementid).innerHTML = response;
-		}
-	}
-	xhr.open("POST", "sectionaction.php", true);
-	xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+            window.location.href = finalpage;
+        }
+    }
+    xhr.open("POST", "sectionaction.php", true);
+    xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
     args = "action=" + elementname + "&sectionid=" + sectionid;
     xhr.send(args);
 }
