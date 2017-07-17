@@ -621,7 +621,7 @@ function block_catalogue_separator($firstlistname, $secondlistname) {
  * @return string HTML code
  */
 function block_catalogue_show_favorites($favorites, $bgcolor) {
-	global $CFG, $USER;
+    global $CFG, $USER;
     $displayedlists = get_config('catalogue', 'displayedlists');
     $displayedlistsarray = explode(',', $displayedlists);
     $nbfavs = count($favorites);
@@ -647,12 +647,12 @@ function block_catalogue_show_favorites($favorites, $bgcolor) {
         $favstring .= $favlists[$favorite->listname]->display_favorite($favorite->elementname);
         $favstring .= "</a>";
         if ($USER->editing) {
-			$favstring .= "<span style='vertical-align:top'> ";
-			$favstring .= "<a>";
-			$delete = get_string('delete');
-			$favstring .= "<img src='$CFG->wwwroot/pix/t/delete.png' alt='$delete' title='$delete' width='8px' height='8px'>";
-			$favstring .= "</a></span>";
-		}
+            $favstring .= "<span style='vertical-align:top'> ";
+            $favstring .= "<a>";
+            $delete = get_string('delete');
+            $favstring .= "<img src='$CFG->wwwroot/pix/t/delete.png' alt='$delete' title='$delete' width='8px' height='8px'>";
+            $favstring .= "</a></span>";
+        }
         $favstring .= "</td>";
         $nbshownfavs++;
         if ($nbshownfavs % $nbcolumns == 0) {
