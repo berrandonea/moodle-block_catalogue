@@ -46,7 +46,7 @@ class blockcatalogue_list_customlabels extends blockcatalogue_list {
             $this->skip = true;
         }
         $this->prefix = 'customlabeltype';
-        $this->color = '#000000';
+        $this->color = '#731472';
         $this->categories = array('pedagogic', 'structure', 'other');
         $this->potentialmembers = array();
         foreach ($this->categories as $category) {
