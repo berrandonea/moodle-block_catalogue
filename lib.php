@@ -469,7 +469,6 @@ function block_catalogue_link_editor($url, $elementname, $link) {
  */
 function block_catalogue_main_table($listnames, $course, $bgcolor, $showtabs) {
     global $OUTPUT;
-
     $listsandfavorites = block_catalogue_all_favorites($listnames);
     $lists = $listsandfavorites->lists;
     $favorites = $listsandfavorites->favorites;
@@ -511,9 +510,9 @@ function block_catalogue_main_table($listnames, $course, $bgcolor, $showtabs) {
             $maintable .= "<td style='$iconstyle'>$rowtitle</td>";
         }
         $maintable .= '</tr>';
-        $maintable .= '<tr><td colspan=2> </td></tr>';
+        $maintable .= '<tr><td colspan=2>&nbsp;</td></tr>';
         $favtitle = get_string('favorites', 'block_catalogue');
-        $favstyle = 'text-align:center;font-weight:bold';
+        $favstyle = 'text-align:center;font-weight:bold;font-size:16';
         $helper = $OUTPUT->help_icon('favorites', 'block_catalogue');
         $maintable .= "<tr><td colspan=2 style='$favstyle'>$favtitle $helper</td></tr>";
     }
@@ -528,9 +527,10 @@ function block_catalogue_main_table($listnames, $course, $bgcolor, $showtabs) {
         $maintable .= "<p style='$iconstyle'>$nofavs</p>";
     }
     if ($showtabs) {
-        $maintable .= '<div width="100%" style="text-align:center;font-weight:bold;margin-top:10px">'.get_string('navigation').'</div>';
+        $maintable .= '<div width="100%" style="text-align:center;font-weight:bold;margin-top:10px;font-size:16">'
+                      .get_string('navigation').'</div>';
         $maintable .= block_catalogue_navigation();
-	}
+    }
     return $maintable;
 }
 

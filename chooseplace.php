@@ -160,7 +160,9 @@ if ($map) {
     echo '</div>';
     $herebutton = '';
 } else {
-    $herebutton = '<button class="btn btn-secondary">'.get_string('here', 'block_catalogue').'</button>';
+    $imgtitle = get_string('here', 'block_catalogue');
+    $herebutton = "<img alt='$imgtitle' title='$imgtitle' width='20px' height='30px'"
+                   ." src='$CFG->wwwroot/theme/bootstrapbase/pix/fp/dnd_arrow.gif'>";
     $args = array('mod' => $mod,
                   'type' => $type,
                   'course' => $courseid,
