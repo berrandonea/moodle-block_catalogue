@@ -528,7 +528,7 @@ function block_catalogue_main_table($listnames, $course, $bgcolor, $showtabs) {
         $maintable .= "<p style='$iconstyle'>$nofavs</p>";
     }
     $maintable .= '<div width="100%" style="text-align:center;font-weight:bold;margin-top:10px">'.get_string('navigation').'</div>';
-    $maintable .= block_catalogue_proximityarrows();
+    $maintable .= block_catalogue_navigation();
     return $maintable;
 }
 
@@ -780,13 +780,14 @@ function block_catalogue_update_element($listname, $elementname, $nature, $newva
 }
 
 /**
+ * Navigation area. Includes a link to the course map.
  * If we're inside a mod, displays arrow links to the next mod and the previous mod.
  * @global object $COURSE
  * @global object $DB
  * @global object $PAGE
  * @return string HTML code
  */
-function block_catalogue_proximityarrows() {
+function block_catalogue_navigation() {
     global $CFG, $COURSE, $DB, $PAGE;
     $cataloguepixdir = "$CFG->wwwroot/blocks/catalogue/pix";
     $pagecontext = $PAGE->context;
