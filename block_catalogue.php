@@ -58,6 +58,10 @@ class block_catalogue extends block_base {
 
     public function get_content() {
         global $DB, $PAGE;
+        // Don't show the block if we're already using theme_catalogue.
+        if ($PAGE->theme->name == 'catalogue') {
+            return '';
+        }
         $courseviewonly = get_config('catalogue', 'courseviewonly');
         if ($courseviewonly) {
             $pagetype = explode('-', $PAGE->pagetype);
