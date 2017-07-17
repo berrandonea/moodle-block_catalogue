@@ -616,10 +616,12 @@ function block_catalogue_separator($firstlistname, $secondlistname) {
 
 /**
  * Show all the current user's favorites in the small block.
+ * @global $USER
  * @param array of objects $favorites
  * @return string HTML code
  */
 function block_catalogue_show_favorites($favorites, $bgcolor) {
+	global $CFG, $USER;
     $displayedlists = get_config('catalogue', 'displayedlists');
     $displayedlistsarray = explode(',', $displayedlists);
     $nbfavs = count($favorites);
@@ -643,7 +645,15 @@ function block_catalogue_show_favorites($favorites, $bgcolor) {
         $url = $favlists[$favorite->listname]->usage_url($favorite->elementname);
         $favstring .= "<td style='$style'><a href='$url'>";
         $favstring .= $favlists[$favorite->listname]->display_favorite($favorite->elementname);
-        $favstring .= "</a></td>";
+        $favstring .= "</a>";
+        if ($USER->editing) {
+			$favstring .= "<span style='vertical-align:top'> ";
+			$favstring .= "<a>";
+			$delete = get_string('delete');
+			$favstring .= "<img src='$CFG->wwwroot/pix/t/delete.png' alt='$delete' title='$delete' width='8px' height='8px'>";
+			$favstring .= "</a></span>";
+		}
+        $favstring .= "</td>";
         $nbshownfavs++;
         if ($nbshownfavs % $nbcolumns == 0) {
             $favstring .= "</tr>";
@@ -673,33 +683,6 @@ function block_catalogue_show_link($link) {
         echo '</a>';
     }
     echo '</div>';
-}
-
-/**
- * Another way to display the favorites. Used by theme_catalogue.
- * @return string HTML code
- */
-function block_catalogue_theme_favorites() {
-    $favtitle = get_string('favorites', 'block_catalogue');
-    $html = '';
-    $listnames = block_catalogue_get_listnames();
-    $listsandfavorites = block_catalogue_all_favorites($listnames);
-    $favorites = $listsandfavorites->favorites;
-    $favlists = array();
-    $favstyle = "max-width:50px;text-align:center;margin-right:15px";
-    foreach ($favorites as $favorite) {
-        if (!isset($favlists[$favorite->listname])) {
-            $favlists[$favorite->listname] = block_catalogue_instanciate_list($favorite->listname);
-        }
-        if (!$favlists[$favorite->listname]->favorite_here($favorite->elementname)) {
-            continue;
-        }
-        $url = $favlists[$favorite->listname]->usage_url($favorite->elementname);
-        $html .= "<a href='$url' style='$favstyle'>";
-        $html .= $favlists[$favorite->listname]->display_favorite($favorite->elementname);
-        $html .= "</a>";
-    }
-    return $html;
 }
 
 /**
@@ -803,8 +786,8 @@ function block_catalogue_navigation() {
         $previousarrow = block_catalogue_proximityarrow($modinfo, $sequence, $current, -1, $section, $cataloguepixdir);
         $nextarrow = block_catalogue_proximityarrow($modinfo, $sequence, $current, 1, $section, $cataloguepixdir);
     } else {
-        $previousarrow = '';
-        $nextarrow = '';
+        $previousarrow = '<div style="width:52px"></div>';
+        $nextarrow = '<div style="width:52px"></div>';
     }
     $arrows = '<table width="100%"><tr>';
     $arrows .= '<td width="33%" style="text-align:center">'.$previousarrow.'</td>';
@@ -814,7 +797,9 @@ function block_catalogue_navigation() {
     $arrows .= "<img src='$cataloguepixdir/coursemap.png' width='50px' alt='$maplabel' title='$maplabel'>";
     $arrows .= "</a>".'</td>';
     $arrows .= '<td width="33%" style="text-align:center">'.$nextarrow.'</td>';
-    $arrows .= '</tr></table>';
+    $arrows .= '</tr>';
+    $arrows .= '<tr><td></td><td style="color:#565656;text-align:center;font-size:9px">'.$maplabel.'</td><td></td></tr>';
+    $arrows .= '</table>';
     return $arrows;
 }
 
