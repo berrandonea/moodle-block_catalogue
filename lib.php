@@ -622,7 +622,7 @@ function block_catalogue_separator($firstlistname, $secondlistname) {
  */
 function block_catalogue_show_favorites($favorites, $bgcolor) {
     global $CFG, $COURSE, $PAGE, $USER;
-    $PAGE->requires->js("/blocks/catalogue/js/block_catalogue.js");    
+    $PAGE->requires->js("/blocks/catalogue/js/block_catalogue.js");
     $displayedlists = get_config('catalogue', 'displayedlists');
     $displayedlistsarray = explode(',', $displayedlists);
     $nbfavs = count($favorites);
@@ -651,8 +651,8 @@ function block_catalogue_show_favorites($favorites, $bgcolor) {
             $favstring .= "<span style='vertical-align:top'> ";
             $delete = get_string('delete');
             $default = 0;
-            $defaultfavorites = $favlists[$favorite->listname]->get_default_favorites();            
-            if (in_array($favorite->elementname, $defaultfavorites)) {				
+            $defaultfavorites = $favlists[$favorite->listname]->get_default_favorites();
+            if (in_array($favorite->elementname, $defaultfavorites)) {
                 $default = 1;
             }
             $favstring .= "<img src='$CFG->wwwroot/pix/t/delete.png'
