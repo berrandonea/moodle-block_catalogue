@@ -118,7 +118,7 @@ class blockcatalogue_list_mods extends blockcatalogue_list {
                 }
 
             case 'iconurl' :
-                $iconurl = $OUTPUT->pix_url('icon', "mod_$modname");
+                $iconurl = block_catalogue_pixurl('icon', "mod_$modname");
                 return $iconurl;
 
             default :

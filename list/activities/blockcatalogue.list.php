@@ -117,11 +117,7 @@ class blockcatalogue_list_activities extends blockcatalogue_list {
                 }
 
             case 'iconurl' :
-                if (method_exists($OUTPUT, 'image_url')) {
-					$iconurl = $OUTPUT->image_url('icon', "mod_$modname");
-				} else {
-					$iconurl = $OUTPUT->pix_url('icon', "mod_$modname");
-				}                
+                $iconurl = block_catalogue_pixurl('icon', "mod_$modname");                
                 return $iconurl;
 
             default :

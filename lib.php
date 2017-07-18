@@ -148,7 +148,7 @@ function block_catalogue_chooseplace_modicon($modulehtml, $cmid, $selectmodurl, 
 
     if (strpos($modulehtml, '<div class="contentwithoutlink ')) {
         $module = $DB->get_record('modules', array('id' => $cm->module));
-        $pixurl = $OUTPUT->pix_url('icon', "mod_$module->name");
+        $pixurl = block_catalogue_pixurl('icon', "mod_$module->name");
         if ($module->name == 'customlabel') {
             $clabelslist = block_catalogue_instanciate_list('customlabels');
             if ($clabelslist) {
@@ -888,3 +888,24 @@ function block_catalogue_proximod($modinfo, $sequence, $current, $direction) {
     }
     return $proxy;
 }
+
+/**
+ * Some versions of Moodle use image_url(). Others use pix_url(). This function handles both situations.
+ * @global object $OUTPUT
+ * @param string $name image name
+ * @param string $component
+ */
+function block_catalogue_pixurl($name, $component) {
+	global $OUTPUT;
+	if (method_exists($OUTPUT, 'image_url')) {
+        $iconurl = $OUTPUT->image_url($name, $component);
+    } else {
+        $iconurl = $OUTPUT->pix_url($name, $component);
+    }
+    return $iconurl;
+}
+
+
+
+
+
