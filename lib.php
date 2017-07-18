@@ -514,7 +514,8 @@ function block_catalogue_main_table($listnames, $course, $bgcolor, $showtabs) {
         $favtitle = get_string('favorites', 'block_catalogue');
         $favstyle = 'text-align:center;font-weight:bold;font-size:16';
         $helper = $OUTPUT->help_icon('favorites', 'block_catalogue');
-        $maintable .= "<tr><td colspan=2 style='$favstyle'>$favtitle $helper</td></tr>";
+        $maintable .= "<tr><td colspan=2 style='$favstyle'>$favtitle$helper</td></tr>";
+        $maintable .= '<tr><td height="8px"></td></tr>';
     }
 
     $maintable .= '</table>';
@@ -527,7 +528,7 @@ function block_catalogue_main_table($listnames, $course, $bgcolor, $showtabs) {
         $maintable .= "<p style='$iconstyle'>$nofavs</p>";
     }
     if ($showtabs) {
-        $maintable .= '<div width="100%" style="text-align:center;font-weight:bold;margin-top:10px;font-size:16">'
+        $maintable .= '<div width="100%" style="text-align:center;font-weight:bold;margin-top:20px;font-size:16">'
                       .get_string('navigation').'</div>';
         $maintable .= block_catalogue_navigation();
     }
@@ -799,7 +800,9 @@ function block_catalogue_navigation() {
         $previousarrow = '<div style="width:52px"></div>';
         $nextarrow = '<div style="width:52px"></div>';
     }
-    $arrows = '<table width="100%"><tr>';
+    $arrows = '<table width="100%">';
+    $arrows .= '<tr><td height="5px"></td></tr>';
+    $arrows .= '<tr>';
     $arrows .= '<td width="33%" style="text-align:center">'.$previousarrow.'</td>';
     $maplabel = get_string('coursemap', 'block_catalogue');
     $mapurl = "$CFG->wwwroot/blocks/catalogue/chooseplace.php?course=$COURSE->id&map=1";
@@ -807,8 +810,7 @@ function block_catalogue_navigation() {
     $arrows .= "<img src='$cataloguepixdir/coursemap.png' width='50px' alt='$maplabel' title='$maplabel'>";
     $arrows .= "</a>".'</td>';
     $arrows .= '<td width="33%" style="text-align:center">'.$nextarrow.'</td>';
-    $arrows .= '</tr>';
-    $arrows .= '<tr><td colspan=3 style="color:#565656;text-align:center;font-size:9px">'.$maplabel.'</td></tr>';
+    $arrows .= '</tr>';    
     $arrows .= '</table>';
     return $arrows;
 }

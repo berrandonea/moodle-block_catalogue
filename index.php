@@ -109,7 +109,7 @@ $numcategory = 0;
 
 if (!$editing) {
     echo '<div class="block_catalogue_hoverlabel">';
-    echo get_string('hover', 'block_catalogue');
+    echo '*'.get_string('hover', 'block_catalogue');
     echo '</div>';
 }
 foreach ($categories as $category) {
