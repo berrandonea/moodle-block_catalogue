@@ -49,6 +49,6 @@ What's new in version 2.0 ?
 - Subcategories are now displayed in columns rather than in rows.
 - If editing mode is active, you can remove favorites directly from the block.
 - More responsive design.
-- Fixed a bug that prevented to find module's description strings under some configurations.
+- Fixed a bug that prevented to find modules' description strings under some configurations.
 - Support for Moodle 3.3
 
