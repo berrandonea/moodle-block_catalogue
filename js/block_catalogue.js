@@ -66,15 +66,14 @@ function toggle(listname, elementname, toggler, courseid, isdefault, phpscript) 
         if(xhr.readyState == 4 && xhr.status == 200) {
             response = xhr.responseText;
             newdata = response.split("£µ£");
-            docelementid = toggler + 'tog-' + elementname;
+            docelementid = toggler + 'tog-' + elementname;            
+            starzone = document.getElementById(docelementid);
             favzone = document.getElementById('block-catalogue-favorites');
-            themefavzone = document.getElementById('theme-catalogue-favorites');
-            document.getElementById(docelementid).innerHTML = newdata[0];
+            if (newdata[0] && starzone) {
+                starzone.innerHTML = newdata[0];
+            }
             if (newdata[1] && favzone) {
                 favzone.innerHTML = newdata[1];
-            }
-            if (newdata[2] && themefavzone) {
-                themefavzone.innerHTML = newdata[2];
             }
         }
     }

@@ -621,7 +621,8 @@ function block_catalogue_separator($firstlistname, $secondlistname) {
  * @return string HTML code
  */
 function block_catalogue_show_favorites($favorites, $bgcolor) {
-    global $CFG, $USER;
+    global $CFG, $COURSE, $PAGE, $USER;
+    $PAGE->requires->js("/blocks/catalogue/js/block_catalogue.js");    
     $displayedlists = get_config('catalogue', 'displayedlists');
     $displayedlistsarray = explode(',', $displayedlists);
     $nbfavs = count($favorites);
@@ -648,10 +649,19 @@ function block_catalogue_show_favorites($favorites, $bgcolor) {
         $favstring .= "</a>";
         if ($USER->editing) {
             $favstring .= "<span style='vertical-align:top'> ";
-            $favstring .= "<a>";
             $delete = get_string('delete');
-            $favstring .= "<img src='$CFG->wwwroot/pix/t/delete.png' alt='$delete' title='$delete' width='8px' height='8px'>";
-            $favstring .= "</a></span>";
+            $default = 0;
+            $defaultfavorites = $favlists[$favorite->listname]->get_default_favorites();            
+            if (in_array($favorite->elementname, $defaultfavorites)) {				
+                $default = 1;
+            }
+            $favstring .= "<img src='$CFG->wwwroot/pix/t/delete.png'
+                                alt='$delete' title='$delete'
+                                width='8px' height='8px'
+                                onclick='javascript:toggle(".'"'.$favorite->listname.'", "'
+                                    .$favorite->elementname.'", "'.'fav'.'", "'.$COURSE->id.'", "'.$default.'", "'
+                                    .$CFG->wwwroot.'/blocks/catalogue/toggle.php"'.")'>";
+            $favstring .= "</span>";
         }
         $favstring .= "</td>";
         $nbshownfavs++;
@@ -798,7 +808,7 @@ function block_catalogue_navigation() {
     $arrows .= "</a>".'</td>';
     $arrows .= '<td width="33%" style="text-align:center">'.$nextarrow.'</td>';
     $arrows .= '</tr>';
-    $arrows .= '<tr><td></td><td style="color:#565656;text-align:center;font-size:9px">'.$maplabel.'</td><td></td></tr>';
+    $arrows .= '<tr><td colspan=3 style="color:#565656;text-align:center;font-size:9px">'.$maplabel.'</td></tr>';
     $arrows .= '</table>';
     return $arrows;
 }

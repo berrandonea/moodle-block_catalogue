@@ -89,8 +89,4 @@ if ($toggler == 'fav') {
     $bgcolor = get_config('catalogue', 'bgcolor');
     $favstring = block_catalogue_show_favorites($listsandfavorites->favorites, $bgcolor);
     echo $favstring;
-
-    // For theme_catalogue.
-    echo '£µ£';
-    echo block_catalogue_theme_favorites();
 }
