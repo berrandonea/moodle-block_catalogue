@@ -32,12 +32,14 @@ Authors :
 - Salma El-mrabah <salma.el-mrabah@u-cergy.fr> (development, version 1.0)
 - Caroline Pers <caroline.pers@u-cergy.fr> (external communication, many ideas and feature requests, version 2.0)
 - Baptiste Bail <baptiste.bail@u-cergy.fr> (list icons, version 2.0)
+- Noa Randriamalaka <noa.randriamalaka@u-cergy.fr> (SEFIAP director)
 
+ SEFIAP
  Université de Cergy-Pontoise
  33, boulevard du Port
  95011 Cergy-Pontoise cedex
  FRANCE
- https://www.u-cergy.fr
+ https://sefiap.u-cergy.fr/
 
 What's new in version 2.0 ?
 - Course map : Navigate throughout your course.
