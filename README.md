@@ -15,14 +15,15 @@ A manager interface is included. There, managers can :
 
 - Activities : divided in 3 categories (Exercises, Collaboration, Other)
 - Blocks : 3 categories (Monitor learners, Communicate with learners, Other)
-- Custom labels : Requires the plug-in "mod_customlabels", by Valery Fremaux. 3 categories (Pedagogical elements, Structural elements, Other elements).
+- Custom labels : Requires the plug-in "mod_customlabels", by Valery Fremaux. 3 categories (Pedagogical elements, Structural elements, Other elements)
 - Enrolments : 2 categories (Users and groups, Enrolment methods)
 - Grades : 3 categories (Grade settings, Grade reports, "Outcomes, competencies, badges")
-- Modules : Activities and Resources together. 4 categories (Resources, Exercises, Collaboration, Other)
+- Modules : Activities and Resources together. 4 categories (Resources, Exercises, Collaboration, Other).
 Of course, you're not supposed to use "Modules" and "Activities" at the same time on the same site. 
 - Reports : 1 category
 - Resources : 1 category
-The 9th one is now deprecated and will be replaced in a future version. Therefore, its icon hasn't been updated in version 2.0.
+
+The 9th list is now deprecated and will be replaced in a future version. Therefore, its icon hasn't been updated in version 2.0.
 Please avoid using this list :
 - Sections : 1 category (Manage sections without switching to editing mode)
 
