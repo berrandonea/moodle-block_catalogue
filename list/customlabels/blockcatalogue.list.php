@@ -168,8 +168,13 @@ class blockcatalogue_list_customlabels extends blockcatalogue_list {
                 $iconurl = $this->get_local_iconurl(null, $elementname);
                 if ($iconurl) {
                     return $iconurl;
-                } else {
-                    return $OUTPUT->pix_url('icon', 'mod_customlabel');
+                } else {                    
+                    if (method_exists($OUTPUT, 'image_url')) {
+                        $iconurl = $OUTPUT->image_url('icon', "mod_customlabel");
+                    } else {
+                        $iconurl = $OUTPUT->pix_url('icon', "mod_customlabel");
+                    }                
+                    return $iconurl;
                 }
 
             default :
