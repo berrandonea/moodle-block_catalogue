@@ -30,7 +30,8 @@ Please avoid using this list :
 Authors : 
 - Brice Errandonea <brice.errandonea@u-cergy.fr> (development)
 - Salma El-mrabah <salma.el-mrabah@u-cergy.fr> (development, version 1.0)
-- Caroline Pers <caroline.pers@u-cergy.fr> (external communication, many ideas and feature requests, version 2.0)
+- Nirina Andriamanantenasoa <nirina.andriamanantenasoa@u-cergy.fr> (element icons and descriptions, versions 1.x)
+- Caroline Pers <caroline.pers@u-cergy.fr> (external communication, user experience, feature requests)
 - Baptiste Bail <baptiste.bail@u-cergy.fr> (list icons, version 2.0)
 - Noa Randriamalaka <noa.randriamalaka@u-cergy.fr> (SEFIAP director)
 
