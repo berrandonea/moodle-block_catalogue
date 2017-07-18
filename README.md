@@ -9,7 +9,11 @@ A manager interface is included. There, managers can :
 -	Edit the documentation links.
 -	Hide or show items to the teachers. We don't recommend you hide too many tools. Better let the teachers choose which ones are their favorites. But if you want to hide a tool and test it before showing it to the teachers, that's possible.
 
-Authors : Brice Errandonea <brice.errandonea@u-cergy.fr> (development), Salma El-mrabah <salma.el-mrabah@u-cergy.fr> (development, version 1.0), Caroline Pers (external communication, many ideas and feature requests, version 2.0) <caroline.pers@u-cergy.fr>, Baptiste Bail (list icons, version 2.0) <baptiste.bail@u-cergy.fr>
+Authors : 
+- Brice Errandonea <brice.errandonea@u-cergy.fr> (development)
+- Salma El-mrabah <salma.el-mrabah@u-cergy.fr> (development, version 1.0)
+- Caroline Pers <caroline.pers@u-cergy.fr> (external communication, many ideas and feature requests, version 2.0)
+- Baptiste Bail <baptiste.bail@u-cergy.fr> (list icons, version 2.0)
 
  Université de Cergy-Pontoise
  33, boulevard du Port
