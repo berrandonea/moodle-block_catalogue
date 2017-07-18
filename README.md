@@ -17,7 +17,7 @@ Authors : Brice Errandonea <brice.errandonea@u-cergy.fr> (development), Salma El
  FRANCE
  https://www.u-cergy.fr
  
-Successfully tested on Moodle 2.6.1+, 2.9, 2.9.4, 3.1+, 3.3.1
+Supports Moodle 2.7 up to 3.3.1 (at least).
 
 9 lists of items are available. The site administrator can choose which ones of these tool lists will be displayed in the block, and in which order.
 
