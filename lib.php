@@ -798,8 +798,8 @@ function block_catalogue_navigation($bgcolor) {
         $previousarrow = block_catalogue_proximityarrow($modinfo, $sequence, $current, -1, $section, $cataloguepixdir);
         $nextarrow = block_catalogue_proximityarrow($modinfo, $sequence, $current, 1, $section, $cataloguepixdir);
     } else {
-        $previousarrow = '<div style="width:52px"></div>';
-        $nextarrow = '<div style="width:52px"></div>';
+        $previousarrow = '<div style="width:40px"></div>';
+        $nextarrow = '<div style="width:40px"></div>';
     }
     $arrows = '<table width="100%">';
     $arrows .= '<tr><td height="5px"></td></tr>';
@@ -812,7 +812,7 @@ function block_catalogue_navigation($bgcolor) {
     $arrows .= "<img src='$cataloguepixdir/coursemap.png' width='50px' alt='$maplabel' title='$maplabel'>";
     $arrows .= "</a>"."</td>";
     $arrows .= "<td width='33%' style='$navstyle'>".$nextarrow."</td>";
-    $arrows .= '</tr>';    
+    $arrows .= '</tr>';
     $arrows .= '</table>';
     return $arrows;
 }
@@ -859,7 +859,7 @@ function block_catalogue_proximityarrow($modinfo, $sequence, $current, $directio
         }
         $proxilabel = $sectionname;
     }
-    $arrow = "<a href='$proxilink'><img src='$cataloguepixdir/$picture' width='50px' alt='$proxilabel' title='$proxilabel'></a>";
+    $arrow = "<a href='$proxilink'><img src='$cataloguepixdir/$picture' width='40px' alt='$proxilabel' title='$proxilabel'></a>";
     return $arrow;
 }
 
