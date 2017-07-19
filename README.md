@@ -27,11 +27,11 @@ The 9th list is now deprecated and will be replaced in a future version. Therefo
 Please avoid using this list :
 - Sections : 1 category (Manage sections without switching to editing mode)
 
-Authors : 
-- Brice Errandonea <brice.errandonea@u-cergy.fr> (development, general idea)
+Authors :
+- Brice Errandonea <brice.errandonea@u-cergy.fr> (development, general idea, project lead)
+- Caroline Pers <caroline.pers@u-cergy.fr> (external communication, user experience refinments, feature requests, beta-test)
 - Salma El-mrabah <salma.el-mrabah@u-cergy.fr> (development, version 1.0)
 - Nirina Andriamanantenasoa <nirina.andriamanantenasoa@u-cergy.fr> (element icons and descriptions, versions 1.x)
-- Caroline Pers <caroline.pers@u-cergy.fr> (external communication, user experience, feature requests)
 - Baptiste Bail <baptiste.bail@u-cergy.fr> (list icons, version 2.0)
 - Noa Randriamalaka <noa.randriamalaka@u-cergy.fr> (SEFIAP director)
 
