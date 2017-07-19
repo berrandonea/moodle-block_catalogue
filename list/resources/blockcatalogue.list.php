@@ -120,7 +120,7 @@ class blockcatalogue_list_resources extends blockcatalogue_list {
                 }
 
             case 'iconurl' :
-                $iconurl = block_catalogue_pixurl('icon', "mod_$modname");                
+                $iconurl = block_catalogue_pixurl('icon', "mod_$modname");
                 return $iconurl;
 
             default :
@@ -136,17 +136,21 @@ class blockcatalogue_list_resources extends blockcatalogue_list {
      * @return boolean
      */
     public function sortout($elementname, $coursecontext) {
-        global $CFG;
-        if (!has_capability("mod/$elementname:addinstance", $coursecontext)) {
+        global $CFG, $DB;
+        $capability = "mod/$elementname:addinstance";
+        if (!$DB->record_exists('capabilities', array('name' => $capability))) {
+			return false;
+		}
+        if (!has_capability($capability, $coursecontext)) {
+            return false;
+        }
+        $libfile = "$CFG->dirroot/mod/$elementname/lib.php";
+        if (!file_exists($libfile)) {
             return false;
         }
         $common = $this->common_sortout($elementname);
         if ($common) {
             return true;
-        }
-        $libfile = "$CFG->dirroot/mod/$elementname/lib.php";
-        if (!file_exists($libfile)) {
-            return false;
         }
         include_once($libfile);
         $supportfunction = $elementname.'_supports';

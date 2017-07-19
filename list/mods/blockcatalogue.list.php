@@ -138,13 +138,13 @@ class blockcatalogue_list_mods extends blockcatalogue_list {
         if (!has_capability("mod/$elementname:addinstance", $coursecontext)) {
             return false;
         }
-        $common = $this->common_sortout($elementname);
-        if ($common) {
-            return true;
-        }
         $libfile = "$CFG->dirroot/mod/$elementname/lib.php";
         if (!file_exists($libfile)) {
             return false;
+        }
+        $common = $this->common_sortout($elementname);
+        if ($common) {
+            return true;
         }
         include_once($libfile);
         $supportfunction = $elementname.'_supports';
