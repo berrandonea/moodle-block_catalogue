@@ -66,7 +66,7 @@ function toggle(listname, elementname, toggler, courseid, isdefault, phpscript) 
         if(xhr.readyState == 4 && xhr.status == 200) {
             response = xhr.responseText;
             newdata = response.split("£µ£");
-            docelementid = toggler + 'tog-' + elementname;            
+            docelementid = toggler + 'tog-' + elementname;
             starzone = document.getElementById(docelementid);
             favzone = document.getElementById('block-catalogue-favorites');
             if (newdata[0] && starzone) {

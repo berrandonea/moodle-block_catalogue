@@ -169,7 +169,7 @@ class blockcatalogue_list_customlabels extends blockcatalogue_list {
                 if ($iconurl) {
                     return $iconurl;
                 } else {
-					$iconurl = block_catalogue_pixurl('icon', "mod_customlabel");
+                    $iconurl = block_catalogue_pixurl('icon', "mod_customlabel");
                     return $iconurl;
                 }
 

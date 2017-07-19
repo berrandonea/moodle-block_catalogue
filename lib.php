@@ -510,12 +510,10 @@ function block_catalogue_main_table($listnames, $course, $bgcolor, $showtabs) {
             $maintable .= "<td style='$iconstyle'>$rowtitle</td>";
         }
         $maintable .= '</tr>';
-//        $maintable .= '<tr><td colspan=2>&nbsp;</td></tr>';
         $favtitle = get_string('favorites', 'block_catalogue');
         $favstyle = 'text-align:center;font-weight:bold;font-size:16;padding-top:10px';
         $helper = $OUTPUT->help_icon('favorites', 'block_catalogue');
         $maintable .= "<tr><td colspan=2 style='$favstyle'>$favtitle$helper</td></tr>";
-//        $maintable .= '<tr><td height="8px"></td></tr>';
     }
 
     $maintable .= '</table>';
@@ -898,8 +896,8 @@ function block_catalogue_proximod($modinfo, $sequence, $current, $direction) {
  * @param string $component
  */
 function block_catalogue_pixurl($name, $component) {
-	global $OUTPUT;
-	if (method_exists($OUTPUT, 'image_url')) {
+    global $OUTPUT;
+    if (method_exists($OUTPUT, 'image_url')) {
         $iconurl = $OUTPUT->image_url($name, $component);
     } else {
         $iconurl = $OUTPUT->pix_url($name, $component);

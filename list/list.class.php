@@ -358,12 +358,12 @@ abstract class blockcatalogue_list {
      * @return string
      */
     public function get_element_localname($elementname) {
-		$component = $this->prefix.'_'.$elementname;
-		if (get_string_manager()->string_exists('pluginname', $component)) {
-			return get_string('pluginname', $component);
-		} else {
-			return $elementname;
-		}        
+        $component = $this->prefix.'_'.$elementname;
+        if (get_string_manager()->string_exists('pluginname', $component)) {
+            return get_string('pluginname', $component);
+        } else {
+            return $elementname;
+        }
     }
 
     /**

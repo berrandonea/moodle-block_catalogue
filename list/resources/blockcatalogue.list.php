@@ -139,8 +139,8 @@ class blockcatalogue_list_resources extends blockcatalogue_list {
         global $CFG, $DB;
         $capability = "mod/$elementname:addinstance";
         if (!$DB->record_exists('capabilities', array('name' => $capability))) {
-			return false;
-		}
+            return false;
+        }
         if (!has_capability($capability, $coursecontext)) {
             return false;
         }
