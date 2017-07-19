@@ -473,7 +473,7 @@ function block_catalogue_main_table($listnames, $course, $bgcolor, $showtabs) {
     $lists = $listsandfavorites->lists;
     $favorites = $listsandfavorites->favorites;
     $iconstyle = "text-align:center;background-color:$bgcolor";
-    $maintable = '<table width="100%" style="border-collapse:collapse"><tr>';
+    $maintable = '<table width="100%" style="border-collapse:collapse;margin-bottom:0px"><tr>';
     $coursecontext = context_course::instance($course->id);
     $viewlists = has_capability("block/catalogue:viewlists", $coursecontext);
 
@@ -510,12 +510,12 @@ function block_catalogue_main_table($listnames, $course, $bgcolor, $showtabs) {
             $maintable .= "<td style='$iconstyle'>$rowtitle</td>";
         }
         $maintable .= '</tr>';
-        $maintable .= '<tr><td colspan=2>&nbsp;</td></tr>';
+//        $maintable .= '<tr><td colspan=2>&nbsp;</td></tr>';
         $favtitle = get_string('favorites', 'block_catalogue');
-        $favstyle = 'text-align:center;font-weight:bold;font-size:16';
+        $favstyle = 'text-align:center;font-weight:bold;font-size:16;padding-top:10px';
         $helper = $OUTPUT->help_icon('favorites', 'block_catalogue');
         $maintable .= "<tr><td colspan=2 style='$favstyle'>$favtitle$helper</td></tr>";
-        $maintable .= '<tr><td height="8px"></td></tr>';
+//        $maintable .= '<tr><td height="8px"></td></tr>';
     }
 
     $maintable .= '</table>';
@@ -528,7 +528,7 @@ function block_catalogue_main_table($listnames, $course, $bgcolor, $showtabs) {
         $maintable .= "<p style='$iconstyle'>$nofavs</p>";
     }
     if ($showtabs) {
-        $maintable .= '<div width="100%" style="text-align:center;font-weight:bold;margin-top:20px;font-size:16">'
+        $maintable .= "<div width='100%' style='$favstyle'>"
                       .get_string('navigation').'</div>';
         $maintable .= block_catalogue_navigation($bgcolor);
     }
@@ -630,7 +630,7 @@ function block_catalogue_show_favorites($favorites, $bgcolor) {
     $nbshownfavs = 0;
     $favlists = array();
     $previouslist = '';
-    $favstring = '<table width="100%">';
+    $favstring = '<table width="100%" style="margin-bottom:0px">';
     $style = "max-width:50px;text-align:center;background-color:$bgcolor";
     $nbcolumns = 3;
     foreach ($favorites as $favorite) {
