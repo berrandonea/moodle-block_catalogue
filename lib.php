@@ -530,7 +530,7 @@ function block_catalogue_main_table($listnames, $course, $bgcolor, $showtabs) {
     if ($showtabs) {
         $maintable .= '<div width="100%" style="text-align:center;font-weight:bold;margin-top:20px;font-size:16">'
                       .get_string('navigation').'</div>';
-        $maintable .= block_catalogue_navigation();
+        $maintable .= block_catalogue_navigation($bgcolor);
     }
     return $maintable;
 }
@@ -781,9 +781,10 @@ function block_catalogue_update_element($listname, $elementname, $nature, $newva
  * @global object $COURSE
  * @global object $DB
  * @global object $PAGE
+ * @param  string $bgcolor Block background color as defined in settings.
  * @return string HTML code
  */
-function block_catalogue_navigation() {
+function block_catalogue_navigation($bgcolor) {
     global $CFG, $COURSE, $DB, $PAGE;
     $cataloguepixdir = "$CFG->wwwroot/blocks/catalogue/pix";
     $pagecontext = $PAGE->context;
@@ -803,13 +804,14 @@ function block_catalogue_navigation() {
     $arrows = '<table width="100%">';
     $arrows .= '<tr><td height="5px"></td></tr>';
     $arrows .= '<tr>';
-    $arrows .= '<td width="33%" style="text-align:center">'.$previousarrow.'</td>';
+    $navstyle = "text-align:center;background-color:$bgcolor";
+    $arrows .= "<td width='33%' style='$navstyle'>".$previousarrow."</td>";
     $maplabel = get_string('coursemap', 'block_catalogue');
     $mapurl = "$CFG->wwwroot/blocks/catalogue/chooseplace.php?course=$COURSE->id&map=1";
-    $arrows .= '<td style="text-align:center">'."<a href='$mapurl'>";
+    $arrows .= "<td style='$navstyle'>"."<a href='$mapurl'>";
     $arrows .= "<img src='$cataloguepixdir/coursemap.png' width='50px' alt='$maplabel' title='$maplabel'>";
-    $arrows .= "</a>".'</td>';
-    $arrows .= '<td width="33%" style="text-align:center">'.$nextarrow.'</td>';
+    $arrows .= "</a>"."</td>";
+    $arrows .= "<td width='33%' style='$navstyle'>".$nextarrow."</td>";
     $arrows .= '</tr>';    
     $arrows .= '</table>';
     return $arrows;
