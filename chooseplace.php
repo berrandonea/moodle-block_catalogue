@@ -133,7 +133,7 @@ if (isset($listname)) {
     }
 }
 
-$sections = $DB->get_recordset('course_sections', array('course' => $COURSE->id));
+$sections = $DB->get_recordset('course_sections', array('course' => $COURSE->id), 'section');
 
 // Page display.
 $USER->editing = 0;
