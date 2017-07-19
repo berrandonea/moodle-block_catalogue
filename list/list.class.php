@@ -595,16 +595,16 @@ abstract class blockcatalogue_list {
         $html .= '<table><tr>';
         if (!$selectedlistname || $this->name == $selectedlistname) {
             $opacity = 1;
-            $height = '60px';
+            $height = '70px';
             $textcolor = $this->get_color();
         } else {
             $opacity = 0.5;
-            $height = '40px';
+            $height = '50px';
             $textcolor = '#222';
         }
         $html .= "<td class='block_catalogue_listtab' style='text-align:center'>";
         $html .= "<img src='$listdir/$this->name/catalogue_icon.png' style='opacity:$opacity'";
-        $html .= "' class='block_catalogue_tabicon' width='40px' height='40px'>";
+        $html .= "' width='$height' height='$height'>";
         $html .= "</td>";
         $html .= '</tr><tr>';
         if ($this->name == $selectedlistname) {
