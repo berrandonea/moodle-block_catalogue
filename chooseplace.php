@@ -154,7 +154,6 @@ $completioninfo = new completion_info($course);
 $modinfo = get_fast_modinfo($course);
 
 if ($map) {
-    $editinglist->display_all_buttons('');
     echo '<div style="text-align:center;size:20">';
     echo "<a href='$coursepage'><button class='btn btn-secondary'>$COURSE->fullname</button></a>";
     echo '</div>';
