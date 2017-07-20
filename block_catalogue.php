@@ -57,9 +57,13 @@ class block_catalogue extends block_base {
     }
 
     public function get_content() {
-        global $DB, $PAGE;
+        global $COURSE, $DB, $PAGE;
         // Don't show the block if we're already using theme_catalogue.
         if ($PAGE->theme->name == 'catalogue') {
+            return '';
+        }
+        // Don't show if we're not inside a course.
+        if ($COURSE->id == 1) {
             return '';
         }
         $courseviewonly = get_config('catalogue', 'courseviewonly');

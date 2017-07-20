@@ -33,11 +33,14 @@
 
 require_once('../../config.php');
 require_once('lib.php');
-global $DB, $OUTPUT, $PAGE, $USER;
+global $CFG, $DB, $OUTPUT, $PAGE, $USER;
 
 // Check params.
 $thislistname = required_param('name', PARAM_ALPHA);
 $courseid = required_param('course', PARAM_INT);
+if ($courseid == 1) {
+    header("Location: $CFG->wwwroot/index.php");
+}
 $elementname = optional_param('element', '', PARAM_TEXT);
 $edit = optional_param('edit', '', PARAM_ALPHA);
 $newvalue = optional_param('newvalue', '', PARAM_TEXT);

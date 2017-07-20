@@ -39,6 +39,9 @@ require_once("$CFG->dirroot/course/renderer.php");
 
 // Check params.
 $courseid = required_param('course', PARAM_INT);
+if ($courseid == 1) {
+    header("Location: $CFG->wwwroot/index.php");
+}
 $args = array('course' => $courseid);
 $map = optional_param('map', 0, PARAM_INT);
 if (!$map) {
