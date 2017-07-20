@@ -142,7 +142,4 @@ class blockcatalogue_list_sections extends blockcatalogue_list {
         $url = new moodle_url($targetpage, $args);
         return $url;
     }
-
-    public function display_all_buttons() {
-    }
 }

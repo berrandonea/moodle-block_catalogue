@@ -82,8 +82,10 @@ if ($map) {
     if (!$permitted) {
         header("Location: $coursepage");
     }
-    $targetfilename = $list->get_modedit();
-    $targetcommonurl = "$CFG->wwwroot/$targetfilename?add=$mod&type=$type&course=$courseid&return=0&sr=0";
+    if (!$listname != 'blocks') {
+        $targetfilename = $list->get_modedit();
+        $targetcommonurl = "$CFG->wwwroot/$targetfilename?add=$mod&type=$type&course=$courseid&return=0&sr=0";
+	}
 }
 
 // Once the user has chosen where to add a module.
