@@ -476,6 +476,7 @@ function block_catalogue_main_table($listnames, $course, $bgcolor, $showtabs) {
     $maintable = '<table width="100%" style="border-collapse:collapse;margin-bottom:0px"><tr>';
     $coursecontext = context_course::instance($course->id);
     $viewlists = has_capability("block/catalogue:viewlists", $coursecontext);
+    $favstyle = 'text-align:center;font-weight:bold;font-size:16;padding-top:10px';
 
     if ($viewlists && $showtabs) {
         $nblists = count($listnames);
@@ -511,7 +512,6 @@ function block_catalogue_main_table($listnames, $course, $bgcolor, $showtabs) {
         }
         $maintable .= '</tr>';
         $favtitle = get_string('favorites', 'block_catalogue');
-        $favstyle = 'text-align:center;font-weight:bold;font-size:16;padding-top:10px';
         $helper = $OUTPUT->help_icon('favorites', 'block_catalogue');
         $maintable .= "<tr><td colspan=2 style='$favstyle'>$favtitle$helper</td></tr>";
     }
