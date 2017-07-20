@@ -82,7 +82,7 @@ if ($map) {
     if (!$permitted) {
         header("Location: $coursepage");
     }
-    if (!$listname != 'blocks') {
+    if ($listname != 'blocks') {
         $targetfilename = $list->get_modedit();
         $targetcommonurl = "$CFG->wwwroot/$targetfilename?add=$mod&type=$type&course=$courseid&return=0&sr=0";
 	}
@@ -160,6 +160,8 @@ if ($map) {
     echo "<a href='$coursepage'><button class='btn btn-secondary'>$COURSE->fullname</button></a>";
     echo '</div>';
     $herebutton = '';
+} else if ($listname == 'blocks') {
+	exit;
 } else {
     $imgtitle = get_string('here', 'block_catalogue');
     $herebutton = "<img alt='$imgtitle' title='$imgtitle' width='20px' height='30px'"
