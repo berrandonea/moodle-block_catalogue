@@ -88,7 +88,7 @@ if ($map) {
     if ($listname != 'blocks') {
         $targetfilename = $list->get_modedit();
         $targetcommonurl = "$CFG->wwwroot/$targetfilename?add=$mod&type=$type&course=$courseid&return=0&sr=0";
-	}
+    }
 }
 
 // Once the user has chosen where to add a module.
@@ -164,7 +164,7 @@ if ($map) {
     echo '</div>';
     $herebutton = '';
 } else if ($listname == 'blocks') {
-	exit;
+    exit;
 } else {
     $imgtitle = get_string('here', 'block_catalogue');
     $herebutton = "<img alt='$imgtitle' title='$imgtitle' width='20px' height='30px'"
