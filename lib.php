@@ -647,8 +647,8 @@ function block_catalogue_show_favorites($favorites, $bgcolor) {
         $favstring .= "</a>";
         $editing = false;
         if (isset($USER->editing)) {
-            $editing = true;
-        }
+            $editing = $USER->editing;
+		}
         if ($editing) {
             $favstring .= "<span style='vertical-align:top'> ";
             $delete = get_string('delete');
