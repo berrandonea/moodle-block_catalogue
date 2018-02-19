@@ -82,6 +82,9 @@ class blockcatalogue_list_resources extends blockcatalogue_list {
             $this->availables[$category] = array();
         }
         foreach ($enabledmods as $enabledmod) {
+            if ($enabledmod->name == 'threesixo') {
+                continue;
+            }
             $this->sortout($enabledmod->name, $coursecontext);
         }
         foreach ($this->categories as $category) {

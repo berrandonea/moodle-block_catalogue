@@ -145,6 +145,10 @@ class blockcatalogue_list_activities extends blockcatalogue_list {
         if ($common) {
             return true;
         }
+        if ($elementname == 'threesixo') {
+            $this->availables['other'][] = 'threesixo';
+            return true;
+        }
         include_once($libfile);
         $supportfunction = $elementname.'_supports';
         if ($supportfunction(FEATURE_MOD_ARCHETYPE) == MOD_ARCHETYPE_RESOURCE) {
