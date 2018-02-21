@@ -41,8 +41,8 @@ class blockcatalogue_list_enrols extends blockcatalogue_list {
         $this->categories = array('users', 'methods');
         $this->potentialmembers = array();
         $this->potentialmembers['methods'] = array('enrol_instances', 'enrol_manual', 'enrol_self',
-                                                   'local_mass_enroll', 'blocks_enrol_demands');
-        $this->defaultfavorites = array('enrol_users');
+                                                   'local_mass_enroll', 'blocks_enrol_demands', 'local_cohortmanager');
+        $this->defaultfavorites = array('enrol_users', 'cohortmanager');
     }
 
     /**
@@ -95,6 +95,11 @@ class blockcatalogue_list_enrols extends blockcatalogue_list {
                     $this->availables['methods'][] = 'mass_enroll';
                 }
             }
+            if ($name == 'cohortmanager') {
+				if (has_capability('local/cohortmanager:viewinfocourse', $coursecontext)) {
+					$this->availables['methods'][] = 'cohortmanager';
+				}
+			}
         }
         if (file_exists("$CFG->dirroot/group/copygroup.php")) {
             if (has_capability('moodle/course:managegroups', $coursecontext)) {
@@ -172,6 +177,9 @@ class blockcatalogue_list_enrols extends blockcatalogue_list {
         if ($elementname == 'mass_enroll') {
             return get_string('mass_enroll', 'local_mass_enroll');
         }
+        if ($elementname == 'cohortmanager') {
+            return get_string('pluginname', 'local_cohortmanager');
+        }
         return get_string('pluginname', "$elementname");
     }
 
@@ -213,6 +221,13 @@ class blockcatalogue_list_enrols extends blockcatalogue_list {
             $targetpage .= '/report/'.$nameparts[1].'/index.php';
         } else if ($elementname == 'mass_enroll') {
             $targetpage .= '/local/mass_enroll/mass_enroll.php';
+        } else if ($elementname == 'cohortmanager') {
+            $targetpage .= '/local/cohortmanager/viewinfo.php';
+            unset($args['id']);
+            unset($args['courseid']);
+            $coursecontext = context_course::instance($COURSE->id);
+            $args['contextid'] = $coursecontext->id;
+            $args['origin'] = 'course';            
         } else if ($elementname == 'block_demands') {
             $targetpage .= '/blocks/enrol_demands/requests.php';
         }
