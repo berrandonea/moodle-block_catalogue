@@ -224,7 +224,8 @@ foreach ($sections as $section) {
         foreach ($modinfo->sections[$section->section] as $cmid) {
             $cminfo = $modinfo->cms[$cmid];
             if ($modulehtml = $renderer->course_section_cm_list_item($course,
-                                         $completioninfo, $cminfo, null)) {
+                                         $completioninfo, $cminfo, null)) {											 
+                $modulehtml = simplifymodule($modulehtml);
                 if ($map) {
                     $cm = $DB->get_record('course_modules', array('id' => $cmid));
                     $module = $DB->get_record('modules', array('id' => $cm->module));
@@ -250,3 +251,18 @@ echo '</table>';
 
 $sections->close();
 echo $OUTPUT->footer();
+
+function simplifymodule($modulehtml) {
+	$modulehtmltable = explode('</a></div>', $modulehtml);
+	//~ print_object($modulehtmltable);
+	//~ $begintable = explode('class="instancename">', $modulehtmltable[0]);
+	//~ $modulename = substr($begintable[1], 0, 50);
+	//~ $modulename = $begintable[1];
+	$modulehtml = $modulehtmltable[0]."</a></div></div></div></div></li>";
+    return $modulehtml;
+}
+
+
+
+
+
