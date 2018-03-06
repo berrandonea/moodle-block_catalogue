@@ -40,8 +40,8 @@ class blockcatalogue_list_enrols extends blockcatalogue_list {
         $this->color = '#0f3e66';
         $this->categories = array('users', 'methods');
         $this->potentialmembers = array();
-        $this->potentialmembers['methods'] = array('enrol_instances', 'enrol_manual', 'enrol_self',
-                                                   'local_mass_enroll', 'blocks_enrol_demands', 'local_cohortmanager');
+        $this->potentialmembers['methods'] = array('enrol_instances', 'enrol_manual', 'enrol_self', 'enrol_enroldemands',
+                                                   'local_mass_enroll', 'local_cohortmanager', 'enrol_stafftraining');
         $this->defaultfavorites = array('enrol_users', 'cohortmanager');
     }
 
@@ -82,7 +82,7 @@ class blockcatalogue_list_enrols extends blockcatalogue_list {
                 $this->availables['methods'][] = 'enrol_vet';
             }
         }
-        $methods = array('manual', 'self');
+        $methods = array('manual', 'self', 'enroldemands', 'stafftraining');
         foreach ($methods as $method) {
             if (has_capability("enrol/$method:config", $coursecontext)) {
                 $this->availables['methods'][] = "enrol_$method".'_edit';
@@ -142,6 +142,9 @@ class blockcatalogue_list_enrols extends blockcatalogue_list {
             return null;
         }
         $nameparts = $this->divide_name($elementname);
+        if (!isset($nameparts[1])) {
+			return null;
+		}
         if (isset($nameparts[2])) {
             $nameparts[1] .= '_'.$nameparts[2];
         }
