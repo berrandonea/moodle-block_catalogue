@@ -53,10 +53,12 @@
 }
 .block_catalogue_iconcell {
     width:50px;
+    height:45px;
 }
 .block_catalogue_elementicon {
     max-width:100%;
-    height:45px;
+    max-height:45px;
+    height:auto;
 }
 .block_catalogue_elementtitle {
     font-size:14;

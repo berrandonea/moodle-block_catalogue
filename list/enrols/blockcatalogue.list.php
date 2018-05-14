@@ -40,9 +40,9 @@ class blockcatalogue_list_enrols extends blockcatalogue_list {
         $this->color = '#0f3e66';
         $this->categories = array('users', 'methods');
         $this->potentialmembers = array();
-        $this->potentialmembers['methods'] = array('enrol_instances', 'enrol_manual', 'enrol_self', 'enrol_enroldemands',
-                                                   'local_mass_enroll', 'local_cohortmanager', 'enrol_stafftraining');
-        $this->defaultfavorites = array('enrol_users', 'cohortmanager');
+        $this->potentialmembers['methods'] = array('enrol_instances', 'enrol_manual', 'enrol_self', 'local_cohortmanager',
+                                                   'local_mass_enroll', 'blocks_enrol_demands');
+        $this->defaultfavorites = array('user_index', 'local_cohortmanager');
     }
 
     /**
@@ -82,7 +82,7 @@ class blockcatalogue_list_enrols extends blockcatalogue_list {
                 $this->availables['methods'][] = 'enrol_vet';
             }
         }
-        $methods = array('manual', 'self', 'enroldemands', 'stafftraining');
+        $methods = array('manual', 'self');
         foreach ($methods as $method) {
             if (has_capability("enrol/$method:config", $coursecontext)) {
                 $this->availables['methods'][] = "enrol_$method".'_edit';
@@ -96,10 +96,10 @@ class blockcatalogue_list_enrols extends blockcatalogue_list {
                 }
             }
             if ($name == 'cohortmanager') {
-				if (has_capability('local/cohortmanager:viewinfocourse', $coursecontext)) {
-					$this->availables['methods'][] = 'cohortmanager';
-				}
-			}
+                if (has_capability('moodle/role:assign', $coursecontext)) {
+                    $this->availables['methods'][] = 'cohortmanager';
+                }
+            }
         }
         if (file_exists("$CFG->dirroot/group/copygroup.php")) {
             if (has_capability('moodle/course:managegroups', $coursecontext)) {
@@ -142,9 +142,6 @@ class blockcatalogue_list_enrols extends blockcatalogue_list {
             return null;
         }
         $nameparts = $this->divide_name($elementname);
-        if (!isset($nameparts[1])) {
-			return null;
-		}
         if (isset($nameparts[2])) {
             $nameparts[1] .= '_'.$nameparts[2];
         }
@@ -222,15 +219,12 @@ class blockcatalogue_list_enrols extends blockcatalogue_list {
             $targetpage .= '.php';
         } else if ($nameparts[0] == 'report') {
             $targetpage .= '/report/'.$nameparts[1].'/index.php';
+        } else if ($elementname == 'local_cohortmanager') {
+            $targetpage .= '/local/cohortmanager/viewinfo.php';
+            $coursecontext = context_course::instance($COURSE->id);
+            $args = array('contextid' => $coursecontext->id, 'origin' => 'course');
         } else if ($elementname == 'mass_enroll') {
             $targetpage .= '/local/mass_enroll/mass_enroll.php';
-        } else if ($elementname == 'cohortmanager') {
-            $targetpage .= '/local/cohortmanager/viewinfo.php';
-            unset($args['id']);
-            unset($args['courseid']);
-            $coursecontext = context_course::instance($COURSE->id);
-            $args['contextid'] = $coursecontext->id;
-            $args['origin'] = 'course';            
         } else if ($elementname == 'block_demands') {
             $targetpage .= '/blocks/enrol_demands/requests.php';
         }

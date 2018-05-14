@@ -68,6 +68,8 @@ class blockcatalogue_list_blocks extends blockcatalogue_list {
         $blockinstance->pagetypepattern = '*';
         $blockinstance->defaultregion = $region;
         $blockinstance->defaultweight = 0;
+        $blockinstance->timecreated = time();
+        $blockinstance->timemodified = time();
         $blockinstance->id = $DB->insert_record('block_instances', $blockinstance);
     }
 

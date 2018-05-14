@@ -275,7 +275,6 @@ function block_catalogue_display_element($course, $usereditor, $list, $elementna
     } else {
         $titleclass = 'block_catalogue_elementtitle';
     }
-
     echo "<td class='block_catalogue_iconcell'>";
     echo "<img src='$iconurl' class='block_catalogue_elementicon'>";
     echo '</td>';
@@ -517,7 +516,7 @@ function block_catalogue_main_table($listnames, $course, $bgcolor, $showtabs) {
 
     $maintable .= '</table>';
     if ($favorites) {
-        $maintable .= "<div id='block-catalogue-favorites'>";
+        $maintable .= "<div class='block-catalogue-favorites'>";
         $maintable .= block_catalogue_show_favorites($favorites, $bgcolor);
         $maintable .= '</div>';
     } else if ($viewlists && has_capability("block/catalogue:togglefav", $coursecontext)) {
@@ -526,7 +525,7 @@ function block_catalogue_main_table($listnames, $course, $bgcolor, $showtabs) {
     }
     if ($showtabs) {
         $maintable .= "<div width='100%' style='$favstyle'>"
-                      .get_string('navigation').'</div>';
+                      .get_string('courseadministration').'</div>';
         $maintable .= block_catalogue_navigation($bgcolor);
     }
     return $maintable;
@@ -788,29 +787,32 @@ function block_catalogue_update_element($listname, $elementname, $nature, $newva
 function block_catalogue_navigation($bgcolor) {
     global $CFG, $COURSE, $DB, $PAGE;
     $cataloguepixdir = "$CFG->wwwroot/blocks/catalogue/pix";
-    $pagecontext = $PAGE->context;
-    if ($pagecontext->contextlevel == 70) {
-        $modinfo = get_fast_modinfo($COURSE);
-        $cmid = $pagecontext->instanceid;
-        $cm = $DB->get_record('course_modules', array('id' => $cmid));
-        $section = $DB->get_record('course_sections', array('id' => $cm->section));
-        $sequence = explode(',', $section->sequence);
-        $current = array_search($cmid, $sequence);
-        $previousarrow = block_catalogue_proximityarrow($modinfo, $sequence, $current, -1, $section, $cataloguepixdir);
-        $nextarrow = block_catalogue_proximityarrow($modinfo, $sequence, $current, 1, $section, $cataloguepixdir);
-    } else {
+    //~ $pagecontext = $PAGE->context;
+    //~ if ($pagecontext->contextlevel == 70) {
+        //~ $modinfo = get_fast_modinfo($COURSE);
+        //~ $cmid = $pagecontext->instanceid;
+        //~ $cm = $DB->get_record('course_modules', array('id' => $cmid));
+        //~ $section = $DB->get_record('course_sections', array('id' => $cm->section));
+        //~ $sequence = explode(',', $section->sequence);
+        //~ $current = array_search($cmid, $sequence);
+        //~ $previousarrow = block_catalogue_proximityarrow($modinfo, $sequence, $current, -1, $section, $cataloguepixdir);
+        //~ $nextarrow = block_catalogue_proximityarrow($modinfo, $sequence, $current, 1, $section, $cataloguepixdir);
+    //~ } else {
         $previousarrow = '<div style="width:40px"></div>';
         $nextarrow = '<div style="width:40px"></div>';
-    }
+    //~ }
     $arrows = '<table width="100%">';
     $arrows .= '<tr><td height="5px"></td></tr>';
     $arrows .= '<tr>';
     $navstyle = "text-align:center;background-color:$bgcolor";
     $arrows .= "<td width='33%' style='$navstyle'>".$previousarrow."</td>";
-    $maplabel = get_string('coursemap', 'block_catalogue');
-    $mapurl = "$CFG->wwwroot/blocks/catalogue/chooseplace.php?course=$COURSE->id&map=1";
-    $arrows .= "<td style='$navstyle'>"."<a href='$mapurl'>";
-    $arrows .= "<img src='$cataloguepixdir/coursemap.png' width='50px' alt='$maplabel' title='$maplabel'>";
+    //~ $maplabel = get_string('coursemap', 'block_catalogue');
+    $maplabel = get_string('courseadministration');
+    //~ $mapurl = "$CFG->wwwroot/blocks/catalogue/chooseplace.php?course=$COURSE->id&map=1";
+    $adminurl = "$CFG->wwwroot/course/admin.php?id=$COURSE->id&courseid=$COURSE->id";
+    $arrows .= "<td style='$navstyle'>"."<a href='$adminurl'>";
+    //~ $arrows .= "<img src='$cataloguepixdir/coursemap.png' width='50px' alt='$maplabel' title='$maplabel'>";
+    $arrows .= "<img src='$cataloguepixdir/puzzle.png' width='50px' alt='$maplabel' title='$maplabel'>";
     $arrows .= "</a>"."</td>";
     $arrows .= "<td width='33%' style='$navstyle'>".$nextarrow."</td>";
     $arrows .= '</tr>';
@@ -900,11 +902,13 @@ function block_catalogue_proximod($modinfo, $sequence, $current, $direction) {
  */
 function block_catalogue_pixurl($name, $component) {
     global $OUTPUT;
-    if (method_exists($OUTPUT, 'image_url')) {
+    //~ if (method_exists($OUTPUT, 'image_url')) {
         $iconurl = $OUTPUT->image_url($name, $component);
-    } else {
-        $iconurl = $OUTPUT->pix_url($name, $component);
-    }
+    //~ } else if (method_exists($OUTPUT, 'pix_icon')) {
+        //~ $iconurl = $OUTPUT->pix_icon($name, $component);
+    //~ } else {
+        //~ $iconurl = $OUTPUT->pix_url($name, $component);
+    //~ }
     return $iconurl;
 }
 

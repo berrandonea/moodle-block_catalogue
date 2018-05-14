@@ -109,7 +109,6 @@ $nbcategories = count($categories);
 $minwidth = floor(100 / $nbcategories) - 1;
 $maxperline = 1;
 $numcategory = 0;
-
 if (!$editing) {
     echo '<div class="block_catalogue_hoverlabel">';
     echo '*'.get_string('hover', 'block_catalogue');

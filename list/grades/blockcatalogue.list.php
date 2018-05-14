@@ -54,7 +54,7 @@ class blockcatalogue_list_grades extends blockcatalogue_list {
                                                    'gradereport_outcomes',
                                                    'report_competency',
                                                    'admintool_coursecompetencies');
-        $this->defaultfavorites = array();
+        $this->defaultfavorites = array('gradereport_grader');
         $this->open = false;
     }
 
