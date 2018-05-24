@@ -130,7 +130,10 @@ class blockcatalogue_list_sections extends blockcatalogue_list {
      */
     public function usage_url($elementname) {
         global $CFG, $COURSE;
-        if ($elementname == 'add') {
+        if ($elementname == 'goto') {
+            $targetpage = "$CFG->wwwroot/course/view.php";
+            $args = array('id' => $COURSE->id);
+        } else if ($elementname == 'add') {
             $targetpage = "$CFG->wwwroot/course/changenumsections.php";
             $args = array('courseid' => $COURSE->id,
                           'increase' => 1,

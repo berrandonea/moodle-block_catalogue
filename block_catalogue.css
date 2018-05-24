@@ -55,13 +55,11 @@
     width:50px;
     height:45px;
 }
-.block_catalogue_elementicon {
-    max-width:100%;
-    max-height:45px;
-    height:auto;
+.block_catalogue_elementicon {    
+    height:45px;    
 }
 .block_catalogue_elementtitle {
-    font-size:14;
+    font-size:13;
     font-weight:bold;
     height:25px;
     color:black;

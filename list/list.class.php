@@ -183,7 +183,7 @@ abstract class blockcatalogue_list {
         global $COURSE;
         $coursecontext = context_course::instance($COURSE->id);
         $title = '';
-        if (has_capability('block/catalogue:viewlists', $coursecontext)) {
+        if (has_capability('block/catalogue:viewlists', $coursecontext)&&($this->name != 'sections')) {
             $title .= $this->get_localname().' : ';
         }
         $title .= $this->get_element_localname($elementname);

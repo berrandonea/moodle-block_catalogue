@@ -235,7 +235,7 @@ function block_catalogue_display_category($course, $usereditor, $list, $elementn
         $params = array('listname' => $listname, 'elementname' => $elementname);
         $hidden = $DB->get_record('block_catalogue_hide', $params);
         if ((!$hidden)||$usereditor) {
-            echo "<div class='$elementclass'>";
+            echo "<div class='$elementclass' id='element_$elementname'>";
             block_catalogue_display_element($course, $usereditor, $list, $elementname);
             echo '</div>';
             $onthatline++;
@@ -274,8 +274,8 @@ function block_catalogue_display_element($course, $usereditor, $list, $elementna
         $titleclass = 'block_catalogue_hiddentitle';
     } else {
         $titleclass = 'block_catalogue_elementtitle';
-    }
-    echo "<td class='block_catalogue_iconcell'>";
+    }    
+    echo "<td class='block_catalogue_iconcell'>";    
     echo "<img src='$iconurl' class='block_catalogue_elementicon'>";
     echo '</td>';
     echo "<td class='$titleclass' colspan=2>";
@@ -466,7 +466,7 @@ function block_catalogue_link_editor($url, $elementname, $link) {
  * @return string HTML code
  */
 function block_catalogue_main_table($listnames, $course, $bgcolor, $showtabs) {
-    global $OUTPUT;
+    global $CFG, $COURSE, $OUTPUT;
     $listsandfavorites = block_catalogue_all_favorites($listnames);
     $lists = $listsandfavorites->lists;
     $favorites = $listsandfavorites->favorites;
@@ -523,11 +523,16 @@ function block_catalogue_main_table($listnames, $course, $bgcolor, $showtabs) {
         $nofavs = get_string('nofavs', 'block_catalogue');
         $maintable .= "<p style='$iconstyle'>$nofavs</p>";
     }
-    if ($showtabs) {
-        $maintable .= "<div width='100%' style='$favstyle'>"
-                      .get_string('courseadministration').'</div>';
-        $maintable .= block_catalogue_navigation($bgcolor);
-    }
+    //~ if ($showtabs) {
+        //~ $maintable .= "<div width='100%' style='$favstyle'>"
+                      //~ .get_string('navigation').'</div>';
+        //~ $maintable .= block_catalogue_navigation($bgcolor);
+    //~ }
+    if ($viewlists) {
+        $adminurl = "$CFG->wwwroot/course/admin.php?id=$COURSE->id&courseid=$COURSE->id";
+        $maintable .= "<br><p style='text-align:center'><a href='$adminurl'><button class='btn btn-success'>".get_string('courseadministration')."</button></a></p>";
+	}
+
     return $maintable;
 }
 
@@ -787,32 +792,32 @@ function block_catalogue_update_element($listname, $elementname, $nature, $newva
 function block_catalogue_navigation($bgcolor) {
     global $CFG, $COURSE, $DB, $PAGE;
     $cataloguepixdir = "$CFG->wwwroot/blocks/catalogue/pix";
-    //~ $pagecontext = $PAGE->context;
-    //~ if ($pagecontext->contextlevel == 70) {
-        //~ $modinfo = get_fast_modinfo($COURSE);
-        //~ $cmid = $pagecontext->instanceid;
-        //~ $cm = $DB->get_record('course_modules', array('id' => $cmid));
-        //~ $section = $DB->get_record('course_sections', array('id' => $cm->section));
-        //~ $sequence = explode(',', $section->sequence);
-        //~ $current = array_search($cmid, $sequence);
-        //~ $previousarrow = block_catalogue_proximityarrow($modinfo, $sequence, $current, -1, $section, $cataloguepixdir);
-        //~ $nextarrow = block_catalogue_proximityarrow($modinfo, $sequence, $current, 1, $section, $cataloguepixdir);
-    //~ } else {
+    $pagecontext = $PAGE->context;
+    if ($pagecontext->contextlevel == 70) {
+        $modinfo = get_fast_modinfo($COURSE);
+        $cmid = $pagecontext->instanceid;
+        $cm = $DB->get_record('course_modules', array('id' => $cmid));
+        $section = $DB->get_record('course_sections', array('id' => $cm->section));
+        $sequence = explode(',', $section->sequence);
+        $current = array_search($cmid, $sequence);
+        $previousarrow = block_catalogue_proximityarrow($modinfo, $sequence, $current, -1, $section, $cataloguepixdir);
+        $nextarrow = block_catalogue_proximityarrow($modinfo, $sequence, $current, 1, $section, $cataloguepixdir);
+    } else {
         $previousarrow = '<div style="width:40px"></div>';
         $nextarrow = '<div style="width:40px"></div>';
-    //~ }
+    }
     $arrows = '<table width="100%">';
     $arrows .= '<tr><td height="5px"></td></tr>';
     $arrows .= '<tr>';
     $navstyle = "text-align:center;background-color:$bgcolor";
     $arrows .= "<td width='33%' style='$navstyle'>".$previousarrow."</td>";
-    //~ $maplabel = get_string('coursemap', 'block_catalogue');
-    $maplabel = get_string('courseadministration');
-    //~ $mapurl = "$CFG->wwwroot/blocks/catalogue/chooseplace.php?course=$COURSE->id&map=1";
-    $adminurl = "$CFG->wwwroot/course/admin.php?id=$COURSE->id&courseid=$COURSE->id";
-    $arrows .= "<td style='$navstyle'>"."<a href='$adminurl'>";
-    //~ $arrows .= "<img src='$cataloguepixdir/coursemap.png' width='50px' alt='$maplabel' title='$maplabel'>";
-    $arrows .= "<img src='$cataloguepixdir/puzzle.png' width='50px' alt='$maplabel' title='$maplabel'>";
+    $maplabel = get_string('coursemap', 'block_catalogue');
+    //~ $maplabel = get_string('courseadministration');
+    $mapurl = "$CFG->wwwroot/blocks/catalogue/chooseplace.php?course=$COURSE->id&map=1";
+    //~ $adminurl = "$CFG->wwwroot/course/admin.php?id=$COURSE->id&courseid=$COURSE->id";
+    //~ $arrows .= "<td style='$navstyle'>"."<a href='$adminurl'>";
+    $arrows .= "<img src='$cataloguepixdir/coursemap.png' width='50px' alt='$maplabel' title='$maplabel'>";
+    //~ $arrows .= "<img src='$cataloguepixdir/puzzle.png' width='50px' alt='$maplabel' title='$maplabel'>";
     $arrows .= "</a>"."</td>";
     $arrows .= "<td width='33%' style='$navstyle'>".$nextarrow."</td>";
     $arrows .= '</tr>';

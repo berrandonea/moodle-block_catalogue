@@ -42,7 +42,7 @@ class blockcatalogue_list_enrols extends blockcatalogue_list {
         $this->potentialmembers = array();
         $this->potentialmembers['methods'] = array('enrol_instances', 'enrol_manual', 'enrol_self', 'local_cohortmanager',
                                                    'local_mass_enroll', 'blocks_enrol_demands');
-        $this->defaultfavorites = array('user_index', 'local_cohortmanager');
+        $this->defaultfavorites = array('user_index');
     }
 
     /**
@@ -140,12 +140,16 @@ class blockcatalogue_list_enrols extends blockcatalogue_list {
         global $CFG;
         if ($nature != 'iconurl') {
             return null;
-        }
+        }        
         $nameparts = $this->divide_name($elementname);
         if (isset($nameparts[2])) {
             $nameparts[1] .= '_'.$nameparts[2];
         }
         $localicondir = $nameparts[0].'/'.$nameparts[1].'/pix';
+        if ($elementname == 'cohortmanager') {
+			$localicondir = 'blocks/catalogue/list/enrols/icons';
+			$elementname = 'local_cohortmanager';
+		}        
         $iconurl = $this->get_local_iconurl($localicondir, $elementname);
         return $iconurl;
     }
@@ -178,7 +182,7 @@ class blockcatalogue_list_enrols extends blockcatalogue_list {
             return get_string('mass_enroll', 'local_mass_enroll');
         }
         if ($elementname == 'cohortmanager') {
-            return get_string('pluginname', 'local_cohortmanager');
+            return get_string('viewinfo', 'local_cohortmanager');
         }
         return get_string('pluginname', "$elementname");
     }

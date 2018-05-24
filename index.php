@@ -97,6 +97,7 @@ if ($usereditor) {
 // Header with tabs.
 $header = $OUTPUT->header();
 echo $header;
+
 if (!strpos($header, 'block_catalogue_tabicon')) {
     echo '<table><tr><td>';
     echo block_catalogue_display_tabs($courseid, $thislistname, $editing);
