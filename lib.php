@@ -530,7 +530,7 @@ function block_catalogue_main_table($listnames, $course, $bgcolor, $showtabs) {
     //~ }
     if ($viewlists) {
         $adminurl = "$CFG->wwwroot/course/admin.php?id=$COURSE->id&courseid=$COURSE->id";
-        $maintable .= "<br><p style='text-align:center'><a href='$adminurl'><button class='btn btn-success'>".get_string('courseadministration')."</button></a></p>";
+        $maintable .= "<br><p style='text-align:center'><a href='$adminurl'><button id='courseadminbutton' class='btn btn-success'>".get_string('courseadministration')."</button></a></p>";
 	}
 
     return $maintable;
@@ -623,7 +623,7 @@ function block_catalogue_separator($firstlistname, $secondlistname) {
  * @return string HTML code
  */
 function block_catalogue_show_favorites($favorites, $bgcolor) {
-    global $CFG, $COURSE, $PAGE, $USER;
+    global $CFG, $COURSE, $DB, $PAGE, $USER;
     $PAGE->requires->js("/blocks/catalogue/js/block_catalogue.js");
     $displayedlists = get_config('catalogue', 'displayedlists');
     $displayedlistsarray = explode(',', $displayedlists);
@@ -635,6 +635,11 @@ function block_catalogue_show_favorites($favorites, $bgcolor) {
     $style = "max-width:50px;text-align:center;background-color:$bgcolor";
     $nbcolumns = 3;
     foreach ($favorites as $favorite) {
+		// Don't display favorite for hidden element
+		$hidden = $DB->get_record('block_catalogue_hide', array('listname' => $favorite->listname, 'elementname' => $favorite->elementname));
+		if ($hidden) {
+			continue;
+		}
         if (!isset($favlists[$favorite->listname])) {
             $previouslist = $favorite->listname;
             $favlists[$favorite->listname] = block_catalogue_instanciate_list($favorite->listname);

@@ -41,7 +41,7 @@ class blockcatalogue_list_enrols extends blockcatalogue_list {
         $this->categories = array('users', 'methods');
         $this->potentialmembers = array();
         $this->potentialmembers['methods'] = array('enrol_instances', 'enrol_manual', 'enrol_self', 'local_cohortmanager',
-                                                   'local_mass_enroll', 'blocks_enrol_demands');
+                                                   'local_mass_enroll', 'enrol_demands');
         $this->defaultfavorites = array('user_index');
     }
 
@@ -82,7 +82,7 @@ class blockcatalogue_list_enrols extends blockcatalogue_list {
                 $this->availables['methods'][] = 'enrol_vet';
             }
         }
-        $methods = array('manual', 'self');
+        $methods = array('manual', 'self', 'demands');
         foreach ($methods as $method) {
             if (has_capability("enrol/$method:config", $coursecontext)) {
                 $this->availables['methods'][] = "enrol_$method".'_edit';
@@ -106,14 +106,14 @@ class blockcatalogue_list_enrols extends blockcatalogue_list {
                 $this->availables['methods'][] = 'group_copygroup';
             }
         }
-        $blockplugins = core_component::get_plugin_list('block');
-        foreach ($blockplugins as $name => $path) {
-            if ($name == 'enrol_demands') {
-                if (has_capability('moodle/role:assign', $coursecontext)) {
-                    $this->availables['methods'][] = 'block_demands';
-                }
-            }
-        }
+        //~ $blockplugins = core_component::get_plugin_list('block');
+        //~ foreach ($blockplugins as $name => $path) {
+            //~ if ($name == 'enrol_demands') {
+                //~ if (has_capability('moodle/role:assign', $coursecontext)) {
+                    //~ $this->availables['methods'][] = 'block_demands';
+                //~ }
+            //~ }
+        //~ }
         $reportplugins = core_component::get_plugin_list('report');
         foreach ($reportplugins as $name => $path) {
             $capability = "report/$name:view";
@@ -142,14 +142,15 @@ class blockcatalogue_list_enrols extends blockcatalogue_list {
             return null;
         }        
         $nameparts = $this->divide_name($elementname);
-        if (isset($nameparts[2])) {
-            $nameparts[1] .= '_'.$nameparts[2];
-        }
-        $localicondir = $nameparts[0].'/'.$nameparts[1].'/pix';
+        $localicondir = '';
+        foreach ($nameparts as $namepart) {
+			$localicondir .= $namepart.'/';
+		}
+		$localicondir .= 'pix';        
         if ($elementname == 'cohortmanager') {
 			$localicondir = 'blocks/catalogue/list/enrols/icons';
 			$elementname = 'local_cohortmanager';
-		}        
+		}		
         $iconurl = $this->get_local_iconurl($localicondir, $elementname);
         return $iconurl;
     }
