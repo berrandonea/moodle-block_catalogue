@@ -200,7 +200,7 @@ class blockcatalogue_list_enrols extends blockcatalogue_list {
         $args = array('id' => $COURSE->id, 'courseid' => $COURSE->id);
         $nameparts = $this->divide_name($elementname);
         $targetpage = $CFG->wwwroot;
-        $goodprefix = array('enrol', 'group', 'user');
+        $goodprefix = array('enrol', 'group', 'user');        
         if (in_array($nameparts[0], $goodprefix)) {
             if (isset($nameparts[2])) {
                 $neweditinstance = ($nameparts[0] == 'enrol')
@@ -224,10 +224,9 @@ class blockcatalogue_list_enrols extends blockcatalogue_list {
             $targetpage .= '.php';
         } else if ($nameparts[0] == 'report') {
             $targetpage .= '/report/'.$nameparts[1].'/index.php';
-        } else if ($elementname == 'local_cohortmanager') {
-            $targetpage .= '/local/cohortmanager/viewinfo.php';
-            $coursecontext = context_course::instance($COURSE->id);
-            $args = array('contextid' => $coursecontext->id, 'origin' => 'course');
+        } else if ($elementname == 'cohortmanager') {
+            $targetpage .= '/local/cohortmanager/redirecttoinfo.php';            
+            $args = array('courseid' => $COURSE->id);
         } else if ($elementname == 'mass_enroll') {
             $targetpage .= '/local/mass_enroll/mass_enroll.php';
         } else if ($elementname == 'block_demands') {

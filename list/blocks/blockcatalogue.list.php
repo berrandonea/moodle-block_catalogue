@@ -178,9 +178,9 @@ class blockcatalogue_list_blocks extends blockcatalogue_list {
     private function is_present($blockname) {
         global $COURSE, $DB;
         $coursecontext = $DB->get_record('context', array('contextlevel' => CONTEXT_COURSE, 'instanceid' => $COURSE->id));
-        $courseblockinstance = $DB->get_record('block_instances',
+        $courseblockinstances = $DB->get_records('block_instances',
                 array('blockname' => $blockname, 'parentcontextid' => $coursecontext->id));
-        if ($courseblockinstance) {
+        if ($courseblockinstances) {
             return true;
         }
         $parentcontextids = explode('/', $coursecontext->path);

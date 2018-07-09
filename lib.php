@@ -140,6 +140,15 @@ function block_catalogue_chooseplace_modicon($modulehtml, $cmid, $selectmodurl, 
     $modulehtml = str_replace('</li>', '</div>', $modulehtml);
     $modulehtml = str_replace('<a', '<div', $modulehtml);
     $modulehtml = str_replace('</a>', '</div>', $modulehtml);
+    if (strpos($modulehtml, '<div class="contentafterlink ')) {
+		$explosion = explode('<div class="contentafterlink ', $modulehtml);
+		$modulehtml = $explosion[0].'</div></div></div></div>';
+	}
+    if (strpos($modulehtml, '<div class="availabilityinfo ')) {
+		$explosion = explode('<div class="availabilityinfo ', $modulehtml);
+		$modulehtml = $explosion[0].'</div></div></div></div>';
+	}
+    
     if (!$cm->visible) {
         $modulehtml = str_replace('<img',
                                   '<img style="opacity:.5"',
