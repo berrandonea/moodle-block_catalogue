@@ -43,7 +43,7 @@ class blockcatalogue_list_activities extends blockcatalogue_list {
             'exercise' => array('adaptivequiz', 'assign', 'assignment', 'lesson', 'quiz',
                                 'workshop', 'elang', 'realtimequiz', 'taskchain', 'checkup', 'hvp', 'qcreate', 'offlinequiz'),
             'collaborative' => array('chat', 'data', 'forum', 'bigbluebuttonbn',
-                'glossary', 'depotetudiant', 'etherpadlite', 'wiki', 'choicegroup')
+                'glossary', 'depotetudiant', 'etherpadlite', 'wiki', 'choicegroup', 'newsletter')
         );
         $this->defaultfavorites = array('assign', 'quiz');
         $this->open = false;
