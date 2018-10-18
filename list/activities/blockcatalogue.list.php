@@ -40,8 +40,8 @@ class blockcatalogue_list_activities extends blockcatalogue_list {
         $this->color = '#4472c4';
         $this->categories = array('exercise', 'collaborative', 'other');
         $this->potentialmembers = array(
-            'exercise' => array('adaptivequiz', 'assign', 'assignment', 'lesson', 'quiz',
-                                'workshop', 'elang', 'realtimequiz', 'taskchain', 'checkup', 'hvp', 'qcreate', 'offlinequiz'),
+            'exercise' => array('activequiz', 'adaptivequiz', 'assign', 'assignment', 'lesson', 'quiz',
+                                'workshop', 'elang', 'realtimequiz', 'taskchain', 'checkup', 'hvp', 'qcreate', 'offlinequiz', 'evoting'),
             'collaborative' => array('chat', 'data', 'forum', 'bigbluebuttonbn',
                 'glossary', 'depotetudiant', 'etherpadlite', 'wiki', 'choicegroup', 'newsletter')
         );
