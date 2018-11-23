@@ -31,6 +31,8 @@
  * Class definition for the list of section management tools.
  */
 
+defined('MOODLE_INTERNAL') || die();
+
 require_once($CFG->dirroot."/blocks/catalogue/list/list.class.php");
 
 /**

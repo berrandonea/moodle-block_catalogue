@@ -31,6 +31,8 @@
  * Class definition for the activities and resources list.
  */
 
+defined('MOODLE_INTERNAL') || die();
+
 require_once($CFG->dirroot."/blocks/catalogue/list/list.class.php");
 
 class blockcatalogue_list_blocks extends blockcatalogue_list {

@@ -32,6 +32,8 @@
  * Defines what to do when upgrading the block to a new version.
  */
 
+defined('MOODLE_INTERNAL') || die();
+
 function xmldb_block_catalogue_upgrade($oldversion, $block) {
     global $DB, $USER;
     require_once('access.php');

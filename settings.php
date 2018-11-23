@@ -30,6 +30,7 @@
  * File : list/activities/blockcatalogue.list.php
  * Global settings.
  */
+defined('MOODLE_INTERNAL') || die();
 
 $settings->add(new admin_setting_heading(
             'headerconfig',

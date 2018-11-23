@@ -31,6 +31,8 @@
  * PHP functions library for this block.
  */
 
+defined('MOODLE_INTERNAL') || die();
+
 /**
  * Get all the current favorites.
  * @return array of objects
@@ -141,14 +143,14 @@ function block_catalogue_chooseplace_modicon($modulehtml, $cmid, $selectmodurl, 
     $modulehtml = str_replace('<a', '<div', $modulehtml);
     $modulehtml = str_replace('</a>', '</div>', $modulehtml);
     if (strpos($modulehtml, '<div class="contentafterlink ')) {
-		$explosion = explode('<div class="contentafterlink ', $modulehtml);
-		$modulehtml = $explosion[0].'</div></div></div></div>';
-	}
+        $explosion = explode('<div class="contentafterlink ', $modulehtml);
+        $modulehtml = $explosion[0].'</div></div></div></div>';
+    }
     if (strpos($modulehtml, '<div class="availabilityinfo ')) {
-		$explosion = explode('<div class="availabilityinfo ', $modulehtml);
-		$modulehtml = $explosion[0].'</div></div></div></div>';
-	}
-    
+        $explosion = explode('<div class="availabilityinfo ', $modulehtml);
+        $modulehtml = $explosion[0].'</div></div></div></div>';
+    }
+
     if (!$cm->visible) {
         $modulehtml = str_replace('<img',
                                   '<img style="opacity:.5"',
@@ -283,8 +285,8 @@ function block_catalogue_display_element($course, $usereditor, $list, $elementna
         $titleclass = 'block_catalogue_hiddentitle';
     } else {
         $titleclass = 'block_catalogue_elementtitle';
-    }    
-    echo "<td class='block_catalogue_iconcell'>";    
+    }
+    echo "<td class='block_catalogue_iconcell'>";
     echo "<img src='$iconurl' class='block_catalogue_elementicon'>";
     echo '</td>';
     echo "<td class='$titleclass' colspan=2>";
@@ -532,15 +534,12 @@ function block_catalogue_main_table($listnames, $course, $bgcolor, $showtabs) {
         $nofavs = get_string('nofavs', 'block_catalogue');
         $maintable .= "<p style='$iconstyle'>$nofavs</p>";
     }
-    //~ if ($showtabs) {
-        //~ $maintable .= "<div width='100%' style='$favstyle'>"
-                      //~ .get_string('navigation').'</div>';
-        //~ $maintable .= block_catalogue_navigation($bgcolor);
-    //~ }
     if ($viewlists) {
         $adminurl = "$CFG->wwwroot/course/admin.php?id=$COURSE->id&courseid=$COURSE->id";
-        $maintable .= "<br><p style='text-align:center'><a href='$adminurl'><button id='courseadminbutton' class='btn btn-success'>".get_string('courseadministration')."</button></a></p>";
-	}
+        $maintable .= "<br><p style='text-align:center'><a href='$adminurl'>";
+        $maintable .= "<button id='courseadminbutton' class='btn btn-success'>".get_string('courseadministration')."</button>";
+        $maintable .= "</a></p>";
+    }
 
     return $maintable;
 }
@@ -644,11 +643,12 @@ function block_catalogue_show_favorites($favorites, $bgcolor) {
     $style = "max-width:50px;text-align:center;background-color:$bgcolor";
     $nbcolumns = 3;
     foreach ($favorites as $favorite) {
-		// Don't display favorite for hidden element
-		$hidden = $DB->get_record('block_catalogue_hide', array('listname' => $favorite->listname, 'elementname' => $favorite->elementname));
-		if ($hidden) {
-			continue;
-		}
+        // Don't display favorite for hidden element.
+        $hidden = $DB->get_record('block_catalogue_hide',
+                  array('listname' => $favorite->listname, 'elementname' => $favorite->elementname));
+        if ($hidden) {
+            continue;
+        }
         if (!isset($favlists[$favorite->listname])) {
             $previouslist = $favorite->listname;
             $favlists[$favorite->listname] = block_catalogue_instanciate_list($favorite->listname);
@@ -666,7 +666,7 @@ function block_catalogue_show_favorites($favorites, $bgcolor) {
         $editing = false;
         if (isset($USER->editing)) {
             $editing = $USER->editing;
-		}
+        }
         if ($editing) {
             $favstring .= "<span style='vertical-align:top'> ";
             $delete = get_string('delete');
@@ -675,10 +675,10 @@ function block_catalogue_show_favorites($favorites, $bgcolor) {
             if (in_array($favorite->elementname, $defaultfavorites)) {
                 $default = 1;
             }
-            $favstring .= "<img src='$CFG->wwwroot/pix/t/delete.png'
-                                alt='$delete' title='$delete'
-                                width='8px' height='8px'
-                                onclick='javascript:toggle(".'"'.$favorite->listname.'", "'
+            $favstring .= "<img src='$CFG->wwwroot/pix/t/delete.png'";
+            $favstring .= "     alt='$delete' title='$delete'";
+            $favstring .= "     width='8px' height='8px'";
+            $favstring .= "     onclick='javascript:toggle(".'"'.$favorite->listname.'", "'
                                     .$favorite->elementname.'", "'.'fav'.'", "'.$COURSE->id.'", "'.$default.'", "'
                                     .$CFG->wwwroot.'/blocks/catalogue/toggle.php"'.")'>";
             $favstring .= "</span>";
@@ -826,12 +826,8 @@ function block_catalogue_navigation($bgcolor) {
     $navstyle = "text-align:center;background-color:$bgcolor";
     $arrows .= "<td width='33%' style='$navstyle'>".$previousarrow."</td>";
     $maplabel = get_string('coursemap', 'block_catalogue');
-    //~ $maplabel = get_string('courseadministration');
     $mapurl = "$CFG->wwwroot/blocks/catalogue/chooseplace.php?course=$COURSE->id&map=1";
-    //~ $adminurl = "$CFG->wwwroot/course/admin.php?id=$COURSE->id&courseid=$COURSE->id";
-    //~ $arrows .= "<td style='$navstyle'>"."<a href='$adminurl'>";
     $arrows .= "<img src='$cataloguepixdir/coursemap.png' width='50px' alt='$maplabel' title='$maplabel'>";
-    //~ $arrows .= "<img src='$cataloguepixdir/puzzle.png' width='50px' alt='$maplabel' title='$maplabel'>";
     $arrows .= "</a>"."</td>";
     $arrows .= "<td width='33%' style='$navstyle'>".$nextarrow."</td>";
     $arrows .= '</tr>';
@@ -921,13 +917,7 @@ function block_catalogue_proximod($modinfo, $sequence, $current, $direction) {
  */
 function block_catalogue_pixurl($name, $component) {
     global $OUTPUT;
-    //~ if (method_exists($OUTPUT, 'image_url')) {
-        $iconurl = $OUTPUT->image_url($name, $component);
-    //~ } else if (method_exists($OUTPUT, 'pix_icon')) {
-        //~ $iconurl = $OUTPUT->pix_icon($name, $component);
-    //~ } else {
-        //~ $iconurl = $OUTPUT->pix_url($name, $component);
-    //~ }
+    $iconurl = $OUTPUT->image_url($name, $component);
     return $iconurl;
 }
 

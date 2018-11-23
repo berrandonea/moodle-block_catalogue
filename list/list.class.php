@@ -31,6 +31,8 @@
  * Abstract mother class for all the catalogue's lists.
  */
 
+defined('MOODLE_INTERNAL') || die();
+
 /**
  * Abstract mother class for all the catalogue's lists.
  *

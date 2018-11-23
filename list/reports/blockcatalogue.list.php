@@ -31,6 +31,8 @@
  * Class definition for the reports list.
  */
 
+defined('MOODLE_INTERNAL') || die();
+
 require_once($CFG->dirroot."/blocks/catalogue/list/list.class.php");
 
 class blockcatalogue_list_reports extends blockcatalogue_list {

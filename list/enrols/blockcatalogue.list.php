@@ -31,6 +31,8 @@
  * Class definition for the enrols list.
  */
 
+defined('MOODLE_INTERNAL') || die();
+
 require_once($CFG->dirroot."/blocks/catalogue/list/list.class.php");
 
 class blockcatalogue_list_enrols extends blockcatalogue_list {
@@ -106,14 +108,6 @@ class blockcatalogue_list_enrols extends blockcatalogue_list {
                 $this->availables['methods'][] = 'group_copygroup';
             }
         }
-        //~ $blockplugins = core_component::get_plugin_list('block');
-        //~ foreach ($blockplugins as $name => $path) {
-            //~ if ($name == 'enrol_demands') {
-                //~ if (has_capability('moodle/role:assign', $coursecontext)) {
-                    //~ $this->availables['methods'][] = 'block_demands';
-                //~ }
-            //~ }
-        //~ }
         $reportplugins = core_component::get_plugin_list('report');
         foreach ($reportplugins as $name => $path) {
             $capability = "report/$name:view";
@@ -140,17 +134,17 @@ class blockcatalogue_list_enrols extends blockcatalogue_list {
         global $CFG;
         if ($nature != 'iconurl') {
             return null;
-        }        
+        }
         $nameparts = $this->divide_name($elementname);
         $localicondir = '';
         foreach ($nameparts as $namepart) {
-			$localicondir .= $namepart.'/';
-		}
-		$localicondir .= 'pix';        
+            $localicondir .= $namepart.'/';
+        }
+        $localicondir .= 'pix';
         if ($elementname == 'cohortmanager') {
-			$localicondir = 'blocks/catalogue/list/enrols/icons';
-			$elementname = 'local_cohortmanager';
-		}		
+            $localicondir = 'blocks/catalogue/list/enrols/icons';
+            $elementname = 'local_cohortmanager';
+        }
         $iconurl = $this->get_local_iconurl($localicondir, $elementname);
         return $iconurl;
     }
@@ -200,7 +194,7 @@ class blockcatalogue_list_enrols extends blockcatalogue_list {
         $args = array('id' => $COURSE->id, 'courseid' => $COURSE->id);
         $nameparts = $this->divide_name($elementname);
         $targetpage = $CFG->wwwroot;
-        $goodprefix = array('enrol', 'group', 'user');        
+        $goodprefix = array('enrol', 'group', 'user');
         if (in_array($nameparts[0], $goodprefix)) {
             if (isset($nameparts[2])) {
                 $neweditinstance = ($nameparts[0] == 'enrol')
@@ -225,7 +219,7 @@ class blockcatalogue_list_enrols extends blockcatalogue_list {
         } else if ($nameparts[0] == 'report') {
             $targetpage .= '/report/'.$nameparts[1].'/index.php';
         } else if ($elementname == 'cohortmanager') {
-            $targetpage .= '/local/cohortmanager/redirecttoinfo.php';            
+            $targetpage .= '/local/cohortmanager/redirecttoinfo.php';
             $args = array('courseid' => $COURSE->id);
         } else if ($elementname == 'mass_enroll') {
             $targetpage .= '/local/mass_enroll/mass_enroll.php';

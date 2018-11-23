@@ -31,6 +31,8 @@
  * Class definition for the customlabels list.
  */
 
+defined('MOODLE_INTERNAL') || die();
+
 require_once($CFG->dirroot."/blocks/catalogue/list/list.class.php");
 $customlabellib = "$CFG->dirroot/mod/customlabel/locallib.php";
 if (file_exists($customlabellib)) {

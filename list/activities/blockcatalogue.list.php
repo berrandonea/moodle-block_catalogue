@@ -31,6 +31,8 @@
  * Class definition for the activities and resources list.
  */
 
+defined('MOODLE_INTERNAL') || die();
+
 require_once($CFG->dirroot."/blocks/catalogue/list/list.class.php");
 
 class blockcatalogue_list_activities extends blockcatalogue_list {
@@ -41,7 +43,8 @@ class blockcatalogue_list_activities extends blockcatalogue_list {
         $this->categories = array('exercise', 'collaborative', 'other');
         $this->potentialmembers = array(
             'exercise' => array('activequiz', 'adaptivequiz', 'assign', 'assignment', 'lesson', 'quiz',
-                                'workshop', 'elang', 'realtimequiz', 'taskchain', 'checkup', 'hvp', 'qcreate', 'offlinequiz', 'evoting'),
+                                'workshop', 'elang', 'realtimequiz', 'taskchain', 'checkup', 'hvp',
+                                'qcreate', 'offlinequiz', 'evoting'),
             'collaborative' => array('chat', 'data', 'forum', 'bigbluebuttonbn',
                 'glossary', 'depotetudiant', 'etherpadlite', 'wiki', 'choicegroup', 'newsletter')
         );
